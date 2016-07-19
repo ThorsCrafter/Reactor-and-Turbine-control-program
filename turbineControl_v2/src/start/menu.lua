@@ -1,9 +1,11 @@
 -- Reaktor- und Turbinenprogramm von Thor_s_Crafter --
 -- Version 2.2 --
--- Hauptmenü --
+-- Hauptmenue --
 
 --Lädt die Touchpoint API (von Lyqyd)
+shell.run("cp /reactor-turbine-program/config/touchpoint.lua /touchpoint")
 os.loadAPI("touchpoint")
+shell.run("rm touchpoint")
 
 -- Lokale Variablen --
 --Touchpoint Page
@@ -112,7 +114,7 @@ function exit()
 end
 
 function updateManual()
-  shell.run("installerUpdate")
+  shell.run("/reactor-turbine-program/install/installerUpdate.lua")
   os.reboot()
 end
 
@@ -159,13 +161,13 @@ end
 
 function startTC()
   if program == "turbine" then
-    shell.run("turbineControl")
+    shell.run("/reactor-turbine-program/program/turbineControl.lua")
   elseif program == "reactor" then
-    shell.run("reactorControl")
+    shell.run("/reactor-turbine-program/program/reactorControl.lua")
   end
 end
 function displayOptions()
-  shell.run("editOptions")
+  shell.run("/reactor-turbine-program/program/editOptions.lua")
 end
 function reboot()
   restart()

@@ -2,12 +2,12 @@
 -- Version 2.2 --
 -- Installationsprogramm --
 
-if not fs.exists("options.txt") then
-	shell.run("pastebin get KFcHD2Bj options.txt")
+if not fs.exists("/reactor-turbine-program/config/options.txt") then
+	shell.run("pastebin get KFcHD2Bj /reactor-turbine-program/program/options.txt")
 end
 
 local optionList = {}
-file = fs.open("options.txt","r")
+file = fs.open("/reactor-turbine-program/config/options.txt","r")
 listElement = file.readLine()
 while listElement do
 	table.insert(optionList,listElement)
@@ -21,8 +21,8 @@ local nVersion = 2.2
 if tonumber(version) < nVersion then
 	
 	if tonumber(version) < 2.2	then
-		shell.run("rm options.txt")
-		shell.run("pastebin get KFcHD2Bj options.txt")
+		shell.run("rm /reactor-turbine-program/config/options.txt")
+		shell.run("pastebin get KFcHD2Bj /reactor-turbine-program/config/options.txt")
 	end
 
 end
@@ -35,7 +35,7 @@ print("-- Installer of the Reactor- und Turbinecontrolprogram by Thor_s_Crafter 
 print("-- Version "..nVersion.." --")
 print()
 
-if fs.exists("turbineControl") then
+if fs.exists("/reactor-turbine-program/program/turbineControl.lua") then
 	update = true
 	print("Updating Program...")
 end
@@ -78,57 +78,49 @@ term.clear()
 term.setCursorPos(1,1)
 
 print("Checking existing programs...")
-if fs.exists("touchpoint") then
-	shell.run("delete touchpoint")
+if fs.exists("/reactor-turbine-program/config/touchpoint.lua") then
+	shell.run("delete /reactor-turbine-program/config/touchpoint.lua")
 	print("touchpoint deleted.")
 end
-if fs.exists("turbineControl") then
-	shell.run("delete turbineControl")
+if fs.exists("/reactor-turbine-program/program/turbineControl.lua") then
+	shell.run("delete /reactor-turbine-program/program/turbineControl.lua")
 	print("turbineControl deleted.")
 end
-if fs.exists("changelog.txt") then
-	shell.run("delete changelog.txt")
+if fs.exists("/reactor-turbine-program/changelog/changelog.txt") then
+	shell.run("delete /reactor-turbine-program/changelog/changelog.txt")
 	print("changelog deleted.")
 end
-if fs.exists("showChangelog") then
-	shell.run("delete showChangelog")
-	print("showChangelog deleted.")
-end
-if fs.exists("editOptions") then
-	shell.run("delete editOptions")
+if fs.exists("/reactor-turbine-program/program/editOptions.lua") then
+	shell.run("delete /reactor-turbine-program/program/editOptions.lua")
 	print("editOptions deleted.")
 end
-if fs.exists("mainMenu") then
-	shell.run("delete mainMenu")
-	print("mainMenu deleted.")
-end
-if fs.exists("menu") then
-	shell.run("delete menu")
+if fs.exists("/reactor-turbine-program/start/menu.lua") then
+	shell.run("delete /reactor-turbine-program/start/menu.lua")
 	print("menu deleted.")
 end
-if fs.exists("start") then
-	shell.run("delete start")
+if fs.exists("/reactor-turbine-program/start/start.lua") then
+	shell.run("delete /reactor-turbine-program/start/start.lua")
 	print("start deleted.")
 end
-if fs.exists("reactorControl") then
-  shell.run("delete reactorControl")
+if fs.exists("/reactor-turbine-program/program/reactorControl.lua") then
+  shell.run("delete /reactor-turbine-program/program/reactorControl.lua")
   print("reactorControl geloescht.")
 end
 
 print("Loading Touchpoint-Program...")
-shell.run("pastebin get yTXVvQ4s touchpoint")
+shell.run("pastebin get yTXVvQ4s /reactor-turbine-program/config/touchpoint.lua")
 print("Loading Turbine-Program...")
-shell.run("pastebin get KdnLB5bx turbineControl")
+shell.run("pastebin get KdnLB5bx /reactor-turbine-program/config/turbineControl.lua")
 print("Loading Reactor-Program")
-shell.run("pastebin get KjwASAn2 reactorControl")
+shell.run("pastebin get KjwASAn2 /reactor-turbine-program/program/reactorControl.lua")
 print("Loading Changelog...")
-shell.run("pastebin get h1G9tH7y changelog.txt")
+shell.run("pastebin get h1G9tH7y /reactor-turbine-program/changelog/changelog.txt")
 print("Loading editOptions...")
-shell.run("pastebin get NwHaeCzh editOptions")
+shell.run("pastebin get NwHaeCzh /reactor-turbine-program/program/editOptions.lua")
 print("Loading Hauptmenue")
-shell.run("pastebin get 4jRyfMz7 menu")
+shell.run("pastebin get 4jRyfMz7 /reactor-turbine-program/start/menu.lua")
 print("Loading Start")
-shell.run("pastebin get uLQCLcV9  start")
+shell.run("pastebin get uLQCLcV9  /reactor-turbine-program/start/start.lua")
 print()
 
 term.clear()
@@ -141,7 +133,7 @@ if not fs.exists("startup") then
 		input = read()
 		if input == "y" then
 			local file = fs.open("startup","w")
-			file.writeLine("shell.run(\"start\")")
+			file.writeLine("shell.run(\"/reactor-turbine-program/start/start.lua\")")
 			file.close()
 			print("Startup installed.")
 			out2 = false
@@ -156,7 +148,7 @@ if not fs.exists("startup") then
 else
 	shell.run("delete startup")
 	local file = fs.open("startup","w")
-	file.writeLine("shell.run(\"start\")")
+	file.writeLine("shell.run(\"/reactor-turbine-program/start/start.lua\")")
 	file.close()	
 end
 

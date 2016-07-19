@@ -2,7 +2,13 @@
 -- Version 2.2 --
 -- Reaktorkontrolle --
 
+shell.run("cp /reactor-turbine-program/config/touchpoint.lua /touchpoint")
 os.loadAPI("touchpoint")
+shell.run("rm touchpoint")
+
+shell.run("cp /reactor-turbine-program/config/input.lua /input")
+os.loadAPI("input")
+shell.run("rm input")
 
 local page = touchpoint.new(touchpointLocation)
 local rodLevel
@@ -36,13 +42,13 @@ function createButtons()
   --In Deutsch
   if lang == "de" then
     page:add("Neu starten",restart,2,18,17,18)
-    page:add("Optionen",function() run("editOptions") end,2,20,17,20)
-    page:add("Hauptmenue",function() run("menu") end,2,22,17,22)
+    page:add("Optionen",function() run("/reactor-turbine-program/program/editOptions.lua") end,2,20,17,20)
+    page:add("Hauptmenue",function() run("/reactor-turbine-program/start/menu.lua") end,2,22,17,22)
     --In Englisch
   elseif lang == "en" then
     page:add("Reboot",restart,2,18,17,18)
-    page:add("Options",function() run("editOptions") end,2,20,17,20)
-    page:add("Main Menu",function() run("menu") end,2,22,17,22)
+    page:add("Options",function() run("/reactor-turbine-program/program/editOptions.lua") end,2,20,17,20)
+    page:add("Main Menu",function() run("/reactor-turbine-program/start/menu.lua") end,2,22,17,22)
   end
   page:draw()
 end
@@ -166,7 +172,7 @@ function switchMode()
   end
   page = ""
   mon.clear()
-  run("reactorControl")
+  run("/reactor-turbine-program/program/reactorControl.lua")
 end
 
 function displayDataAuto()

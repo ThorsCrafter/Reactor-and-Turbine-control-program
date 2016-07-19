@@ -14,7 +14,7 @@ reactorOnAt
 mainMenu
 true
 autoUpdate
-true
+false
 lang
 de
 mode

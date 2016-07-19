@@ -3,7 +3,13 @@
 -- Turbinenkontrolle --
 
 --Laedt die Touchpoint API
+shell.run("cp /reactor-turbine-program/config/touchpoint.lua /touchpoint")
 os.loadAPI("touchpoint")
+shell.run("rm touchpoint")
+
+shell.run("cp /reactor-turbine-program/config/input.lua /input")
+os.loadAPI("input")
+shell.run("rm input")
 
 local page = touchpoint.new(touchpointLocation)
 local lastStat = 0
@@ -60,10 +66,10 @@ function startAutoMode()
   mon.setCursorPos(1,1)
   --In Deutsch
   if lang == "de" then
-    mon.write("Bringe Turbinen auf "..turbineTargetSpeed.." RPM. Bitte warten...")
+    mon.write("Bringe Turbinen auf "..(input.formatNumber(turbineTargetSpeed)).." RPM. Bitte warten...")
     --In Englisch
   elseif lang == "en" then
-    mon.write("Getting Turbines to "..turbineTargetSpeed.." RPM. Please wait...")
+    mon.write("Getting Turbines to "..(input.formatNumberComma(turbineTargetSpeed)).." RPM. Please wait...")
   end
 
   while not allAtTargetSpeed() do
@@ -75,9 +81,14 @@ function startAutoMode()
 
       local speed = tostring(t[i].getRotorSpeed())
       local speedstr = string.sub(speed,0,4)
+      local formattedSpeed = tonumber(speedstr)
       mon.setTextColor(textColor)
       mon.setCursorPos(1,(i+3))
-      mon.write("Turbine "..(i+1)..": "..speedstr.." RPM")
+      if lang == "de" then
+        mon.write("Turbine "..(i+1)..": "..(input.formatNumber(formattedSpeed)).." RPM")
+      elseif lang == "en" then
+        mon.write("Turbine "..(i+1)..": "..(input.formatNumberComma(formattedSpeed)).." RPM")
+      end
       if t[i].getRotorSpeed() > turbineTargetSpeed then
         mon.setTextColor(colors.green)
         mon.write(" OK ")
@@ -309,7 +320,7 @@ function findOptimalFuelRodLevel()
       mon.setCursorPos(1,3)
       mon.write("Berechne Level...")
       mon.setCursorPos(1,5)
-      mon.write("Gesuchter Steam-Output: "..targetSteamOutput.."mb/t")
+      mon.write("Gesuchter Steam-Output: "..(input.formatNumber(targetSteamOutput)).."mb/t")
       --In Englisch
     elseif lang == "en" then
       mon.setCursorPos(1,1)
@@ -317,7 +328,7 @@ function findOptimalFuelRodLevel()
       mon.setCursorPos(1,3)
       mon.write("Calculating Level...")
       mon.setCursorPos(1,5)
-      mon.write("Target Steam-Output: "..targetSteamOutput.."mb/t")
+      mon.write("Target Steam-Output: "..(input.formatNumberComma(targetSteamOutput)).."mb/t")
     end
 
     --Berechne bestes Level
@@ -347,11 +358,11 @@ function findOptimalFuelRodLevel()
       --In Deutsch
       if lang == "de" then
         mon.setCursorPos(1,6)
-        mon.write("Aktueller Steam-Output: "..steamOutput.."mb/t    ")
+        mon.write("Aktueller Steam-Output: "..(input.formatNumber(steamOutput)).."mb/t    ")
         --In Englisch
       elseif lang == "en" then
         mon.setCursorPos(1,6)
-        mon.write("Current Steam-Output: "..steamOutput.."mb/t    ")
+        mon.write("Current Steam-Output: "..(input.formatNumberComma(steamOutput)).."mb/t    ")
       end
 
       --Level zu gross
@@ -517,7 +528,7 @@ function switchMode()
   end
   page = ""
   mon.clear()
-  run("turbineControl")
+  run("/reactor-turbine-program/program/turbineControl.lua")
 end
 
 --Erstellt alle Buttons
@@ -556,13 +567,13 @@ function createAllButtons()
   --In Deutsch
   if lang == "de" then
     page:add("Neu starten",restart,2,19,17,19)
-    page:add("Optionen",function() run("editOptions") end,2,21,17,21)
-    page:add("Hauptmenue",function() run("menu") end,2,23,17,23)
+    page:add("Optionen",function() run("/reactor-turbine-program/program/editOptions.lua") end,2,21,17,21)
+    page:add("Hauptmenue",function() run("/reactor-turbine-program/start/menu.lua") end,2,23,17,23)
     --In Englisch
   elseif lang == "en" then
     page:add("Reboot",restart,2,19,17,19)
-    page:add("Options",function() run("editOptions") end,2,21,17,21)
-    page:add("Main Menu",function() run("menu") end,2,23,17,23)
+    page:add("Options",function() run("/reactor-turbine-program/program/editOptions.lua") end,2,21,17,21)
+    page:add("Main Menu",function() run("/reactor-turbine-program/start/menu.lua") end,2,23,17,23)
   end
   page:draw()
 end
@@ -666,9 +677,9 @@ function printStatsAuto(turbine)
 
   mon.setCursorPos(2,5)
   if lang == "de" then
-    mon.write("RF-Produktion: "..math.floor(rfGen).." RF/t      ")
+    mon.write("RF-Produktion: "..(input.formatNumber(math.floor(rfGen))).." RF/t      ")
   elseif lang == "en" then
-    mon.write("RF-Production: "..math.floor(rfGen).." RF/t      ")
+    mon.write("RF-Production: "..(input.formatNumberComma(math.floor(rfGen))).." RF/t      ")
   end
 
   mon.setCursorPos(2,7)
@@ -704,7 +715,7 @@ function printStatsAuto(turbine)
   if lang == "de" then
     mon.write("Reaktor-Verbrauch: "..fuelCons2.."mb/t     ")
     mon.setCursorPos(2,10)
-    mon.write("Steam: "..math.floor(r.getHotFluidProducedLastTick()).."mb/t    ")
+    mon.write("Steam: "..(input.formatNumber(math.floor(r.getHotFluidProducedLastTick()))).."mb/t    ")
     mon.setCursorPos(40,2)
     mon.write("Turbinen: "..(amountTurbines+1).."  ")
     mon.setCursorPos(19,21)
@@ -714,7 +725,7 @@ function printStatsAuto(turbine)
   elseif lang == "en" then
     mon.write("Fuel Consumption: "..fuelCons2.."mb/t     ")
     mon.setCursorPos(2,10)
-    mon.write("Steam: "..math.floor(r.getHotFluidProducedLastTick()).."mb/t    ")
+    mon.write("Steam: "..(input.formatNumberComma(math.floor(r.getHotFluidProducedLastTick()))).."mb/t    ")
     mon.setCursorPos(40,2)
     mon.write("Turbines: "..(amountTurbines+1).."  ")
     mon.setCursorPos(19,21)
@@ -747,14 +758,14 @@ function printStatsAuto(turbine)
   mon.setCursorPos(2,14)
   if lang == "de" then
     mon.write("Rotor Geschwindigkeit: ")
-    mon.write(math.floor(t[turbine].getRotorSpeed()).." RPM   ")
+    mon.write((input.formatNumber(math.floor(t[turbine].getRotorSpeed()))).." RPM   ")
     mon.setCursorPos(2,15)
-    mon.write("RF-Produktion: "..math.floor(t[turbine].getEnergyProducedLastTick()).." RF/t           ")
+    mon.write("RF-Produktion: "..(input.formatNumber(math.floor(t[turbine].getEnergyProducedLastTick()))).." RF/t           ")
   elseif lang == "en" then
     mon.write("Rotor Speed: ")
-    mon.write(math.floor(t[turbine].getRotorSpeed()))
+    mon.write((input.formatNumberComma(math.floor(t[turbine].getRotorSpeed()))).." RPM    ")
     mon.setCursorPos(2,15)
-    mon.write("RF-Production: "..math.floor(t[turbine].getEnergyProducedLastTick()).." RF/t           ")
+    mon.write("RF-Production: "..(input.formatNumberComma(math.floor(t[turbine].getEnergyProducedLastTick()))).." RF/t           ")
   end
 
   mon.setCursorPos(2,25)
@@ -826,14 +837,14 @@ function printStatsMan(turbine)
 
   if lang == "de" then
     mon.setCursorPos(2,5)
-    mon.write("RF-Produktion: "..math.floor(rfGen).." RF/t      ")
+    mon.write("RF-Produktion: "..(input.formatNumber(math.floor(rfGen))).." RF/t      ")
     mon.setCursorPos(2,7)
     local fuelCons = tostring(r.getFuelConsumedLastTick())
     local fuelCons2 = string.sub(fuelCons, 0,4)
     mon.write("Reaktor-Verbrauch: "..fuelCons2.."mb/t     ")
     mon.setCursorPos(2,9)
     mon.write("Rotor Geschwindigkeit: ")
-    mon.write(math.floor(t[turbine].getRotorSpeed()).." RPM   ")
+    mon.write((input.formatNumber(math.floor(t[turbine].getRotorSpeed()))).." RPM   ")
     mon.setCursorPos(2,11)
     mon.write("Reaktor: ")
     mon.setCursorPos(19,21)
@@ -844,14 +855,14 @@ function printStatsMan(turbine)
     mon.write("Alle Turbinen: ")
   elseif lang == "en" then
     mon.setCursorPos(2,5)
-    mon.write("RF-Production: "..math.floor(rfGen).." RF/t      ")
+    mon.write("RF-Production: "..(input.formatNumberComma(math.floor(rfGen))).." RF/t      ")
     mon.setCursorPos(2,7)
     local fuelCons = tostring(r.getFuelConsumedLastTick())
     local fuelCons2 = string.sub(fuelCons, 0,4)
     mon.write("Fuel Consumption: "..fuelCons2.."mb/t     ")
     mon.setCursorPos(2,9)
     mon.write("Rotor Speed: ")
-    mon.write(math.floor(t[turbine].getRotorSpeed()))
+    mon.write((input.formatNumberComma(math.floor(t[turbine].getRotorSpeed()))).." RPM     ")
     mon.setCursorPos(2,11)
     mon.write("Reactor: ")
     mon.setCursorPos(19,21)

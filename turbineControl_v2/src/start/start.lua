@@ -31,7 +31,7 @@ touchpointLocation = {}
 --Lädt die Optionsdatei
 function loadOptionFile()
 	--Datei einlesen
-	local file = fs.open("options.txt","r")
+	local file = fs.open("/reactor-turbine-program/config/options.txt","r")
 	listElement = file.readLine()
 	while listElement do
 		table.insert(optionList,listElement)
@@ -59,7 +59,7 @@ function saveOptionFile()
 	--Aktualisieren
 	refreshOptionList()
 	--Daten in die Datei schreiben
-	local file = fs.open("options.txt","w")
+	local file = fs.open("/reactor-turbine-program/config/options.txt","w")
 	for i=1,#optionList+1,1 do
 		file.writeLine(optionList[i])
 	end
@@ -158,7 +158,7 @@ function restart()
 	mon.setCursorPos(38,8)
 	mon.write("Reboot...")
 	if autoUpdate == true then
-		shell.run("installerUpdate")
+		shell.run("/reactor-turbine-program/install/installerUpdate.lua")
 	else
 		os.reboot()
 	end
@@ -168,22 +168,22 @@ end
 loadOptionFile()
 initPeripherals()
 if autoUpdate == "true" then
-	shell.run("installerUpdate")
+	shell.run("/reactor-turbine-program/install/installerUpdate.lua")
 end
 if mainMenu == "true" then
-	shell.run("menu")
+	shell.run("/reactor-turbine-program/start/menu.lua")
 	error("end start")
 elseif mainMenu == "false" then
   if program == "turbine" then
-	 shell.run("turbineControl")
+	 shell.run("/reactor-turbine-program/program/turbineControl.lua")
   elseif program == "reactor" then
-    shell.run("reactorControl")
+    shell.run("/reactor-turbine-program/program/reactorControl.lua")
   end
 	error("end start")
 else
 	mainMenu = "true"
 	saveOptionFile()
-	shell.run("menu")
+	shell.run("/reactor-turbine-program/start/menu.lua")
 	error("end start")
 end
 
