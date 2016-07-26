@@ -84,6 +84,7 @@ function startAutoMode()
       local formattedSpeed = tonumber(speedstr)
       mon.setTextColor(textColor)
       mon.setCursorPos(1,(i+3))
+      if i >= 16 then mon.setCursorPos(28,(i-16+3)) end
       if lang == "de" then
         mon.write("Turbine "..(i+1)..": "..(input.formatNumber(formattedSpeed)).." RPM")
       elseif lang == "en" then
@@ -371,18 +372,12 @@ function findOptimalFuelRodLevel()
         r.setAllControlRodLevels(controlRodLevel)
 
       else
-        --Level gefunden?
-        if steamOutput-targetSteamOutput < 50 then
           r.setAllControlRodLevels(controlRodLevel)
           rodLevel = controlRodLevel
           saveOptionFile()
           print("Target RodLevel: "..controlRodLevel)
           sleep(2)
           break
-          --Level zu klein
-        else
-          controlRodLevel = controlRodLevel + 1
-        end--else
       end --else
 
     end --while
@@ -533,31 +528,44 @@ end
 
 --Erstellt alle Buttons
 function createAllButtons()
-  local xMin = 40
-  local xMax = 52
-  local yMin = 4
-  local yMax = 4
+  local x1 = 40
+  local x2 = 47
+  local x3 = 54
+  local x4 = 61
+  local y = 4
 
   --Turbinenbuttons
   for i=0,amountTurbines,1 do
-    --Gerade Anzahl (wird in der linken Spalte angezeigt)
-    if math.floor(i/2)*2 == i then
-      if overallMode == "auto" then
-        page:add("Turbine "..(i+1),function() printStatsAuto(i) end,xMin,yMin,xMax,yMax)
-      elseif overallMode == "manual" then
-        page:add("Turbine "..(i+1),function() printStatsMan(i) end,xMin,yMin,xMax,yMax)
+    if overallMode == "auto" then
+      if i <= 7 then
+        page:add("#"..(i+1),function() printStatsAuto(i) end,x1,y,x1+5,y)
+      elseif (i > 7 and i <= 15) then
+        page:add("#"..(i+1),function() printStatsAuto(i) end,x2,y,x2+5,y)
+      elseif (i > 15 and i <= 23) then
+        page:add("#"..(i+1),function() printStatsAuto(i) end,x3,y,x3+5,y)
+      elseif i > 23 then
+        page:add("#"..(i+1),function() printStatsAuto(i) end,x4,y,x4+5,y)
       end
-    else
-      --Ungerade Anzahl (wird in der rechten Spalte angezeigt)
-      if overallMode == "auto" then
-        page:add("Turbine "..(i+1),function() printStatsAuto(i) end,xMin+15,yMin,xMax+15,yMax)
-      elseif overallMode == "manual" then
-        page:add("Turbine "..(i+1),function() printStatsMan(i) end,xMin+15,yMin,xMax+15,yMax)
+      if (i == 7 or i == 15 or i == 23) then y = 4
+      else y = y + 2 end
+
+    elseif overallMode == "manual" then
+      if i <= 7 then
+        page:add("#"..(i+1),function() printStatsMan(i) end,x1,y,x1+5,y)
+      elseif (i > 7 and i <= 15) then
+        page:add("#"..(i+1),function() printStatsMan(i) end,x2,y,x2+5,y)
+      elseif (i > 15 and i <= 23) then
+        page:add("#"..(i+1),function() printStatsMan(i) end,x3,y,x3+5,y)
+      elseif i > 23 then
+        page:add("#"..(i+1),function() printStatsMan(i) end,x4,y,x4+5,y)
       end
-      yMin = yMin + 2
-      yMax = yMax + 2
-    end
-  end
+      if (i == 7 or i == 15 or i == 23) then y = 4
+      else y = y + 2 end
+    end --mode
+  end --for
+
+
+
   page:add("modeSwitch",switchMode,19,23,33,23)
   if overallMode == "auto" then
     page:rename("modeSwitch",modeA,true)
@@ -635,12 +643,12 @@ end
 function printStatsAuto(turbine)
   currStat = turbine
 
-  if not page.buttonList["Turbine "..currStat+1].active then
-    page:toggleButton("Turbine "..currStat+1)
+  if not page.buttonList["#"..currStat+1].active then
+    page:toggleButton("#"..currStat+1)
   end
   if currStat ~= lastStat then
-    if page.buttonList["Turbine "..lastStat+1].active then
-      page:toggleButton("Turbine "..lastStat+1)
+    if page.buttonList["#"..lastStat+1].active then
+      page:toggleButton("#"..lastStat+1)
     end
   end
 
@@ -777,12 +785,12 @@ end
 function printStatsMan(turbine)
   currStat = turbine
 
-  if not page.buttonList["Turbine "..currStat+1].active then
-    page:toggleButton("Turbine "..currStat+1)
+  if not page.buttonList["#"..currStat+1].active then
+    page:toggleButton("#"..currStat+1)
   end
   if currStat ~= lastStat then
-    if page.buttonList["Turbine "..lastStat+1].active then
-      page:toggleButton("Turbine "..lastStat+1)
+    if page.buttonList["#"..lastStat+1].active then
+      page:toggleButton("#"..lastStat+1)
     end
   end
 
