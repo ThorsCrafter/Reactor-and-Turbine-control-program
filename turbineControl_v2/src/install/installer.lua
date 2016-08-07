@@ -1,6 +1,6 @@
 -- Reactor- und Turbine control by Thor_s_Crafter --
 -- Version 2.3 --
--- Installer (English) --
+-- Installer (Deutsch) --
 
 --Loads the option file if not present yet
 if not fs.exists("/reactor-turbine-program/config/options.txt") then
@@ -31,18 +31,18 @@ if not update then
   --Description
   term.clear()
   term.setCursorPos(1,1)
-  print("Reactor- and Turbine control by Thor_s_Crafter")
+  print("Reaktor- und Turbinenprogramm von Thor_s_Crafter")
   print("Version 2.3")
   print()
-  print("About this program:")
-  print("The program controls one BigReactors reactor.")
-  print("You can also attach up to 32 turbines.")
-  print("You must connect the computer with Wired Modems to the reactor (and the turbines).")
-  print("Additionally some kind of Energy Storage and a monitor is required.")
-  print("The size of the monitor has to be at least 7 wide and 4 high.")
-  print("If set up with turbines, the reactor must be able to produce at least 2000mb/t of steam per turbine.")
+  print("Ueber das Programm:")
+  print("Das Programm kontrolliert einen BigReactors-Reaktor.")
+  print("Es koennen auch bis zu 32 Turbinen angeschlossen werden.")
+  print("Der Computer muss mit Wired Modems am Reaktor (und ggf. Turbinen) verbunden werden.")
+  print("Ausserdem muss ein Energiespeicher und ein Monitor angeschlossen werden.")
+  print("Der Monitor muss min. 7 Bloecke breit und 4 Bloecke hoch sein.")
+  print("Wird das Programm mit Turbinen betrieben, sollte der Reaktor pro Turbine mindestens 2000mb/t Steam produzieren koennen.")
   print()
-  write("Press Enter...")
+  write("Bitte Enter druecken...")
   leer = read()
 
   --Computer label
@@ -50,22 +50,22 @@ if not update then
   while out do
     term.clear()
     term.setCursorPos(1,1)
-    print("It is recommended to label the computer.")
-    term.write("Do you want to label the computer? (y/n): ")
+    print("Es wird empfohlen den Computer zu labeln.")
+    term.write("Computer labeln? (j/n): ")
 
     local input = read()
-    if input == "y" then
+    if input == "j" then
       print()
       shell.run("label set \"TurbineComputer\"")
       print()
-      print("ComputerLabel set to \"TurbineComputer\".")
+      print("ComputerLabel auf \"TurbineComputer\" gesetzt.")
       print()
       sleep(2)
       out = false
 
     elseif input == "n" then
       print()
-      print("ComputerLabel not set.")
+      print("ComputerLabel wurde nicht gesetzt.")
       print()
       out = false
     end
@@ -76,23 +76,23 @@ if not update then
   while out2 do
     term.clear()
     term.setCursorPos(1,1)
-    print("It is recommended to add the program to the computers' startup.")
-    print("If you add the program to the startup, the program will automatically run when the computer is started.")
-    term.write("Add startup? (y/n): ")
+    print("Es wird empfohlen das Programm zum Startup hinzuzufugen.")
+    print("Dadurch wird das Programm beim Starten des Computers automatisch ausgefuehrt.")
+    term.write("Startup hinzufuegen? (j/n): ")
 
     local input = read()
-    if input == "y" then
+    if input == "j" then
       local file = fs.open("startup","w")
       file.writeLine("shell.run(\"/reactor-turbine-program/start/start.lua\")")
       file.close()
       print()
-      print("Startup installed.")
+      print("Startup wurde installiert.")
       print()
       out2 = false
     end
     if input == "n" then
       print()
-      print("Startup not installed.")
+      print("Startup wurde nicht installiert.")
       print()
       out2 = false
     end
@@ -104,7 +104,7 @@ end --update
 term.clear()
 term.setCursorPos(1,1)
 
-print("Checking an removing existing programs...")
+print("Checke und loesche vorhandene Programme...")
 --Removes input.lua and touchpoint.lua
 if fs.exists("/reactor-turbine-program/config/input.lua") then
   shell.run("rm /reactor-turbine-program/config/input.lua")
@@ -136,7 +136,7 @@ shell.run("pastebin get 4jRyfMz7 /reactor-turbine-program/start/menu.lua")
 shell.run("pastebin get uLQCLcV9 /reactor-turbine-program/start/start.lua")
 shell.run("pastebin get 3DLAa2HE /reactor-turbine-program/changelog/changelogDe.txt")
 shell.run("pastebin get h1G9tH7y /reactor-turbine-program/changelog/changelogEn.txt")
-print("Done!")
+print("Fertig!")
 
 term.clear()
 term.setCursorPos(1,1)
@@ -154,20 +154,20 @@ term.clear()
 term.setCursorPos(1,1)
 
 if not update then
-  print("Installation successful!")
-  print("The program is now ready to run!")
+  print("Die Installation wurde erfolgreich abgeschlossen!")
+  print("Das Programm ist nun einsatzbereit!")
   print()
   term.setTextColor(colors.yellow)
-  print("You have just installed the program for the first time!")
-  print("It is necessary to reboot the computer manually once.")
-  print("In order to do this, please type in \"reboot\" or press \"Ctrl + R\" for a moment.")
+  print("Beim ersten Start ist es notwendig den Computer manuell neu zu starten!")
+  print("Dazu bitte \"reboot\" eingeben oder \"Strg + R\" kurz gedrueckt halten.")
   term.setTextColor(colors.white)
   print()
-  print("Thanks for using my program! ;)")
-  print("I hope you like it.")
+  print("Danke, dass du mein Programm benutzt! ;)")
+  print("Viel Spass damit.")
   print("(Thor_s_Crafter)")
   print()
 end
-error("Installer terminated. (This is not an error! Please ignore!)")
+error("Installer beendet. (Das ist kein Fehler! Bitte ignorieren!)")
+
 
 

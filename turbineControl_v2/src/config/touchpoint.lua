@@ -1,6 +1,6 @@
--- Reaktor- und Turbinenprogramm von Thor_s_Crafter --
--- Version 2.2 --
--- Touchpoint API von Lyqyd - Leicht geaendert --
+-- Reaktor- and Turbinen control by Thor_s_Crafter --
+-- Version 2.3 --
+-- Touchpoint API by Lyqyd - Slightly changed --
 
 local backgroundColor
 local textColor

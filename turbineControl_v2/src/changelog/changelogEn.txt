@@ -1,6 +1,25 @@
 ****************************************************************
--- Complete Changelog Reactor- und Turbineprogram by Thor_s_Crafter --
--- Current Version: 2.2 --
+-- Reactor- und Turbine control by Thor_s_Crafter --
+-- Complete Changelog --
+-- Current Version: 2.3 --
+****************************************************************
+Version 2.3
+- Now supporting up to 32 turbines
+- Better calculation of the RodLevel
+- Improved getEnergyStorage()-function
+- Improved update-function
+- Removed auto-update
+- Added input API
+- Improved display
+	> Formatting big numers (e.g. 1,000)
+	> Changed turbine buttons (smaller)
+	> Changed default background (gray)
+- Improved installer
+	> Works much better now ;)
+	> More user-friendly
+- Added folder structure
+- Lots of small bugfixes
+	> Thanks to you!
 ****************************************************************
 Version 2.2
 - Better calculation of the RodLevel

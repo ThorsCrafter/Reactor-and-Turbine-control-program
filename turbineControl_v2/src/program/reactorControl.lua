@@ -1,5 +1,5 @@
 -- Reaktor- und Turbinenprogramm von Thor_s_Crafter --
--- Version 2.2 --
+-- Version 2.3 --
 -- Reaktorkontrolle --
 
 shell.run("cp /reactor-turbine-program/config/touchpoint.lua /touchpoint")

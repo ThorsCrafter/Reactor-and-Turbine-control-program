@@ -1,5 +1,5 @@
 --Reaktor- und Turbinenprogramm von Thor_s_Crafter --
--- Version 2.2 --
+-- Version 2.3 --
 -- Globale Einstellungen --
 
 --Globale Variablen fuer alle Programmteile
@@ -12,7 +12,7 @@ textColor = 0
 reactorOffAt = 0
 reactorOnAt = 0
 mainMenu = ""
-autoUpdate = ""
+autoUpdate = "" --deprecated
 lang = ""
 overallMode = ""
 program = ""
@@ -47,7 +47,7 @@ function loadOptionFile()
 	reactorOffAt = tonumber(optionList[11])
 	reactorOnAt = tonumber(optionList[13])
 	mainMenu = optionList[15]
-	autoUpdate = optionList[17]
+	autoUpdate = optionList[17] --deprecated
 	lang = optionList[19]
 	overallMode = optionList[21]
 	program = optionList[23]

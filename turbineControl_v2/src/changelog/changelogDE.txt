@@ -1,6 +1,26 @@
 ****************************************************************
--- Komplettes Changelog Reaktor- und Turbinenprogramm von Thor_s_Crafter --
--- Aktuelle Version: 2.2 --
+-- Reaktor- und Turbinenprogramm von Thor_s_Crafter --
+-- Komplettes Changelog -- 
+-- Aktuelle Version: 2.3 --
+****************************************************************
+Version 2.3
+- Unterstuetzung fuer bis zu 32 Turbinen hinzugefuegt
+- Erneute Verbesserung der RodLevel Berechnung
+- Verbesserung der checkEnergyLevel()-Funktion
+- Verbesserung der Update-Funktion
+- Auto-Update entfernt
+- InputAPI hinzugefuegt
+- Anzeige optimiert
+	> Grosse Zahlen werden formatiert (z.B. 1.000)
+	> Turbinenbuttons geaendert und verkleinert
+	> Standardhintergrund geaendert (grau)
+- Installationsprogramm verbessert
+	> Bessere Funktionalitaet
+	> Benutzerfreundlicher
+- Ordnerstruktur hinzugefuegt
+	> Bessere Uebersichtlichkeit
+- Weitere kleine Bugfixes
+	> Jede Menge, danke an die Community fuers finden!
 ****************************************************************
 Version 2.2
 - Verbesserung der Berechnung der RodLevel
