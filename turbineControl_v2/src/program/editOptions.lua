@@ -1,8 +1,14 @@
 -- Reaktor- und Turbinenprogramm von Thor_s_Crafter --
--- Version 2.2 --
+-- Version 2.3 --
 -- Optionseditor --
 
+shell.run("cp /reactor-turbine-program/config/touchpoint.lua /touchpoint")
 os.loadAPI("touchpoint")
+shell.run("rm touchpoint")
+
+shell.run("cp /reactor-turbine-program/config/input.lua /input")
+os.loadAPI("input")
+shell.run("rm input")
 
 menuOn = true
 
@@ -18,7 +24,7 @@ local currFunct = mainMenu
 
 function saveConfigFile()
   saveOptionFile()
-  shell.run("editOptions")
+  shell.run("/reactor-turbine-program/program/editOptions.lua")
   error("end editOptions")
 end
 
@@ -26,16 +32,16 @@ function exit()
   mon.clear()
   continue = false
   if program == "turbine" then
-    shell.run("turbineControl")
+    shell.run("/reactor-turbine-program/program/turbineControl.lua")
   elseif program == "reactor" then
-    shell.run("reactorControl")
+    shell.run("/reactor-turbine-program/program/reactorControl.lua")
   end
   error("end editOptions")
 end
 
 function displayMenu()
   mon.clear()
-  shell.run("menu")
+  shell.run("/reactor-turbine-program/start/menu.lua")
   error("end editOptions")
 end
 
@@ -219,16 +225,16 @@ function mainMenu()
   mon.setCursorPos(24,13)
   if tonumber(optionList[25]) ~= turbineTargetSpeed then
     if lang == "de" then
-      mon.write("Turbinen Max. Speed: "..math.floor(tonumber(optionList[25])).." -> "..turbineTargetSpeed.."RPM      ")
+      mon.write("Turbinen Max. Speed: "..(input.formatNumber(math.floor(tonumber(optionList[25])))).." -> "..(input.formatNumber(turbineTargetSpeed)).."RPM      ")
     elseif lang == "en" then
-      mon.write("Turbines Max. Speed: "..math.floor(tonumber(optionList[25])).." -> "..turbineTargetSpeed.."RPM      ")
+      mon.write("Turbines Max. Speed: "..(input.formatNumberComma(math.floor(tonumber(optionList[25])))).." -> "..(input.formatNumberComma(turbineTargetSpeed)).."RPM      ")
     end
 
   else
     if lang == "de" then
-      mon.write("Turbinen Max. Speed: "..turbineTargetSpeed.."     ")
+      mon.write("Turbinen Max. Speed: "..(input.formatNumber(turbineTargetSpeed)).."RPM     ")
     elseif lang == "en" then
-      mon.write("Turbines Max. Speed: "..turbineTargetSpeed.."     ")
+      mon.write("Turbines Max. Speed: "..(input.formatNumberComma(turbineTargetSpeed)).."RPM     ")
     end
   end
 
@@ -441,11 +447,11 @@ mode2 = "speed"
   if lang == "de" then
     mon.write("-- Turbinen Speed --")
     mon.setCursorPos(3,5)
-    mon.write("Maximale Turbinengeschwindigkeit: "..turbineTargetSpeed.."RPM      ")
+    mon.write("Maximale Turbinengeschwindigkeit: "..(input.formatNumber(turbineTargetSpeed)).."RPM      ")
   elseif lang == "en" then
     mon.write("-- Turbine Speed --")
     mon.setCursorPos(3,5)
-    mon.write("Maximum Turbine speed: "..turbineTargetSpeed.."RPM      ")
+    mon.write("Maximum Turbine speed: "..(input.formatNumberComma(turbineTargetSpeed)).."RPM      ")
   end
   --refreshOptionList()
   getClick(setTurbineSpeed)

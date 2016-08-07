@@ -1,9 +1,11 @@
 -- Reaktor- und Turbinenprogramm von Thor_s_Crafter --
--- Version 2.2 --
--- Hauptmenü --
+-- Version 2.3 --
+-- Hauptmenue --
 
 --Lädt die Touchpoint API (von Lyqyd)
+shell.run("cp /reactor-turbine-program/config/touchpoint.lua /touchpoint")
 os.loadAPI("touchpoint")
+shell.run("rm touchpoint")
 
 -- Lokale Variablen --
 --Touchpoint Page
@@ -11,13 +13,13 @@ local page = touchpoint.new(touchpointLocation)
 --	Button Labels
 local startOn = {}
 local startOff = {}
-local autoOn = {}
-local autoOff = {}
 
 --Erstellt die Buttons im Hauptmenü
 function createButtons()
   page:add("Deutsch",nil,39,15,49,15)
   page:add("English",nil,39,17,49,17)
+  
+  page:add("Update",updateManual,39,11,49,11)
 
   --In Deutsch
   if lang == "de" then
@@ -30,11 +32,8 @@ function createButtons()
     page:add("Programm beenden",exit,3,18,20,18)
     page:add("Neu starten",reboot,3,20,20,20)
     page:add("menuOn",nil,39,7,49,7)
-    page:add("autoUp",nil,39,11,49,11)
     startOn = {"   Ein    ",label = "menuOn"}
     startOff = {"   Aus    ",label = "menuOn"}
-    autoOn = {"   Ein    ",label = "autoUp"}
-    autoOff = {"   Aus    ",label = "autoUp"}
     page:toggleButton("Deutsch")
     --Programm
     if program == "turbine" then
@@ -60,11 +59,8 @@ function createButtons()
     page:add("Quit program",exit,3,18,20,18)
     page:add("Reboot",restart,3,20,20,20)
     page:add("menuOn",nil,39,7,49,7)
-    page:add("autoUp",nil,39,11,49,11)
     startOn = {"   On    ",label = "menuOn"}
     startOff = {"   Off    ",label = "menuOn"}
-    autoOn = {"   On    ",label = "autoUp"}
-    autoOff = {"   Off    ",label = "autoUp"}
     page:toggleButton("English")
     --Programm
     if program == "turbine" then
@@ -87,14 +83,6 @@ function createButtons()
   else
     page:rename("menuOn",startOff,true)
   end
-  --Aktiv, wenn autoUpdate an ist
-  if autoUpdate == "true" then
-    page:rename("autoUp",autoOn,true)
-    page:toggleButton("autoUp")
-  else
-    page:rename("autoUp",autoOff,true)
-    page:add("Update",updateManual,51,11,61,11)
-  end
 end
 
 --Beendet das Programm
@@ -112,7 +100,8 @@ function exit()
 end
 
 function updateManual()
-  shell.run("installerUpdate")
+   shell.run("/reactor-turbine-program/install/installerUpdate.lua")
+   shell.run("/reactor-turbine-program/install/installer.lua")
   os.reboot()
 end
 
@@ -144,8 +133,8 @@ function switchProgram(currBut)
         page:toggleButton("Mit Turbinen")
       end
     elseif lang == "en" then
-      if page.buttonList["Reactor"].active then
-        page:toggleButton("Reactor")
+      if page.buttonList["Reactor only"].active then
+        page:toggleButton("Reactor only")
       end
       if not page.buttonList["Turbines"].active then
         page:toggleButton("Turbines")
@@ -159,13 +148,13 @@ end
 
 function startTC()
   if program == "turbine" then
-    shell.run("turbineControl")
+    shell.run("/reactor-turbine-program/program/turbineControl.lua")
   elseif program == "reactor" then
-    shell.run("reactorControl")
+    shell.run("/reactor-turbine-program/program/reactorControl.lua")
   end
 end
 function displayOptions()
-  shell.run("editOptions")
+  shell.run("/reactor-turbine-program/program/editOptions.lua")
 end
 function reboot()
   restart()
@@ -185,21 +174,6 @@ local function getClick(funct)
         mainMenu = "false"
         saveOptionFile()
         page:rename("menuOn",startOff,true)
-      end
-      page:toggleButton(but)
-      funct()
-
-    elseif but == "autoUp" then
-      if autoUpdate == "true" then
-        autoUpdate = "false"
-        page:rename("autoUp",autoOff,true)
-        page:add("Update",updateManual,51,11,61,11)
-        saveOptionFile()
-      elseif autoUpdate == "false" then
-        autoUpdate = "true"
-        page:rename("autoUp",autoOn,true)
-        page:remove("Update")
-        saveOptionFile()
       end
       page:toggleButton(but)
       funct()
@@ -311,7 +285,7 @@ function displayMenu()
 
   end
   mon.setCursorPos(39,9)
-  mon.write("Auto-Update:")
+  mon.write("Update:")
   getClick(displayMenu)
 end
 

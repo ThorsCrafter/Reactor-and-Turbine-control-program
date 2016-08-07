@@ -1,10 +1,10 @@
 
 version
-0
+2.3
 rodLevel
 0
 backgroundColor
-2048
+128
 textColor
 1
 reactorOffAt
@@ -14,7 +14,7 @@ reactorOnAt
 mainMenu
 true
 autoUpdate
-true
+false
 lang
 de
 mode

@@ -1,0 +1,13 @@
+*.buildpath
+turbineControl_v2/.metadata/.lock
+*.log
+turbineControl_v2/.metadata/.plugins/org.eclipse.core.resources/.root/.indexes/history.version
+*.tree
+turbineControl_v2/.metadata/.plugins/org.eclipse.core.resources/.safetable/org.eclipse.core.resources
+*.prefs
+turbineControl_v2/.metadata/.plugins/org.eclipse.dltk.core/Containers.dat
+*.xml
+turbineControl_v2/.metadata/version.ini
+*.version
+turbineControl_v2/.metadata/.plugins/org.eclipse.e4.workbench/workbench.xmi
+*.project

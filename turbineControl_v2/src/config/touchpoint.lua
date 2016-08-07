@@ -1,13 +1,13 @@
--- Reaktor- und Turbinenprogramm von Thor_s_Crafter --
--- Version 2.2 --
--- Touchpoint API von Lyqyd - Leicht geändert --
+-- Reaktor- and Turbinen control by Thor_s_Crafter --
+-- Version 2.3 --
+-- Touchpoint API by Lyqyd - Slightly changed --
 
 local backgroundColor
 local textColor
 
 function loadOptions()
 	local optionList = {}
-	local file = fs.open("options.txt","r")
+	local file = fs.open("/reactor-turbine-program/config/options.txt","r")
 	local listElement = file.readLine()
 	while listElement do
 		table.insert(optionList,listElement)
