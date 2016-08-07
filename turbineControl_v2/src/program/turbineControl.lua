@@ -368,7 +368,7 @@ function findOptimalFuelRodLevel()
     local steamOutput1 = r.getHotFluidProducedLastTick()
     print("SO1: "..steamOutput1)
     r.setAllControlRodLevels(controlRodLevel-1)
-    sleep(2)
+    sleep(4)
     local steamOutput2 = r.getHotFluidProducedLastTick()
     print("SO2: "..steamOutput2)
     diff = steamOutput2 - steamOutput1
