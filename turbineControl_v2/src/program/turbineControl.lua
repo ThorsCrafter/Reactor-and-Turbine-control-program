@@ -65,7 +65,7 @@ function startAutoMode()
   --Loads/Calculates the reactor's rod level
   findOptimalFuelRodLevel()
 
-  --Clear display 
+  --Clear display
   term.clear()
   term.setCursorPos(1,1)
 
@@ -481,14 +481,15 @@ function checkEnergyLevel()
   elseif getEnergyPer() < reactorOnAt then
     r.setActive(true)
     for i=0,amountTurbines do
-        if t[i].getRotorSpeed() < turbineTargetSpeed then
-          t[i].setInductorEngaged(false)
-        end
-        if t[i].getRotorSpeed() > turbineTargetSpeed*1.02 then
-          t[i].setInductorEngaged(true)
-        end
+      t[i].setFluidFlowRateMax(2000)
+      if t[i].getRotorSpeed() < turbineTargetSpeed then
+        t[i].setInductorEngaged(false)
       end
-    
+      if t[i].getRotorSpeed() > turbineTargetSpeed*1.02 then
+        t[i].setInductorEngaged(true)
+      end
+    end
+
   else
     if r.getActive() then
       for i=0,amountTurbines do
