@@ -410,7 +410,7 @@ function findOptimalFuelRodLevel()
                     --Disable reactor and turbines
                     r.setActive(false)
                     allTurbinesOff()
-                    for i = 1, #amountTurbines do
+                    for i = 1, amountTurbines do
                         t[i].setActive(false)
                     end
 
