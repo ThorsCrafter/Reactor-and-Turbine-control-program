@@ -28,11 +28,11 @@ amountTurbines = 0
 touchpointLocation = {}
 
 -- Globale Funktionen --
---L‰dt die Optionsdatei
+--L√§dt die Optionsdatei
 function loadOptionFile()
 	--Datei einlesen
 	local file = fs.open("/reactor-turbine-program/config/options.txt","r")
-	listElement = file.readLine()
+	local listElement = file.readLine()
 	while listElement do
 		table.insert(optionList,listElement)
 		listElement = file.readLine()
@@ -83,9 +83,9 @@ function refreshOptionList()
 	optionList[25] = turbineTargetSpeed
 end
 
---Initialisiert alle angeschlossenen Ger‰te
+--Initialisiert alle angeschlossenen Ger√§te
 function initPeripherals()
-	--Sucht nach allen angeschlossenen Ger‰ten
+	--Sucht nach allen angeschlossenen Ger√§ten
 	local peripheralList = peripheral.getNames()
 	for i=1,#peripheralList do
 		--Turbinen
@@ -186,8 +186,3 @@ else
 	shell.run("/reactor-turbine-program/start/menu.lua")
 	error("end start")
 end
-
-
-
-
-

@@ -467,26 +467,3 @@ mon.clear()
 while true do
   getClick()
 end
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

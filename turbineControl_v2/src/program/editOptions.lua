@@ -477,9 +477,3 @@ end
 mon.clear()
 createAllButtons()
 mainMenu()
-
-
-
-
-
-

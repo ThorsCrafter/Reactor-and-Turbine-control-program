@@ -168,6 +168,3 @@ if not update then
   print()
 end
 error("Installer beendet. (Das ist kein Fehler! Bitte ignorieren!)")
-
-
-

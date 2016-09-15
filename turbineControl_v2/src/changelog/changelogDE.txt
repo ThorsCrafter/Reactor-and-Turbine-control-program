@@ -81,7 +81,7 @@ Version 1.6
 	> Reaktor aus
 	> Reaktor an
 	> Config loeschen
-- Einstellungsmöglichkeiten angepasst
+- EinstellungsmÃ¶glichkeiten angepasst
 - Weitere kleinere Aenderungen
 ****************************************************************
 Version 1.5
