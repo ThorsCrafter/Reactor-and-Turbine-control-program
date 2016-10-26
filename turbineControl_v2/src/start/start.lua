@@ -17,6 +17,7 @@ lang = ""
 overallMode = ""
 program = ""
 turbineTargetSpeed = 0
+targetSteam = 0
 --Peripherals
 mon = "" --Monitor
 r = ""
@@ -52,6 +53,7 @@ function loadOptionFile()
 	overallMode = optionList[21]
 	program = optionList[23]
 	turbineTargetSpeed = tonumber(optionList[25])
+	targetSteam  = tonumber(optionList[27])
 end
 
 --Speichert alle Daten in der Optionsdatei
@@ -81,45 +83,47 @@ function refreshOptionList()
 	optionList[21] = overallMode
 	optionList[23] = program
 	optionList[25] = turbineTargetSpeed
+	optionList[27] = targetSteam
 end
 
 --Initialisiert alle angeschlossenen Geräte
 function initPeripherals()
-	--Sucht nach allen angeschlossenen Geräten
-	local peripheralList = peripheral.getNames()
-	for i=1,#peripheralList do
-		--Turbinen
-		if peripheral.getType(peripheralList[i]) == "BigReactors-Turbine" then
-			t[amountTurbines]=peripheral.wrap(peripheralList[i])
-			amountTurbines = amountTurbines + 1
-		end
-		--Reaktor
-		if peripheral.getType(peripheralList[i]) == "BigReactors-Reactor" then
-			r = peripheral.wrap(peripheralList[i])
-		end
-		--Monitor & Touchpoint
-		if peripheral.getType(peripheralList[i]) == "monitor" then
-			mon = peripheral.wrap(peripheralList[i])
-			touchpointLocation = peripheralList[i]
-		end
-		--Capacitorbank / Energycell / Energy Core
-		if peripheral.getType(peripheralList[i]) == "tile_blockcapacitorbank_name" then
-			v = peripheral.wrap(peripheralList[i])
-		elseif peripheral.getType(peripheralList[i]) == "capacitor_bank" then
-			v = peripheral.wrap(peripheralList[i])
-		elseif peripheral.getType(peripheralList[i]) == "tile_thermalexpansion_cell_basic_name" then
-			v = peripheral.wrap(peripheralList[i])
-		elseif peripheral.getType(peripheralList[i]) == "tile_thermalexpansion_cell_hardened_name" then
-			v = peripheral.wrap(peripheralList[i])
-		elseif peripheral.getType(peripheralList[i]) == "tile_thermalexpansion_cell_reinforced_name" then
-			v = peripheral.wrap(peripheralList[i])
-		elseif peripheral.getType(peripheralList[i]) == "tile_thermalexpansion_cell_resonant_name" then
-			v = peripheral.wrap(peripheralList[i])
-		elseif peripheral.getType(peripheralList[i]) == "draconic_rf_storage" then
-			v = peripheral.wrap(peripheralList[i])
-		end
-
-	end
+    --Sucht nach allen angeschlossenen Geräten
+    local peripheralList = peripheral.getNames()
+    for i = 1, #peripheralList do
+        --Turbinen
+        if peripheral.getType(peripheralList[i]) == "BigReactors-Turbine" then
+            t[amountTurbines] = peripheral.wrap(peripheralList[i])
+            amountTurbines = amountTurbines + 1
+        end
+        --Reaktor
+        if peripheral.getType(peripheralList[i]) == "BigReactors-Reactor" then
+            r = peripheral.wrap(peripheralList[i])
+        end
+        --Monitor & Touchpoint
+        if peripheral.getType(peripheralList[i]) == "monitor" then
+            mon = peripheral.wrap(peripheralList[i])
+            touchpointLocation = peripheralList[i]
+        end
+        --Capacitorbank / Energycell / Energy Core
+        if peripheral.getType(peripheralList[i]) == "tile_blockcapacitorbank_name" then
+            v = peripheral.wrap(peripheralList[i])
+        elseif peripheral.getType(peripheralList[i]) == "capacitor_bank" then
+            v = peripheral.wrap(peripheralList[i])
+        elseif peripheral.getType(peripheralList[i]) == "tile_thermalexpansion_cell_basic_name" then
+            v = peripheral.wrap(peripheralList[i])
+        elseif peripheral.getType(peripheralList[i]) == "tile_thermalexpansion_cell_hardened_name" then
+            v = peripheral.wrap(peripheralList[i])
+        elseif peripheral.getType(peripheralList[i]) == "tile_thermalexpansion_cell_reinforced_name" then
+            v = peripheral.wrap(peripheralList[i])
+        elseif peripheral.getType(peripheralList[i]) == "tile_thermalexpansion_cell_resonant_name" then
+            v = peripheral.wrap(peripheralList[i])
+        elseif peripheral.getType(peripheralList[i]) == "cofh_thermal_expansion_energycell" then
+            v = peripheralList.wrap(peripheralList[i])
+        elseif peripheral.getType(peripheralList[i]) == "draconic_rf_storage" then
+        v = peripheral.wrap(peripheralList[i])
+        end
+    end
 
 	--Fehlererkennung
 	term.clear()
