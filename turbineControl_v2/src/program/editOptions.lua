@@ -47,12 +47,13 @@ end
 
 function createAllButtons()
   if lang == "de" then
-    touch1:add("Hintergrund",setBackground,3,5,19,5)
-    touch1:add("Text",setText,3,7,19,7)
-    touch1:add("Reaktor Aus",setOffAt,3,9,19,9)
-    touch1:add("Reaktor An",setOnAt,3,11,19,11)
-    touch1:add("Turbinen Speed",setTurbineSpeed,3,13,19,13)
-    touch1:add("Config loeschen",resetConfig,3,15,19,15)
+    touch1:add("Hintergrund",setBackground,3,4,19,4)
+    touch1:add("Text",setText,3,6,19,6)
+    touch1:add("Reaktor Aus",setOffAt,3,8,19,8)
+    touch1:add("Reaktor An",setOnAt,3,10,19,10)
+    touch1:add("Turbinen Speed",setTurbineSpeed,3,12,19,12)
+    touch1:add("Steam Input",setTurbineSteamRate,3,14,19,14)
+    touch1:add("Config loeschen",resetConfig,3,16,19,16)
     touch1:add("Speichern",saveConfigFile,3,19,19,19)
     touch1:add("Zum Programm",exit,3,21,19,21)
     touch1:add("Hauptmenue",displayMenu,3,23,19,23)
@@ -94,12 +95,13 @@ function createAllButtons()
     touch4:add("Zurueck",mainMenu,3,13,19,13)
 
   elseif lang == "en" then
-    touch1:add("Background",setBackground,3,5,19,5)
-    touch1:add("Text",setText,3,7,19,7)
-    touch1:add("Reactor Off",setOffAt,3,9,19,9)
-    touch1:add("Reactor On",setOnAt,3,11,19,11)
-    touch1:add("Turbine Speed",setTurbineSpeed,3,13,19,13)
-    touch1:add("Delete Config",resetConfig,3,15,19,15)
+    touch1:add("Background",setBackground,3,4,19,4)
+    touch1:add("Text",setText,3,6,19,6)
+    touch1:add("Reactor Off",setOffAt,3,8,19,8)
+    touch1:add("Reactor On",setOnAt,3,10,19,10)
+    touch1:add("Turbine Speed",setTurbineSpeed,3,12,19,12)
+    touch1:add("Steam Input",setTurbineSteamRate,3,14,19,14)
+    touch1:add("Delete Config",resetConfig,3,16,19,16)
     touch1:add("Save",saveConfigFile,3,19,19,19)
     touch1:add("Back to program",exit,3,21,19,21)
     touch1:add("Main menu",displayMenu,3,23,19,23)
@@ -130,7 +132,7 @@ function createAllButtons()
     touch3:add("+100",function() setOnOffAt("+",100) end,14,10,19,10)
     touch3:add("Back",mainMenu,3,13,19,13)
     
-     touch4:add("-1",function() setOnOffAt("-",1) end,3,8,6,8)
+    touch4:add("-1",function() setOnOffAt("-",1) end,3,8,6,8)
     touch4:add("-10",function() setOnOffAt("-",10) end,8,8,12,8)
     touch4:add("-100",function() setOnOffAt("-",100) end,14,8,19,8)
     touch4:add("-1000",function() setOnOffAt("-",1000) end,21,8,28,8)
@@ -157,7 +159,7 @@ function mainMenu()
     mon.write("-- Options --")
   end
 
-  mon.setCursorPos(24,5)
+  mon.setCursorPos(24,4)
   local col = printColor(tonumber(optionList[7]))
   local col2 = printColor(backgroundColor)
   if tonumber(optionList[7]) ~= backgroundColor then
@@ -174,7 +176,7 @@ function mainMenu()
     end
   end
 
-  mon.setCursorPos(24,7)
+  mon.setCursorPos(24,6)
   local col3 = printColor(tonumber(optionList[9]))
   local col4 = printColor(textColor)
   if tonumber(optionList[9]) ~= textColor then
@@ -191,7 +193,7 @@ function mainMenu()
     end
   end
 
-  mon.setCursorPos(24,9)
+  mon.setCursorPos(24,8)
   if math.floor(tonumber(optionList[11])) ~= math.floor(reactorOffAt) then
     if lang == "de" then
       mon.write("Reaktor aus bei ueber "..math.floor(tonumber(optionList[11])).."% -> "..math.floor(reactorOffAt).."%   ")
@@ -206,7 +208,7 @@ function mainMenu()
     end
   end
 
-  mon.setCursorPos(24,11)
+  mon.setCursorPos(24,10)
   if math.floor(tonumber(optionList[13])) ~= math.floor(reactorOnAt) then
     if lang == "de" then
       mon.write("Reaktor an bei unter "..math.floor(tonumber(optionList[13])).."% -> "..math.floor(reactorOnAt).."%   ")
@@ -222,7 +224,7 @@ function mainMenu()
     end
   end
   
-  mon.setCursorPos(24,13)
+  mon.setCursorPos(24,12)
   if tonumber(optionList[25]) ~= turbineTargetSpeed then
     if lang == "de" then
       mon.write("Turbinen Max. Speed: "..(input.formatNumber(math.floor(tonumber(optionList[25])))).." -> "..(input.formatNumber(turbineTargetSpeed)).."RPM      ")
@@ -238,7 +240,23 @@ function mainMenu()
     end
   end
 
-  mon.setCursorPos(24,15)
+  mon.setCursorPos(24,14)
+  if tonumber(optionList[27]) ~= targetSteam then
+    if lang == "de" then
+      mon.write("Turbinen Steam-Input: "..(input.formatNumber(math.floor(tonumber(optionList[27])))).." -> "..(input.formatNumber(targetSteam)).."mb/t      ")
+    elseif lang == "en" then
+      mon.write("Turbines Steam Input: "..(input.formatNumberComma(math.floor(tonumber(optionList[27])))).." -> "..(input.formatNumberComma(targetSteam)).."mb/t      ")
+    end
+
+  else
+    if lang == "de" then
+      mon.write("Turbinen Steam-Input: "..(input.formatNumber(targetSteam)).."mb/t     ")
+    elseif lang == "en" then
+      mon.write("Turbines Steam Input: "..(input.formatNumberComma(targetSteam)).."mb/t     ")
+    end
+  end
+
+  mon.setCursorPos(24,16)
   if lang == "de" then
     mon.write("Config vorhanden: ")
   elseif lang == "en" then
@@ -420,6 +438,9 @@ function setOnOffAt(vorz,anz)
     elseif mode2 == "speed" then
       turbineTargetSpeed = turbineTargetSpeed - anz
       if turbineTargetSpeed < 0 then turbineTargetSpeed = 0 end
+    elseif mode2 == "steam" then
+      targetSteam = targetSteam - anz
+      if targetSteam < 0 then targetSteam = 0 end
     end
   elseif vorz == "+" then
     if mode2 == "off" then
@@ -430,6 +451,9 @@ function setOnOffAt(vorz,anz)
       if reactorOnAt >100 then reactorOnAt = 100 end
     elseif mode2 == "speed" then
       turbineTargetSpeed = turbineTargetSpeed + anz
+    elseif mode2 == "steam" then
+      targetSteam = targetSteam + anz
+      if targetSteam >2000 then targetSteam = 2000 end
     end
   end
   if mode2 == "off" then setOffAt()
@@ -456,6 +480,28 @@ mode2 = "speed"
   --refreshOptionList()
   getClick(setTurbineSpeed)
   setTurbineSpeed()
+end
+
+function setTurbineSteamRate()
+  mode2 = "steam"
+  mon.clear()
+  currPage = touch4
+  currPage:draw()
+  mon.setBackgroundColor(backgroundColor)
+  mon.setTextColor(textColor)
+  mon.setCursorPos(3,2)
+  if lang == "de" then
+    mon.write("-- Turbinen Steam Input --")
+    mon.setCursorPos(3,5)
+    mon.write("Turbinen Steam Input-Rate: "..(input.formatNumber(targetSteam)).."mb/t      ")
+  elseif lang == "en" then
+    mon.write("-- Turbine Steam Input --")
+    mon.setCursorPos(3,5)
+    mon.write("Turbine Steam Input-Rate: "..(input.formatNumberComma(targetSteam)).."mb/t      ")
+  end
+  --refreshOptionList()
+  getClick(setTurbineSteamRate)
+  setTurbineSteamRate()
 end
 
 function resetConfig()

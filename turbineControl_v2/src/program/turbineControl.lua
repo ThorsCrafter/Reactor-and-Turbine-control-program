@@ -1,5 +1,5 @@
 -- Reactor- und Turbine control by Thor_s_Crafter --
--- Version 2.3 --
+-- Version 2.4 --
 -- Turbine control --
 
 --Loads the touchpoint API
@@ -149,7 +149,7 @@ function startManualMode()
 
     --Sets all turbine flow rates to maximum (if set different in auto mode)
     for i = 0, #t do
-        t[i].setFluidFlowRateMax(2000)
+        t[i].setFluidFlowRateMax(targetSteam)
     end
 
     --Displays the first turbine (default)
@@ -255,7 +255,7 @@ function allTurbinesOn()
     for i = 0, amountTurbines, 1 do
         t[i].setActive(true)
         t[i].setInductorEngaged(true)
-        t[i].setFluidFlowRateMax(2000)
+        t[i].setFluidFlowRateMax(targetSteam)
     end
 end
 
@@ -270,7 +270,7 @@ end
 --Enable one turbine
 function turbineOn(i)
     t[i].setInductorEngaged(true)
-    t[i].setFluidFlowRateMax(2000)
+    t[i].setFluidFlowRateMax(targetSteam)
 end
 
 --Disable one turbine
@@ -340,7 +340,7 @@ function findOptimalFuelRodLevel()
         --Calculation variables
         local controlRodLevel = 99
         local diff = 0
-        local targetSteamOutput = 2000 * (amountTurbines + 1)
+        local targetSteamOutput = targetSteam * (amountTurbines + 1)
         local targetLevel = 99
 
         --Display
@@ -541,7 +541,7 @@ function checkEnergyLevel()
     elseif getEnergyPer() < reactorOnAt then
         r.setActive(true)
         for i = 0, amountTurbines do
-            t[i].setFluidFlowRateMax(2000)
+            t[i].setFluidFlowRateMax(targetSteam)
             if t[i].getRotorSpeed() < turbineTargetSpeed then
                 t[i].setInductorEngaged(false)
             end
@@ -573,7 +573,7 @@ function getToTargetSpeed()
             r.setActive(true)
             t[i].setActive(true)
             t[i].setInductorEngaged(false)
-            t[i].setFluidFlowRateMax(2000)
+            t[i].setFluidFlowRateMax(targetSteam)
         end
         if t[i].getRotorSpeed() > turbineTargetSpeed then
             turbineOff(i)
