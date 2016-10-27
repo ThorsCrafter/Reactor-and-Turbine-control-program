@@ -128,10 +128,6 @@ function initPeripherals()
 	--Fehlererkennung
 	term.clear()
 	term.setCursorPos(1,1)
-	mon.setBackgroundColor(colors.black)
-	mon.setTextColor(colors.red)
-	mon.clear()
-	mon.setCursorPos(1,1)
 	--Kein Monitor
 	if mon == "" then
 		if lang == "de" then
@@ -140,6 +136,11 @@ function initPeripherals()
 			error("Monitor not found! Please check and reboot the computer (Press and hold Ctrl+R)")
 		end
 	end
+	--Monitor clear
+	mon.setBackgroundColor(colors.black)
+	mon.setTextColor(colors.red)
+	mon.clear()
+	mon.setCursorPos(1,1)
 	--Monitor zu klein
 	local monX,monY = mon.getSize()
 	if monX < 71 or monY < 26 then
