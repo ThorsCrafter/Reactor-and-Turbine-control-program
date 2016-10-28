@@ -506,6 +506,7 @@ end
 
 function resetConfig()
   rodLevel = 0
+  targetSteam = 2000
   mainMenu()
 end
 
