@@ -85,7 +85,7 @@ function startAutoMode()
 
     --Gets turbine to target speed
     while not allAtTargetSpeed() do
-        getToTargetSpeed()
+        if not pcall(getToTargetSpeed) then error("Chunkloading Fehler!") end
         sleep(1)
         term.setCursorPos(1, 2)
         for i = 0, amountTurbines, 1 do
