@@ -1,9 +1,9 @@
---Reaktor- und Turbinenprogramm von Thor_s_Crafter --
--- Version 2.3 --
--- Globale Einstellungen --
+-- Reactor- und Turbine control by Thor_s_Crafter --
+-- Version 2.4 --
+-- Start program --
 
---Globale Variablen fuer alle Programmteile
---Alle Optionen
+--Global variables
+--All options
 optionList = {}
 version = 0
 rodLevel = 0
@@ -28,10 +28,10 @@ amountTurbines = 0
 --Touchpoint
 touchpointLocation = {}
 
--- Globale Funktionen --
---Lädt die Optionsdatei
+--Global functions
+--Loads the options.txt file
 function loadOptionFile()
-	--Datei einlesen
+	--Read the file
 	local file = fs.open("/reactor-turbine-program/config/options.txt","r")
 	local listElement = file.readLine()
 	while listElement do
@@ -40,7 +40,7 @@ function loadOptionFile()
 	end
 	file.close()
 
-	--Werte zuordnen
+	--Assign values
 	version = optionList[3]
 	rodLevel = tonumber(optionList[5])
 	backgroundColor = tonumber(optionList[7])
@@ -56,7 +56,7 @@ function loadOptionFile()
 	targetSteam  = tonumber(optionList[27])
 end
 
---Speichert alle Daten in der Optionsdatei
+--Saves all data basck to the options.txt file
 function saveOptionFile()
 	--Aktualisieren
 	refreshOptionList()
@@ -69,7 +69,7 @@ function saveOptionFile()
 	print("Saved.")
 end
 
---Aktualisiert optionList
+--Refreshes th options list
 function refreshOptionList()
 	optionList[3] = version
 	optionList[5] = rodLevel
@@ -86,9 +86,9 @@ function refreshOptionList()
 	optionList[27] = targetSteam
 end
 
---Initialisiert alle angeschlossenen Geräte
+--Initializing all attached peripherals
 function initPeripherals()
-    --Sucht nach allen angeschlossenen Geräten
+    --Get all peripherals
     local peripheralList = peripheral.getNames()
     for i = 1, #peripheralList do
         --Turbinen
@@ -96,7 +96,7 @@ function initPeripherals()
             t[amountTurbines] = peripheral.wrap(peripheralList[i])
             amountTurbines = amountTurbines + 1
         end
-        --Reaktor
+        --Reactor
         if peripheral.getType(peripheralList[i]) == "BigReactors-Reactor" then
             r = peripheral.wrap(peripheralList[i])
         end
@@ -125,10 +125,10 @@ function initPeripherals()
         end
     end
 
-	--Fehlererkennung
+	--Check for errors
 	term.clear()
 	term.setCursorPos(1,1)
-	--Kein Monitor
+	--No Monitor
 	if mon == "" then
 		if lang == "de" then
 			error("Monitor nicht gefunden! Bitte pruefen und den Computer neu starten (Strg+R gedrueckt halten)")
@@ -141,7 +141,7 @@ function initPeripherals()
 	mon.setTextColor(colors.red)
 	mon.clear()
 	mon.setCursorPos(1,1)
-	--Monitor zu klein
+	--Monitor too small
 	local monX,monY = mon.getSize()
 	if monX < 71 or monY < 26 then
 		if lang == "de" then
@@ -156,6 +156,7 @@ function initPeripherals()
 	amountTurbines = amountTurbines - 1
 end
 
+--Restarts the computer
 function restart()
 	refreshOptionList()
 	saveOptionFile()
@@ -169,25 +170,28 @@ function restart()
 	end
 end
 
--- Startet das Programm --
+--Start the program
 loadOptionFile()
 initPeripherals()
-if autoUpdate == "true" then
-	shell.run("/reactor-turbine-program/install/installerUpdate.lua")
-end
+
+--Deprecated
+--if autoUpdate == "true" then
+--	shell.run("/reactor-turbine-program/install/installerUpdate.lua")
+--end
+
 if mainMenu == "true" then
 	shell.run("/reactor-turbine-program/start/menu.lua")
-	error("end start")
+	shell.completeProgram("/reactor-turbine-program/start/start.lua")
 elseif mainMenu == "false" then
   if program == "turbine" then
 	 shell.run("/reactor-turbine-program/program/turbineControl.lua")
   elseif program == "reactor" then
     shell.run("/reactor-turbine-program/program/reactorControl.lua")
   end
-	error("end start")
+	shell.completeProgram("/reactor-turbine-program/start/start.lua")
 else
 	mainMenu = "true"
 	saveOptionFile()
 	shell.run("/reactor-turbine-program/start/menu.lua")
-	error("end start")
+	shell.completeProgram("/reactor-turbine-program/start/start.lua")
 end

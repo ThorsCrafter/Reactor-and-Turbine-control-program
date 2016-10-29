@@ -96,7 +96,7 @@ function exit()
   end
   term.clear()
   term.setCursorPos(1,1)
-  error("end program")
+  shell.completeProgram("/reactor-turbine-program/start/menu.lua")
 end
 
 function updateManual()

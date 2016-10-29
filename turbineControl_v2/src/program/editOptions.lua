@@ -25,7 +25,7 @@ local currFunct = mainMenu
 function saveConfigFile()
   saveOptionFile()
   shell.run("/reactor-turbine-program/program/editOptions.lua")
-  error("end editOptions")
+  shell.completeProgram("/reactor-turbine-program/program/editOptions.lua")
 end
 
 function exit()
@@ -36,13 +36,13 @@ function exit()
   elseif program == "reactor" then
     shell.run("/reactor-turbine-program/program/reactorControl.lua")
   end
-  error("end editOptions")
+  shell.completeProgram("/reactor-turbine-program/program/editOptions.lua")
 end
 
 function displayMenu()
   mon.clear()
   shell.run("/reactor-turbine-program/start/menu.lua")
-  error("end editOptions")
+  shell.completeProgram("/reactor-turbine-program/program/editOptions.lua")
 end
 
 function createAllButtons()

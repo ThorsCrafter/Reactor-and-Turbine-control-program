@@ -594,7 +594,7 @@ end
 --Runs another program
 function run(program)
     shell.run(program)
-    error("end turbineControl")
+    shell.completeProgram("/reactor-turbine-program/program/turbineControl.lua")
 end
 
 --Switches between auto and manual mode

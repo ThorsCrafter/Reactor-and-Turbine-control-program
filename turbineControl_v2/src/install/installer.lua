@@ -167,4 +167,5 @@ if not update then
   print("(Thor_s_Crafter)")
   print()
 end
-error("Installer beendet. (Das ist kein Fehler! Bitte ignorieren!)")
+
+shell.completeProgram("/reactor-turbine-program/install/installer.lua")

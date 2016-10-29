@@ -454,7 +454,7 @@ end
 
 function run(program)
     shell.run(program)
-    error("end reactorControl")
+    shell.completeProgram("/reactor-turbine-program/program/reactorControl.lua")
 end
 
 checkPeripherals()
