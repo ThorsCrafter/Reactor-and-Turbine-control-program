@@ -30,6 +30,10 @@ local modeM
 --Last/Current turbine (for switching)
 local lastStat = 0
 local currStat = 0
+--Last/Current TurbineSpeed (for checking)
+local lastSpeed = {}
+local currSpeed = {}
+local speedFailCounter = {}
 
 --Button renaming
 if lang == "de" then
@@ -564,12 +568,55 @@ function checkEnergyLevel()
     end --else
 end
 
---if
+--Sets the tables for checking the current turbineSpeeds
+function initSpeedTable()
+    for i=0, amountTurbines do
+        lastSpeed[i] = 0
+        currSpeed[i] = 0
+        speedFailCounter[i] = 0
+    end
+end
 
 --Gets turbines to targetSpeed
 function getToTargetSpeed()
     for i = 0, amountTurbines, 1 do
-        if t[i].getRotorSpeed() <= turbineTargetSpeed then
+
+        --Get the current speed of the turbine
+        local tspeed = t[i].getRotorSpeed()
+
+        --Write speed to the currSpeed table
+        currSpeed[i] = tspeed
+
+        --Check turbine speed progression
+        if currSpeed[i] < lastSpeed[i] then
+
+            --Return error message
+            if speedFailCounter[i] >= 3 then
+                mon.setBackgroundColor(colors.black)
+                mon.clear()
+                mon.setTextColor(colors.red)
+                mon.setCursorPos(1, 1)
+                if lang == "de" then
+                    mon.write("Turbinen koennen nicht auf Speed gebracht werden!")
+                    mon.setCursorPos(1,2)
+                    mon.write("Bitte den Steam-Input pruefen!")
+                    error("Turbinen koennen nicht auf Speed gebracht werden!")
+                elseif lang == "en" then
+                    mon.write("Turbines can't get to speed!")
+                    mon.setCursorPos(1,2)
+                    mon.write("Please check your Steam-Input!")
+                    error("Turbines can't get to speed!")
+                end
+
+            --increase speedFailCounter
+            else
+                speedFailCounter[i] = speedFailCounter[i] + 1
+            end
+        end
+
+        --Speed progression ok
+        --Control turbines
+        if tspeed <= turbineTargetSpeed then
             r.setActive(true)
             t[i].setActive(true)
             t[i].setInductorEngaged(false)
@@ -578,6 +625,9 @@ function getToTargetSpeed()
         if t[i].getRotorSpeed() > turbineTargetSpeed then
             turbineOff(i)
         end
+
+        --Write speed to the lastSpeed table
+        lastSpeed[i] = tspeed
     end
 end
 
