@@ -584,6 +584,17 @@ function getToTargetSpeed()
         --Get the current speed of the turbine
         local tspeed = t[i].getRotorSpeed()
 
+        --Control turbines
+        if tspeed <= turbineTargetSpeed then
+            r.setActive(true)
+            t[i].setActive(true)
+            t[i].setInductorEngaged(false)
+            t[i].setFluidFlowRateMax(targetSteam)
+        end
+        if t[i].getRotorSpeed() > turbineTargetSpeed then
+            turbineOff(i)
+        end
+
         --Write speed to the currSpeed table
         currSpeed[i] = tspeed
 
@@ -612,18 +623,6 @@ function getToTargetSpeed()
             else
                 speedFailCounter[i] = speedFailCounter[i] + 1
             end
-        end
-
-        --Speed progression ok
-        --Control turbines
-        if tspeed <= turbineTargetSpeed then
-            r.setActive(true)
-            t[i].setActive(true)
-            t[i].setInductorEngaged(false)
-            t[i].setFluidFlowRateMax(targetSteam)
-        end
-        if t[i].getRotorSpeed() > turbineTargetSpeed then
-            turbineOff(i)
         end
 
         --Write speed to the lastSpeed table
