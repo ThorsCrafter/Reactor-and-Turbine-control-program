@@ -189,9 +189,11 @@ elseif mainMenu == "false" then
     shell.run("/reactor-turbine-program/program/reactorControl.lua")
   end
 	shell.completeProgram("/reactor-turbine-program/start/start.lua")
-else
-	mainMenu = "true"
-	saveOptionFile()
-	shell.run("/reactor-turbine-program/start/menu.lua")
-	shell.completeProgram("/reactor-turbine-program/start/start.lua")
+
+--Deprecated?
+--else
+--	mainMenu = "true"
+--	saveOptionFile()
+--	shell.run("/reactor-turbine-program/start/menu.lua")
+--	shell.completeProgram("/reactor-turbine-program/start/start.lua")
 end

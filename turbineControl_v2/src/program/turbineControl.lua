@@ -650,6 +650,7 @@ end
 function run(program)
     shell.run(program)
     shell.completeProgram("/reactor-turbine-program/program/turbineControl.lua")
+    error("terminated.")
 end
 
 --Switches between auto and manual mode
