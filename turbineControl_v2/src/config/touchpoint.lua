@@ -1,5 +1,5 @@
 -- Reaktor- and Turbinen control by Thor_s_Crafter --
--- Version 2.3 --
+-- Version 2.4 --
 -- Touchpoint API by Lyqyd - Slightly changed --
 
 local backgroundColor

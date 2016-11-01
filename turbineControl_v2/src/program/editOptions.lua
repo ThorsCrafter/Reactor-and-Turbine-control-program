@@ -1,7 +1,8 @@
--- Reaktor- und Turbinenprogramm von Thor_s_Crafter --
--- Version 2.3 --
--- Optionseditor --
+-- Reactor- und Turbine control by Thor_s_Crafter --
+-- Version 2.4 --
+-- Options menu --
 
+--Loads the touchpoint and input APIs
 shell.run("cp /reactor-turbine-program/config/touchpoint.lua /touchpoint")
 os.loadAPI("touchpoint")
 shell.run("rm touchpoint")
@@ -12,6 +13,7 @@ shell.run("rm input")
 
 menuOn = true
 
+--Some variables
 local mode
 local mode2
 local continue = true
@@ -22,12 +24,14 @@ local touch4 = touchpoint.new(touchpointLocation)
 local currPage =  touchpoint.new(touchpointLocation)
 local currFunct = mainMenu
 
+--Save the changes and reopen the options menu
 function saveConfigFile()
   saveOptionFile()
   shell.run("/reactor-turbine-program/program/editOptions.lua")
   shell.completeProgram("/reactor-turbine-program/program/editOptions.lua")
 end
 
+--Go back to the program
 function exit()
   mon.clear()
   continue = false
@@ -39,14 +43,19 @@ function exit()
   shell.completeProgram("/reactor-turbine-program/program/editOptions.lua")
 end
 
+--Go back to the main menu
 function displayMenu()
   mon.clear()
   shell.run("/reactor-turbine-program/start/menu.lua")
   shell.completeProgram("/reactor-turbine-program/program/editOptions.lua")
 end
 
+--Creates all buttons
 function createAllButtons()
+  --German buttons
   if lang == "de" then
+
+    --Overwiev buttons
     touch1:add("Hintergrund",setBackground,3,4,19,4)
     touch1:add("Text",setText,3,6,19,6)
     touch1:add("Reaktor Aus",setOffAt,3,8,19,8)
@@ -58,6 +67,7 @@ function createAllButtons()
     touch1:add("Zum Programm",exit,3,21,19,21)
     touch1:add("Hauptmenue",displayMenu,3,23,19,23)
 
+    --Color buttons
     touch2:add("Weiss",function() setColor(1) end,35,5,48,5)
     touch2:add("Orange",function() setColor(2) end,50,5,63,5)
     touch2:add("Magenta",function() setColor(4) end,35,7,48,7)
@@ -76,6 +86,7 @@ function createAllButtons()
     touch2:add("Schwarz",function() setColor(32768) end,50,19,63,19)
     touch2:add("Zurueck",mainMenu,3,8,19,8)
 
+    --+/- buttons (1-100)
     touch3:add("-1",function() setOnOffAt("-",1) end,3,8,6,8)
     touch3:add("-10",function() setOnOffAt("-",10) end,8,8,12,8)
     touch3:add("-100",function() setOnOffAt("-",100) end,14,8,19,8)
@@ -83,7 +94,8 @@ function createAllButtons()
     touch3:add("+10",function() setOnOffAt("+",10) end,8,10,12,10)
     touch3:add("+100",function() setOnOffAt("+",100) end,14,10,19,10)
     touch3:add("Zurueck",mainMenu,3,13,19,13)
-    
+
+    --+/- buttons (1-1000)
     touch4:add("-1",function() setOnOffAt("-",1) end,3,8,6,8)
     touch4:add("-10",function() setOnOffAt("-",10) end,8,8,12,8)
     touch4:add("-100",function() setOnOffAt("-",100) end,14,8,19,8)
@@ -94,7 +106,9 @@ function createAllButtons()
     touch4:add("+1000",function() setOnOffAt("+",1000) end,21,10,28,10)
     touch4:add("Zurueck",mainMenu,3,13,19,13)
 
+  --English buttons
   elseif lang == "en" then
+    --Overwiev buttons
     touch1:add("Background",setBackground,3,4,19,4)
     touch1:add("Text",setText,3,6,19,6)
     touch1:add("Reactor Off",setOffAt,3,8,19,8)
@@ -106,6 +120,7 @@ function createAllButtons()
     touch1:add("Back to program",exit,3,21,19,21)
     touch1:add("Main menu",displayMenu,3,23,19,23)
 
+    --Color buttons
     touch2:add("White",function() setColor(1) end,35,5,48,5)
     touch2:add("Orange",function() setColor(2) end,50,5,63,5)
     touch2:add("Magenta",function() setColor(4) end,35,7,48,7)
@@ -124,6 +139,7 @@ function createAllButtons()
     touch2:add("Black",function() setColor(32768) end,50,19,63,19)
     touch2:add("Back",mainMenu,3,8,19,8)
 
+    --+/- buttons (1-100)
     touch3:add("-1",function() setOnOffAt("-",1) end,3,8,6,8)
     touch3:add("-10",function() setOnOffAt("-",10) end,8,8,12,8)
     touch3:add("-100",function() setOnOffAt("-",100) end,14,8,19,8)
@@ -131,7 +147,8 @@ function createAllButtons()
     touch3:add("+10",function() setOnOffAt("+",10) end,8,10,12,10)
     touch3:add("+100",function() setOnOffAt("+",100) end,14,10,19,10)
     touch3:add("Back",mainMenu,3,13,19,13)
-    
+
+    --+/- buttons (1-1000)
     touch4:add("-1",function() setOnOffAt("-",1) end,3,8,6,8)
     touch4:add("-10",function() setOnOffAt("-",10) end,8,8,12,8)
     touch4:add("-100",function() setOnOffAt("-",100) end,14,8,19,8)
@@ -144,6 +161,7 @@ function createAllButtons()
   end
 end
 
+--Display the overwiew
 function mainMenu()
   mon.clear()
   currPage=touch1
@@ -159,6 +177,7 @@ function mainMenu()
     mon.write("-- Options --")
   end
 
+  --Set text of all the options
   mon.setCursorPos(24,4)
   local col = printColor(tonumber(optionList[7]))
   local col2 = printColor(backgroundColor)
@@ -286,6 +305,7 @@ function mainMenu()
   getClick(mainMenu)
 end
 
+--Function for setting the background color
 function setBackground()
   mode = "background"
   mon.clear()
@@ -309,6 +329,7 @@ function setBackground()
   getClick(setBackground)
 end
 
+--Function for setting the text color
 function setText()
   mode = "text"
   mon.clear()
@@ -332,6 +353,7 @@ function setText()
   getClick(setText)
 end
 
+--Function for setting the shutdown level (high)
 function setOffAt()
   mode2 = "off"
   mon.clear()
@@ -353,6 +375,7 @@ function setOffAt()
   getClick(setOffAt)
 end
 
+--Function for setting the shutdown level (low)
 function setOnAt()
   mode2 = "on"
   mon.clear()
@@ -384,6 +407,7 @@ function setColor(id)
   end
 end
 
+--Resolve color codes to text
 function printColor(which)
   --	local which
   --	if mode == "background" then which = backgroundColor
@@ -427,6 +451,7 @@ function printColor(which)
   end
 end
 
+--Increase/decrease reactorOff/reactorOn setting
 function setOnOffAt(vorz,anz)
   if vorz == "-" then
     if mode2 == "off" then
@@ -460,6 +485,7 @@ function setOnOffAt(vorz,anz)
   elseif mode2 == "on" then setOnAt() end
 end
 
+--Sets the max. turbine speed
 function setTurbineSpeed()
 mode2 = "speed"
   mon.clear()
@@ -482,6 +508,7 @@ mode2 = "speed"
   setTurbineSpeed()
 end
 
+--Sets the max. turbine steam input
 function setTurbineSteamRate()
   mode2 = "steam"
   mon.clear()
@@ -504,12 +531,14 @@ function setTurbineSteamRate()
   setTurbineSteamRate()
 end
 
+--Reset the config file
 function resetConfig()
   rodLevel = 0
   targetSteam = 2000
   mainMenu()
 end
 
+--Check for click events
 function getClick(funct)
   local event,but = currPage:handleEvents(os.pullEvent())
   if event == "button_click" then
@@ -521,6 +550,7 @@ function getClick(funct)
   end
 end
 
+--Run
 mon.clear()
 createAllButtons()
 mainMenu()

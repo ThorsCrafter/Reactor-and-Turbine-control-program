@@ -1,7 +1,8 @@
--- Reaktor- und Turbinenprogramm von Thor_s_Crafter --
--- Version 2.3 --
--- Reaktorkontrolle --
+-- Reactor- und Turbine control by Thor_s_Crafter --
+-- Version 2.4 --
+-- Reactor control --
 
+--Loads the touchpoint and input APIs
 shell.run("cp /reactor-turbine-program/config/touchpoint.lua /touchpoint")
 os.loadAPI("touchpoint")
 shell.run("rm touchpoint")
@@ -10,6 +11,7 @@ shell.run("cp /reactor-turbine-program/config/input.lua /input")
 os.loadAPI("input")
 shell.run("rm input")
 
+--Some variables
 local page = touchpoint.new(touchpointLocation)
 local rodLevel
 local enPer
@@ -25,6 +27,7 @@ local modeA
 local modeM
 local internalBuffer
 
+--Create the buttons
 function createButtons()
     if lang == "de" then
         modeA = { " Automatisch ", label = "modeSwitch" }
@@ -54,6 +57,7 @@ function createButtons()
     page:draw()
 end
 
+--Create additional manual buttons
 function createButtonsMan()
     createButtons()
     if lang == "de" then
@@ -73,6 +77,7 @@ function createButtonsMan()
     page:draw()
 end
 
+--Checks, if all peripherals were setup correctly
 function checkPeripherals()
     mon.setBackgroundColor(colors.black)
     mon.clear()
@@ -98,7 +103,7 @@ function checkPeripherals()
     end
 end
 
---Schaltet den Reaktor um
+--Toggles the reactor on/off
 function toggleReactor()
     r.setActive(not r.getActive())
     page:toggleButton("reactorOn")
@@ -109,6 +114,7 @@ function toggleReactor()
     end
 end
 
+--Returns the current energy level (energy storage)
 function getEnergy()
     local en = v.getEnergyStored()
     local enMax
@@ -119,12 +125,14 @@ function getEnergy()
     return math.floor(en / enMax * 100)
 end
 
+--Returns the current energy level (reactor)
 function getEnergyR()
     local en = r.getEnergyStored()
     local enMax = 10000000
     return math.floor(en / enMax * 100)
 end
 
+--Reads all the reactors data
 function getReactorData()
     rodLevel = r.getControlRodLevel(0)
     enPer = getEnergy()
@@ -137,6 +145,7 @@ function getReactorData()
     isOn = r.getActive()
 end
 
+--Checks for button clicks
 function getClick()
     getReactorData()
 
@@ -164,6 +173,7 @@ function getClick()
     end
 end
 
+--Switches mode between auto/manual
 function switchMode()
     if overallMode == "auto" then
         overallMode = "manual"
@@ -177,6 +187,7 @@ function switchMode()
     run("/reactor-turbine-program/program/reactorControl.lua")
 end
 
+--Displays the data on the screen (auto mode)
 function displayDataAuto()
     if enPer <= reactorOnAt then
         r.setActive(true)
@@ -319,6 +330,7 @@ function displayDataAuto()
     mon.write("Version " .. version)
 end
 
+--Displays the data on the screen (manual mode)
 function displayDataMan()
 
     if r.getActive() then
@@ -452,11 +464,13 @@ function displayDataMan()
     mon.write("Version " .. version)
 end
 
+--Runs another program
 function run(program)
     shell.run(program)
     shell.completeProgram("/reactor-turbine-program/program/reactorControl.lua")
 end
 
+--Run
 checkPeripherals()
 if overallMode == "auto" then
     createButtons()
