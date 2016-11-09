@@ -130,8 +130,7 @@ writeFile(getURL("config/touchpoint.lua"),"config/touchpoint.lua")
 print("     Done.")
 --Install
 term.write("Install files...")
---writeFile(getURL("install/installerEn.lua"),"install/installer.lua")
-writeFile(getURL("install/installerUpdate.lua"),"install/installerUpdate.lua")
+writeFile(getURL("install/installerEn.lua"),"install/installer.lua")
 print("     Done.")
 --Program
 term.write("Program files...")

@@ -102,7 +102,6 @@ function getFiles()
 	--Install
 	print("Install files...")
 	writeFile(getURL("install/installer.lua"),"install/installer.lua")
-	writeFile(getURL("install/installerUpdate.lua"),"install/installerUpdate.lua")
 	--Program
 	print("Program files...")
 	writeFile(getURL("program/editOptions.lua"),"program/editOptions.lua")
