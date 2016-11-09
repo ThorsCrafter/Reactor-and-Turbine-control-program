@@ -2,20 +2,22 @@
 -- Betaversion downloader (GitHub) --
 
 --Branch & Relative paths to the url and path
-local globalLang = ""
+local installLang = ""
 local branch = ""
 local relUrl = ""
 local relPath = "/reactor-turbine-program/"
 
+
+--Select the installer language
 function selectLanguage()
 	clearTerm()
 	print("Sprache/Language")
 	print("1) Deutsch/German (de)")
 	print("2) English (en)")
-	term.write("Eingabe/Input: ")
+	term.write("Eingabe/Enter (1-2): ")
 	local input = read()
-	if input == "1" then globalLang = "de"
-	elseif input == "2" then globalLang = "en"
+	if input == "1" then installLang = "de"
+	elseif input == "2" then installLang = "en"
 	else
 		print("Ungueltige Eingabe!")
 		print("Invalid input!")
@@ -24,27 +26,28 @@ function selectLanguage()
 	end
 end
 
+--Select the github branch to download
 function selectBranch()
 	clearTerm()
-	if globalLang == "de" then
+	if installLang == "de" then
 		print("Welche Version soll geladen werden?")
 		print("Verfuegbar:")
 		print("1) master (Realeases)")
 		print("2) build-2.4.2 (Betatestversion)")
-		term.write("Eingabe: ")
-	elseif globalLang == "en" then
+		term.write("Eingabe (1-2): ")
+	elseif installLang == "en" then
 		print("Which version should be downloaded?")
 		print("Available:")
 		print("1) master (Realeases)")
 		print("2) build-2.4.2 (Betaversion)")
-		term.write("Input: ")
+		term.write("Input (1-2): ")
 	end	
 	local input = read()
 	if input == "1" then branch = "master"
 	elseif input == "2" then branch = "build-2.4.2"
 	else
-		if globalLang == "de" then print("Ungueltige Eingabe!")
-		elseif globalLang == "en" then print("Invalid input!") end
+		if installLang == "de" then print("Ungueltige Eingabe!")
+		elseif installLang == "en" then print("Invalid input!") end
 		sleep(2)
 		selectBranch()
 	end
