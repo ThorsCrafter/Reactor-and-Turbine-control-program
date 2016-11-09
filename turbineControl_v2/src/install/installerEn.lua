@@ -2,23 +2,27 @@
 -- Version 2.4 --
 -- Installer (English) --
 
---Loads the option file if not present yet
-if not fs.exists("/reactor-turbine-program/config/options.txt") then
-  shell.run("pastebin get KFcHD2Bj /reactor-turbine-program/config/options.txt")
+--Variables
+local relUrl = "https://raw.githubusercontent.com/ThorsCrafter/Reactor-and-Turbine-control-program/master/turbineControl_v2/src/"
+
+--Functions
+--Writes the files to the computer
+function writeFile(url,path)
+  local file = fs.open("/reactor-turbine-program/"..path,"w")
+  file.write(url)
+  file.close()
 end
 
---Reads the version --Currently deprecated
-local optionList = {}
-file = fs.open("/reactor-turbine-program/config/options.txt","r")
-listElement = file.readLine()
-while listElement do
-  table.insert(optionList,listElement)
-  listElement = file.readLine()
+--Resolve the right url
+function getURL(path)
+  local gotUrl = http.get(relUrl..path)
+  if gotUrl == nil then
+    clearTerm()
+    error("File not found! Please check, if the branch is correct!")
+  else
+    return gotUrl.readAll()
+  end
 end
-file.close()
-
-local version = optionList[3]
-local nVersion = 2.3
 
 --Update?
 if fs.exists("/reactor-turbine-program/program/turbineControl.lua") then
@@ -104,46 +108,51 @@ end --update
 term.clear()
 term.setCursorPos(1,1)
 
-print("Checking an removing existing programs...")
---Removes input.lua and touchpoint.lua
-if fs.exists("/reactor-turbine-program/config/input.lua") then
-  shell.run("rm /reactor-turbine-program/config/input.lua")
-end
-if fs.exists("/reactor-turbine-program/config/touchpoint.lua") then
-  shell.run("rm /reactor-turbine-program/config/touchpoint.lua")
-end
---Removes the program folder
-if fs.exists("/reactor-turbine-program/program/") then
-  shell.run("rm /reactor-turbine-program/program/")
-end
---Removes the start folder
-if fs.exists("/reactor-turbine-program/start/") then
-  shell.run("rm /reactor-turbine-program/start/")
-end
---Removes the changelog folder
-if fs.exists("/reactor-turbine-program/changelog/") then
-  shell.run("rm /reactor-turbine-program/changelog/")
+print("Checke und loesche vorhandene Programme...")
+--Removes old files
+if fs.exists("/reactor-turbine-program/") then
+  shell.run("rm /reactor-turbine-program/")
 end
 
 --Download all program parts
 print("Lade neue Programmteile...")
-shell.run("pastebin get yszvvGGG /reactor-turbine-program/config/input.lua")
-shell.run("pastebin get yTXVvQ4s /reactor-turbine-program/config/touchpoint.lua")
-shell.run("pastebin get NwHaeCzh /reactor-turbine-program/program/editOptions.lua")
-shell.run("pastebin get KjwASAn2 /reactor-turbine-program/program/reactorControl.lua")
-shell.run("pastebin get KdnLB5bx /reactor-turbine-program/program/turbineControl.lua")
-shell.run("pastebin get 4jRyfMz7 /reactor-turbine-program/start/menu.lua")
-shell.run("pastebin get uLQCLcV9 /reactor-turbine-program/start/start.lua")
-shell.run("pastebin get 3DLAa2HE /reactor-turbine-program/changelog/changelogDe.txt")
-shell.run("pastebin get h1G9tH7y /reactor-turbine-program/changelog/changelogEn.txt")
-print("Done!")
+print("Getting new files...")
+--Changelog
+term.write("Downloading Changelog files...")
+writeFile(getURL("changelog/changelogDE.txt"),"changelog/changelogDE.txt")
+writeFile(getURL("changelog/changelogEn.txt"),"changelog/changelogDE.txt")
+print("     Done.")
+--Config
+term.write("Config files...")
+writeFile(getURL("config/input.lua"),"config/input.lua")
+writeFile(getURL("config/options.txt"),"config/options.txt")
+writeFile(getURL("config/touchpoint.lua"),"config/touchpoint.lua")
+print("     Done.")
+--Install
+term.write("Install files...")
+writeFile(getURL("install/installerEn.lua"),"install/installer.lua")
+writeFile(getURL("install/installerUpdate.lua"),"install/installerUpdate.lua")
+print("     Done.")
+--Program
+term.write("Program files...")
+writeFile(getURL("program/editOptions.lua"),"program/editOptions.lua")
+writeFile(getURL("program/reactorControl.lua"),"program/reactorControl.lua")
+writeFile(getURL("program/turbineControl.lua"),"program/turbineControl.lua")
+print("     Done.")
+--Start
+term.write("Start files...")
+writeFile(getURL("start/menu.lua"),"start/menu.lua")
+writeFile(getURL("start/start.lua"),"start/start.lua")
+print("     Done.")
+print()
+print("Fertig!")
 
 term.clear()
 term.setCursorPos(1,1)
 
 --Refresh startup (if installed)
 if fs.exists("startup") then
-  shell.run("delete startup")
+  shell.run("rm startup")
   local file = fs.open("startup","w")
   file.writeLine("shell.run(\"/reactor-turbine-program/start/start.lua\")")
   file.close()
