@@ -110,7 +110,7 @@ term.setCursorPos(1,1)
 
 print("Checke und loesche vorhandene Programme...")
 --Removes old files
-if fs.exists("/reactor-turbine-program/") then
+if fs.exists("/reactor-turbine-program/program/") then
   shell.run("rm /reactor-turbine-program/")
 end
 
@@ -130,7 +130,7 @@ writeFile(getURL("config/touchpoint.lua"),"config/touchpoint.lua")
 print("     Done.")
 --Install
 term.write("Install files...")
-writeFile(getURL("install/installerEn.lua"),"install/installer.lua")
+--writeFile(getURL("install/installerEn.lua"),"install/installer.lua")
 writeFile(getURL("install/installerUpdate.lua"),"install/installerUpdate.lua")
 print("     Done.")
 --Program
@@ -166,16 +166,23 @@ if not update then
   print("Installation successful!")
   print("The program is now ready to run!")
   print()
-  term.setTextColor(colors.yellow)
-  print("You have just installed the program for the first time!")
-  print("It is necessary to reboot the computer manually once.")
-  print("In order to do this, please type in \"reboot\" or press \"Ctrl + R\" for a moment.")
-  term.setTextColor(colors.white)
+  term.setTextColor(colors.green)
   print()
   print("Thanks for using my program! ;)")
   print("I hope you like it.")
-  print("(Thor_s_Crafter)")
   print()
+  print("Thor_s_Crafter")
+  print("(c) 2016")
+
+  local x,y = term.getSize()
+  term.setTextColor(colors.yellow)
+  term.setCursorPos(1,y)
+  term.write("Reboot in ")
+  for i=5,0,-1 do
+    term.setCursorPos(11,y)
+    term.write(i)
+    sleep(1)
+  end
 end
 error("Installer terminated. (This is not an error! Please ignore!)")
 

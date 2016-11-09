@@ -1,6 +1,9 @@
 -- Reactor- und Turbine control by Thor_s_Crafter --
 -- Betaversion downloader (GitHub) --
 
+--Release or beta version?
+local selectInstaller = "release"
+
 --Branch & Relative paths to the url and path
 local installLang = ""
 local branch = ""
@@ -65,17 +68,6 @@ function removeAll()
 	end
 end
 
---Makes all directories
-function makeDirs()
-	print("Making directories...")
-	shell.run("mkdir reactor-turbine-program")
-	shell.run("mkdir reactor-turbine-program/changelog")
-	shell.run("mkdir reactor-turbine-program/config")
-	shell.run("mkdir reactor-turbine-program/install")
-	shell.run("mkdir reactor-turbine-program/program")
-	shell.run("mkdir reactor-turbine-program/start")
-end
-
 --Writes the files to the computer
 function writeFile(url,path)
 	local file = fs.open("/reactor-turbine-program/"..path,"w")
@@ -97,10 +89,10 @@ end
 --Gets all the files from github
 function getFiles()
 	clearTerm()
-	print("Getting new files...")	
+	print("Getting new files...")
 	--Changelog
 	print("Changelog files...")
-	writeFile(getURL("changelog/changelogDE.txt"),"changelog/changelogDE.txt")	
+	writeFile(getURL("changelog/changelogDE.txt"),"changelog/changelogDE.txt")
 	writeFile(getURL("changelog/changelogEn.txt"),"changelog/changelogDE.txt")
 	--Config
 	print("Config files...")
@@ -133,13 +125,36 @@ function clearTerm()
 	term.setCursorPos(1,1)
 end
 
+function releaseVersion()
+	--Set branch (relUrl) to "master"
+	relUrl = "https://raw.githubusercontent.com/ThorsCrafter/Reactor-and-Turbine-control-program/master/turbineControl_v2/src/"
+
+	--Downloads the installer
+	if installLang == "de" then
+		writeFile(getURL("install/installer.lua"),"install/installer.lua")
+	elseif installLang == "en" then
+		writeFile(getURL("install/installerEn.lua"),"install/installer.lua")
+	end
+	shell.run("/reactor-turbine-program/install/installer.lua")
+end
+
+function betaVersion()
+	selectBranch()
+	removeAll()
+	getFiles()
+	print("Done!")
+	sleep(2)
+end
+
 --Run
 selectLanguage()
-selectBranch()
-removeAll()
-makeDirs()
-getFiles()
-clearTerm()
-print("Done!")
-sleep(2)
+
+if selectInstaller == "beta" then
+	betaVersion()
+elseif selectInstaller == "release" then
+	releaseVersion()
+else
+	error("Enter a release version! (\"beta\"/\"release\") in line 5!")
+end
+
 os.reboot()
