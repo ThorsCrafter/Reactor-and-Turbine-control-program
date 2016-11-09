@@ -100,9 +100,8 @@ function exit()
 end
 
 function updateManual()
-   shell.run("/reactor-turbine-program/install/installerUpdate.lua")
    shell.run("/reactor-turbine-program/install/installer.lua")
-  os.reboot()
+   os.reboot()
 end
 
 function switchProgram(currBut)
