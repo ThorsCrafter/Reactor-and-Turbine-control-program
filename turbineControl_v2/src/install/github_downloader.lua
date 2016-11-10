@@ -128,6 +128,7 @@ function releaseVersion()
 	--Set branch (relUrl) to "master"
 	relUrl = "https://raw.githubusercontent.com/ThorsCrafter/Reactor-and-Turbine-control-program/master/turbineControl_v2/src/"
 
+	removeAll()
 	--Downloads the installer
 	if installLang == "de" then
 		writeFile(getURL("install/installer.lua"),"install/installer.lua")

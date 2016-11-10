@@ -1,6 +1,6 @@
 
 version
-2.4-beta
+2.4
 rodLevel
 0
 backgroundColor
