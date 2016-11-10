@@ -1,7 +1,22 @@
 ****************************************************************
 -- Reaktor- und Turbinenprogramm von Thor_s_Crafter --
 -- Komplettes Changelog -- 
--- Aktuelle Version: 2.3 --
+-- Aktuelle Version: 2.4 --
+****************************************************************
+Version 2.4
+- Github Downloader hinzugefuegt (ersetzt installerUpdate)
+- installer verbesert
+- installerUpdate entfernt
+- RodLevel-Berechnung nochmals verbessert
+- Reaktor kann nun ohne Energiespeicher betrieben werden
+- Option zur Auswahl des Steamlevels hinzugefuegt
+- Program Beenden verbessert
+- Beschreibungen geaendert
+- Bugfixes:
+	> Anzeige der Zahlen gefixt
+	> Monitor not found in start.lua
+	> Weitere Form von Energiezelle hinzugefügt
+	> Weitere kleine Bugfixes
 ****************************************************************
 Version 2.3
 - Unterstuetzung fuer bis zu 32 Turbinen hinzugefuegt

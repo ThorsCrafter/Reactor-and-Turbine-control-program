@@ -1,7 +1,22 @@
 ****************************************************************
 -- Reactor- und Turbine control by Thor_s_Crafter --
 -- Complete Changelog --
--- Current Version: 2.3 --
+-- Current Version: 2.4 --
+****************************************************************
+Version 2.4
+- Added Github Downloader (replaces installerUpdate)
+- installer updated
+- removed installerUpdate
+- Improved RodLevel calculation
+- Reactor can now run without an energy storage
+- Added option for selecting the steam level
+- Program termination improved
+- Changed descriptions
+- Bugfixes:
+	> Number display
+	> Monitor not found in start.lua
+	> Added another type of energy cell
+	> More smaller Bugfixes
 ****************************************************************
 Version 2.3
 - Now supporting up to 32 turbines
