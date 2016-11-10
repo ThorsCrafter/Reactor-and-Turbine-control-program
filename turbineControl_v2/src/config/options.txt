@@ -1,6 +1,6 @@
 
 version
-2.3
+2.4-beta
 rodLevel
 0
 backgroundColor
@@ -23,3 +23,5 @@ program
 turbine
 turbineTargetSpeed
 1820
+turbineTargetSteam
+2000

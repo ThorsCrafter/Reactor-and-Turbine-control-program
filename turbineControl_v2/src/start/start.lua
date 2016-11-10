@@ -1,9 +1,9 @@
---Reaktor- und Turbinenprogramm von Thor_s_Crafter --
--- Version 2.3 --
--- Globale Einstellungen --
+-- Reactor- und Turbine control by Thor_s_Crafter --
+-- Version 2.4 --
+-- Start program --
 
---Globale Variablen fuer alle Programmteile
---Alle Optionen
+--Global variables
+--All options
 optionList = {}
 version = 0
 rodLevel = 0
@@ -17,6 +17,7 @@ lang = ""
 overallMode = ""
 program = ""
 turbineTargetSpeed = 0
+targetSteam = 0
 --Peripherals
 mon = "" --Monitor
 r = ""
@@ -27,19 +28,19 @@ amountTurbines = 0
 --Touchpoint
 touchpointLocation = {}
 
--- Globale Funktionen --
---Lädt die Optionsdatei
+--Global functions
+--Loads the options.txt file
 function loadOptionFile()
-	--Datei einlesen
+	--Read the file
 	local file = fs.open("/reactor-turbine-program/config/options.txt","r")
-	listElement = file.readLine()
+	local listElement = file.readLine()
 	while listElement do
 		table.insert(optionList,listElement)
 		listElement = file.readLine()
 	end
 	file.close()
 
-	--Werte zuordnen
+	--Assign values
 	version = optionList[3]
 	rodLevel = tonumber(optionList[5])
 	backgroundColor = tonumber(optionList[7])
@@ -52,9 +53,10 @@ function loadOptionFile()
 	overallMode = optionList[21]
 	program = optionList[23]
 	turbineTargetSpeed = tonumber(optionList[25])
+	targetSteam  = tonumber(optionList[27])
 end
 
---Speichert alle Daten in der Optionsdatei
+--Saves all data basck to the options.txt file
 function saveOptionFile()
 	--Aktualisieren
 	refreshOptionList()
@@ -67,7 +69,7 @@ function saveOptionFile()
 	print("Saved.")
 end
 
---Aktualisiert optionList
+--Refreshes th options list
 function refreshOptionList()
 	optionList[3] = version
 	optionList[5] = rodLevel
@@ -81,54 +83,52 @@ function refreshOptionList()
 	optionList[21] = overallMode
 	optionList[23] = program
 	optionList[25] = turbineTargetSpeed
+	optionList[27] = targetSteam
 end
 
---Initialisiert alle angeschlossenen Geräte
+--Initializing all attached peripherals
 function initPeripherals()
-	--Sucht nach allen angeschlossenen Geräten
-	local peripheralList = peripheral.getNames()
-	for i=1,#peripheralList do
-		--Turbinen
-		if peripheral.getType(peripheralList[i]) == "BigReactors-Turbine" then
-			t[amountTurbines]=peripheral.wrap(peripheralList[i])
-			amountTurbines = amountTurbines + 1
-		end
-		--Reaktor
-		if peripheral.getType(peripheralList[i]) == "BigReactors-Reactor" then
-			r = peripheral.wrap(peripheralList[i])
-		end
-		--Monitor & Touchpoint
-		if peripheral.getType(peripheralList[i]) == "monitor" then
-			mon = peripheral.wrap(peripheralList[i])
-			touchpointLocation = peripheralList[i]
-		end
-		--Capacitorbank / Energycell / Energy Core
-		if peripheral.getType(peripheralList[i]) == "tile_blockcapacitorbank_name" then
-			v = peripheral.wrap(peripheralList[i])
-		elseif peripheral.getType(peripheralList[i]) == "capacitor_bank" then
-			v = peripheral.wrap(peripheralList[i])
-		elseif peripheral.getType(peripheralList[i]) == "tile_thermalexpansion_cell_basic_name" then
-			v = peripheral.wrap(peripheralList[i])
-		elseif peripheral.getType(peripheralList[i]) == "tile_thermalexpansion_cell_hardened_name" then
-			v = peripheral.wrap(peripheralList[i])
-		elseif peripheral.getType(peripheralList[i]) == "tile_thermalexpansion_cell_reinforced_name" then
-			v = peripheral.wrap(peripheralList[i])
-		elseif peripheral.getType(peripheralList[i]) == "tile_thermalexpansion_cell_resonant_name" then
-			v = peripheral.wrap(peripheralList[i])
-		elseif peripheral.getType(peripheralList[i]) == "draconic_rf_storage" then
-			v = peripheral.wrap(peripheralList[i])
-		end
+    --Get all peripherals
+    local peripheralList = peripheral.getNames()
+    for i = 1, #peripheralList do
+        --Turbinen
+        if peripheral.getType(peripheralList[i]) == "BigReactors-Turbine" then
+            t[amountTurbines] = peripheral.wrap(peripheralList[i])
+            amountTurbines = amountTurbines + 1
+        end
+        --Reactor
+        if peripheral.getType(peripheralList[i]) == "BigReactors-Reactor" then
+            r = peripheral.wrap(peripheralList[i])
+        end
+        --Monitor & Touchpoint
+        if peripheral.getType(peripheralList[i]) == "monitor" then
+            mon = peripheral.wrap(peripheralList[i])
+            touchpointLocation = peripheralList[i]
+        end
+        --Capacitorbank / Energycell / Energy Core
+        if peripheral.getType(peripheralList[i]) == "tile_blockcapacitorbank_name" then
+            v = peripheral.wrap(peripheralList[i])
+        elseif peripheral.getType(peripheralList[i]) == "capacitor_bank" then
+            v = peripheral.wrap(peripheralList[i])
+        elseif peripheral.getType(peripheralList[i]) == "tile_thermalexpansion_cell_basic_name" then
+            v = peripheral.wrap(peripheralList[i])
+        elseif peripheral.getType(peripheralList[i]) == "tile_thermalexpansion_cell_hardened_name" then
+            v = peripheral.wrap(peripheralList[i])
+        elseif peripheral.getType(peripheralList[i]) == "tile_thermalexpansion_cell_reinforced_name" then
+            v = peripheral.wrap(peripheralList[i])
+        elseif peripheral.getType(peripheralList[i]) == "tile_thermalexpansion_cell_resonant_name" then
+            v = peripheral.wrap(peripheralList[i])
+        elseif peripheral.getType(peripheralList[i]) == "cofh_thermal_expansion_energycell" then
+            v = peripheralList.wrap(peripheralList[i])
+        elseif peripheral.getType(peripheralList[i]) == "draconic_rf_storage" then
+        v = peripheral.wrap(peripheralList[i])
+        end
+    end
 
-	end
-
-	--Fehlererkennung
+	--Check for errors
 	term.clear()
 	term.setCursorPos(1,1)
-	mon.setBackgroundColor(colors.black)
-	mon.setTextColor(colors.red)
-	mon.clear()
-	mon.setCursorPos(1,1)
-	--Kein Monitor
+	--No Monitor
 	if mon == "" then
 		if lang == "de" then
 			error("Monitor nicht gefunden! Bitte pruefen und den Computer neu starten (Strg+R gedrueckt halten)")
@@ -136,7 +136,12 @@ function initPeripherals()
 			error("Monitor not found! Please check and reboot the computer (Press and hold Ctrl+R)")
 		end
 	end
-	--Monitor zu klein
+	--Monitor clear
+	mon.setBackgroundColor(colors.black)
+	mon.setTextColor(colors.red)
+	mon.clear()
+	mon.setCursorPos(1,1)
+	--Monitor too small
 	local monX,monY = mon.getSize()
 	if monX < 71 or monY < 26 then
 		if lang == "de" then
@@ -151,6 +156,7 @@ function initPeripherals()
 	amountTurbines = amountTurbines - 1
 end
 
+--Restarts the computer
 function restart()
 	refreshOptionList()
 	saveOptionFile()
@@ -164,30 +170,30 @@ function restart()
 	end
 end
 
--- Startet das Programm --
+--Start the program
 loadOptionFile()
 initPeripherals()
-if autoUpdate == "true" then
-	shell.run("/reactor-turbine-program/install/installerUpdate.lua")
-end
+
+--Deprecated
+--if autoUpdate == "true" then
+--	shell.run("/reactor-turbine-program/install/installerUpdate.lua")
+--end
+
 if mainMenu == "true" then
 	shell.run("/reactor-turbine-program/start/menu.lua")
-	error("end start")
+	shell.completeProgram("/reactor-turbine-program/start/start.lua")
 elseif mainMenu == "false" then
   if program == "turbine" then
 	 shell.run("/reactor-turbine-program/program/turbineControl.lua")
   elseif program == "reactor" then
     shell.run("/reactor-turbine-program/program/reactorControl.lua")
   end
-	error("end start")
-else
-	mainMenu = "true"
-	saveOptionFile()
-	shell.run("/reactor-turbine-program/start/menu.lua")
-	error("end start")
+	shell.completeProgram("/reactor-turbine-program/start/start.lua")
+
+--Deprecated?
+--else
+--	mainMenu = "true"
+--	saveOptionFile()
+--	shell.run("/reactor-turbine-program/start/menu.lua")
+--	shell.completeProgram("/reactor-turbine-program/start/start.lua")
 end
-
-
-
-
-
