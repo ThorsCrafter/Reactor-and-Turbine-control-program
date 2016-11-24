@@ -122,6 +122,8 @@ function initPeripherals()
             v = peripheralList.wrap(peripheralList[i])
         elseif peripheral.getType(peripheralList[i]) == "draconic_rf_storage" then
         v = peripheral.wrap(peripheralList[i])
+		elseif peripheral.getType(peripheralList[i]) == "powered_tile" then
+			v = peripheral.wrap(peripheralList[i])
         end
     end
 
