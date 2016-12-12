@@ -1,8 +1,9 @@
--- Reactor- und Turbine control by Thor_s_Crafter --
+-- Reactor- and Turbine control by Thor_s_Crafter --
 -- Version 2.4 --
 -- Start program --
 
---Global variables
+--========== Global variables for all program parts ==========
+
 --All options
 optionList = {}
 version = 0
@@ -12,7 +13,6 @@ textColor = 0
 reactorOffAt = 0
 reactorOnAt = 0
 mainMenu = ""
-autoUpdate = "" --deprecated
 lang = ""
 overallMode = ""
 program = ""
@@ -20,19 +20,25 @@ turbineTargetSpeed = 0
 targetSteam = 0
 --Peripherals
 mon = "" --Monitor
-r = ""
-v = ""
-t = {}
-
+r = "" --Reactor
+v = "" --Energy Storage
+t = {} --Turbines
+--Total count of all turbines
 amountTurbines = 0
---Touchpoint
+--TouchpointLocation (same as the monitor)
 touchpointLocation = {}
 
---Global functions
---Loads the options.txt file
+
+--========== Global functions for all program parts ==========
+
+
+--===== Functions for loading and saving the options =====
+
+--Loads the options.txt file and adds values to the global variables
 function loadOptionFile()
-	--Read the file
+	--Loads the file
 	local file = fs.open("/reactor-turbine-program/config/options.txt","r")
+	--Inserts all elements into the optionList
 	local listElement = file.readLine()
 	while listElement do
 		table.insert(optionList,listElement)
@@ -40,7 +46,7 @@ function loadOptionFile()
 	end
 	file.close()
 
-	--Assign values
+	--Assign values to variables
 	version = optionList[3]
 	rodLevel = tonumber(optionList[5])
 	backgroundColor = tonumber(optionList[7])
@@ -54,19 +60,6 @@ function loadOptionFile()
 	program = optionList[23]
 	turbineTargetSpeed = tonumber(optionList[25])
 	targetSteam  = tonumber(optionList[27])
-end
-
---Saves all data basck to the options.txt file
-function saveOptionFile()
-	--Aktualisieren
-	refreshOptionList()
-	--Daten in die Datei schreiben
-	local file = fs.open("/reactor-turbine-program/config/options.txt","w")
-	for i=1,#optionList+1,1 do
-		file.writeLine(optionList[i])
-	end
-	file.close()
-	print("Saved.")
 end
 
 --Refreshes th options list
@@ -86,12 +79,27 @@ function refreshOptionList()
 	optionList[27] = targetSteam
 end
 
---Initializing all attached peripherals
+--Saves all data basck to the options.txt file
+function saveOptionFile()
+	--Refresh option list
+	refreshOptionList()
+	--Save optionList to the config file
+	local file = fs.open("/reactor-turbine-program/config/options.txt","w")
+	for i=1,#optionList+1,1 do
+		file.writeLine(optionList[i])
+	end
+	file.close()
+	print("Saved.")
+end
+
+
+--===== Initialization of all peripherals =====
+
 function initPeripherals()
     --Get all peripherals
     local peripheralList = peripheral.getNames()
     for i = 1, #peripheralList do
-        --Turbinen
+        --Turbines
         if peripheral.getType(peripheralList[i]) == "BigReactors-Turbine" then
             t[amountTurbines] = peripheral.wrap(peripheralList[i])
             amountTurbines = amountTurbines + 1
@@ -143,29 +151,25 @@ function initPeripherals()
 	amountTurbines = amountTurbines - 1
 end
 
---Restarts the computer
+
+--===== Shutdown and restart the computer =====
+
 function restart()
-	refreshOptionList()
 	saveOptionFile()
 	mon.clear()
 	mon.setCursorPos(38,8)
-	mon.write("Reboot...")
-	if autoUpdate == true then
-		shell.run("/reactor-turbine-program/install/installerUpdate.lua")
-	else
-		os.reboot()
-	end
+	mon.write("Rebooting...")
+	os.reboot()
 end
 
---Start the program
+
+--=========== Run the program ==========
+
+--Load the option file and initialize the peripherals
 loadOptionFile()
 initPeripherals()
 
---Deprecated
---if autoUpdate == "true" then
---	shell.run("/reactor-turbine-program/install/installerUpdate.lua")
---end
-
+--Run program or main menu, based on the settings
 if mainMenu == "true" then
 	shell.run("/reactor-turbine-program/start/menu.lua")
 	shell.completeProgram("/reactor-turbine-program/start/start.lua")
@@ -176,11 +180,9 @@ elseif mainMenu == "false" then
     shell.run("/reactor-turbine-program/program/reactorControl.lua")
   end
 	shell.completeProgram("/reactor-turbine-program/start/start.lua")
-
---Deprecated?
 --else
---	mainMenu = "true"
---	saveOptionFile()
---	shell.run("/reactor-turbine-program/start/menu.lua")
---	shell.completeProgram("/reactor-turbine-program/start/start.lua")
+	--@TODO insert failsave for main menu bug(s)
 end
+
+
+--========== END OF THE START.LUA FILE ==========
