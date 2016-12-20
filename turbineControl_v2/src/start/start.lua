@@ -62,7 +62,7 @@ function loadOptionFile()
 	targetSteam  = tonumber(optionList[27])
 end
 
---Refreshes th options list
+--Refreshes the options list
 function refreshOptionList()
 	optionList[3] = version
 	optionList[5] = rodLevel
@@ -79,7 +79,7 @@ function refreshOptionList()
 	optionList[27] = targetSteam
 end
 
---Saves all data basck to the options.txt file
+--Saves all data back to the options.txt file
 function saveOptionFile()
 	--Refresh option list
 	refreshOptionList()

@@ -216,3 +216,6 @@ if not update then
 end
 
 shell.completeProgram("/reactor-turbine-program/install/installer.lua")
+
+
+--========== END OF THE INSTALLER.LUA FILE ==========
