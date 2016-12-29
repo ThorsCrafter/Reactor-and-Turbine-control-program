@@ -38,56 +38,52 @@ touchpointLocation = {}
 function loadOptionFile()
 	--Loads the file
 	local file = fs.open("/reactor-turbine-program/config/options.txt","r")
-	--Inserts all elements into the optionList
-	local listElement = file.readLine()
-	while listElement do
-		table.insert(optionList,listElement)
-		listElement = file.readLine()
-	end
+	local list = file.readAll()
 	file.close()
 
+    --Insert Elements and assign values
+    optionList = textutils.unserialise(list)
+
 	--Assign values to variables
-	version = optionList[3]
-	rodLevel = tonumber(optionList[5])
-	backgroundColor = tonumber(optionList[7])
-	textColor = tonumber(optionList[9])
-	reactorOffAt = tonumber(optionList[11])
-	reactorOnAt = tonumber(optionList[13])
-	mainMenu = optionList[15]
-	autoUpdate = optionList[17] --deprecated
-	lang = optionList[19]
-	overallMode = optionList[21]
-	program = optionList[23]
-	turbineTargetSpeed = tonumber(optionList[25])
-	targetSteam  = tonumber(optionList[27])
+	version = optionList["version"]
+	rodLevel = optionList["rodLevel"]
+	backgroundColor = tonumber(optionList["backgroundColor"])
+	textColor = tonumber(optionList["textColor"])
+	reactorOffAt = optionList["reactorOffAt"]
+	reactorOnAt = optionList["reactorOnAt"]
+	mainMenu = optionList["mainMenu"]
+	lang = optionList["lang"]
+	overallMode = optionList["overallMode"]
+	program = optionList["program"]
+	turbineTargetSpeed = optionList["turbineTargetSpeed"]
+	targetSteam  = optionList["targetSteam"]
 end
 
 --Refreshes the options list
 function refreshOptionList()
-	optionList[3] = version
-	optionList[5] = rodLevel
-	optionList[7] = backgroundColor
-	optionList[9] = textColor
-	optionList[11] = reactorOffAt
-	optionList[13] = reactorOnAt
-	optionList[15] = mainMenu
-	optionList[17] = autoUpdate
-	optionList[19] = lang
-	optionList[21] = overallMode
-	optionList[23] = program
-	optionList[25] = turbineTargetSpeed
-	optionList[27] = targetSteam
+	optionList["version"] = version
+	optionList["rodLevel"] = rodLevel
+	optionList["backgroundColor"] = backgroundColor
+	optionList["textColor"] = textColor
+	optionList["reactorOffAt"] = reactorOffAt
+	optionList["reactorOnAt"] = reactorOnAt
+	optionList["mainMenu"] = mainMenu
+	optionList["lang"] = lang
+	optionList["overallMode"] = overallMode
+	optionList["program"] = program
+	optionList["turbineTargetSpeed"] = turbineTargetSpeed
+	optionList["targetSteam"] = targetSteam
 end
 
---Saves all data back to the options.txt file
+--Saves all data basck to the options.txt file
 function saveOptionFile()
 	--Refresh option list
 	refreshOptionList()
+    --Serialise the table
+    local list = textutils.serialise(optionList)
 	--Save optionList to the config file
 	local file = fs.open("/reactor-turbine-program/config/options.txt","w")
-	for i=1,#optionList+1,1 do
-		file.writeLine(optionList[i])
-	end
+    file.writeLine(list)
 	file.close()
 	print("Saved.")
 end
@@ -170,10 +166,10 @@ loadOptionFile()
 initPeripherals()
 
 --Run program or main menu, based on the settings
-if mainMenu == "true" then
+if mainMenu then
 	shell.run("/reactor-turbine-program/start/menu.lua")
 	shell.completeProgram("/reactor-turbine-program/start/start.lua")
-elseif mainMenu == "false" then
+else
 	if program == "turbine" then
 		shell.run("/reactor-turbine-program/program/turbineControl.lua")
 	elseif program == "reactor" then

@@ -22,7 +22,7 @@ local touch2 = touchpoint.new(touchpointLocation)
 local touch3 = touchpoint.new(touchpointLocation)
 local touch4 = touchpoint.new(touchpointLocation)
 local currPage =  touchpoint.new(touchpointLocation)
-local currFunct = mainMenu
+local currFunct = backToMainMenu
 
 --Save the changes and reopen the options menu
 function saveConfigFile()
@@ -84,7 +84,7 @@ function createAllButtons()
     touch2:add("Gruen",function() setColor(8192) end,50,17,63,17)
     touch2:add("Rot",function() setColor(16384) end,35,19,48,19)
     touch2:add("Schwarz",function() setColor(32768) end,50,19,63,19)
-    touch2:add("Zurueck",mainMenu,3,8,19,8)
+    touch2:add("Zurueck",backToMainMenu,3,8,19,8)
 
     --+/- buttons (1-100)
     touch3:add("-1",function() setOnOffAt("-",1) end,3,8,6,8)
@@ -93,7 +93,7 @@ function createAllButtons()
     touch3:add("+1", function() setOnOffAt("+",1) end,3,10,6,10)
     touch3:add("+10",function() setOnOffAt("+",10) end,8,10,12,10)
     touch3:add("+100",function() setOnOffAt("+",100) end,14,10,19,10)
-    touch3:add("Zurueck",mainMenu,3,13,19,13)
+    touch3:add("Zurueck",backToMainMenu,3,13,19,13)
 
     --+/- buttons (1-1000)
     touch4:add("-1",function() setOnOffAt("-",1) end,3,8,6,8)
@@ -104,7 +104,7 @@ function createAllButtons()
     touch4:add("+10",function() setOnOffAt("+",10) end,8,10,12,10)
     touch4:add("+100",function() setOnOffAt("+",100) end,14,10,19,10)
     touch4:add("+1000",function() setOnOffAt("+",1000) end,21,10,28,10)
-    touch4:add("Zurueck",mainMenu,3,13,19,13)
+    touch4:add("Zurueck",backToMainMenu,3,13,19,13)
 
   --English buttons
   elseif lang == "en" then
@@ -137,7 +137,7 @@ function createAllButtons()
     touch2:add("Green",function() setColor(8192) end,50,17,63,17)
     touch2:add("Red",function() setColor(16384) end,35,19,48,19)
     touch2:add("Black",function() setColor(32768) end,50,19,63,19)
-    touch2:add("Back",mainMenu,3,8,19,8)
+    touch2:add("Back",backToMainMenu,3,8,19,8)
 
     --+/- buttons (1-100)
     touch3:add("-1",function() setOnOffAt("-",1) end,3,8,6,8)
@@ -146,7 +146,7 @@ function createAllButtons()
     touch3:add("+1", function() setOnOffAt("+",1) end,3,10,6,10)
     touch3:add("+10",function() setOnOffAt("+",10) end,8,10,12,10)
     touch3:add("+100",function() setOnOffAt("+",100) end,14,10,19,10)
-    touch3:add("Back",mainMenu,3,13,19,13)
+    touch3:add("Back",backToMainMenu,3,13,19,13)
 
     --+/- buttons (1-1000)
     touch4:add("-1",function() setOnOffAt("-",1) end,3,8,6,8)
@@ -157,18 +157,18 @@ function createAllButtons()
     touch4:add("+10",function() setOnOffAt("+",10) end,8,10,12,10)
     touch4:add("+100",function() setOnOffAt("+",100) end,14,10,19,10)
     touch4:add("+1000",function() setOnOffAt("+",1000) end,21,10,28,10)
-    touch4:add("Back",mainMenu,3,13,19,13)
+    touch4:add("Back",backToMainMenu,3,13,19,13)
   end
 end
 
 --Display the overwiew
-function mainMenu()
+function backToMainMenu()
   mon.clear()
   currPage=touch1
   currPage:draw()
   mon.setCursorPos(2,2)
-  mon.setTextColor(tonumber(optionList[9]))
-  mon.setBackgroundColor(tonumber(optionList[7]))
+  mon.setTextColor(tonumber(optionList["textColor"]))
+  mon.setBackgroundColor(tonumber(optionList["backgroundColor"]))
   mon.setCursorPos(4,2)
 
   if lang == "de" then
@@ -179,9 +179,9 @@ function mainMenu()
 
   --Set text of all the options
   mon.setCursorPos(24,4)
-  local col = printColor(tonumber(optionList[7]))
+  local col = printColor(tonumber(optionList["backgroundColor"]))
   local col2 = printColor(backgroundColor)
-  if tonumber(optionList[7]) ~= backgroundColor then
+  if tonumber(optionList["backgroundColor"]) ~= backgroundColor then
     if lang == "de" then
       mon.write("Hintergrundfarbe: "..col.." -> "..col2.."   ")
     elseif lang == "en" then
@@ -196,9 +196,9 @@ function mainMenu()
   end
 
   mon.setCursorPos(24,6)
-  local col3 = printColor(tonumber(optionList[9]))
+  local col3 = printColor(tonumber(optionList["textColor"]))
   local col4 = printColor(textColor)
-  if tonumber(optionList[9]) ~= textColor then
+  if tonumber(optionList["textColor"]) ~= textColor then
     if lang == "de" then
       mon.write("Textfarbe: "..col3.." -> "..col4.."   ")
     elseif lang == "en" then
@@ -213,11 +213,11 @@ function mainMenu()
   end
 
   mon.setCursorPos(24,8)
-  if math.floor(tonumber(optionList[11])) ~= math.floor(reactorOffAt) then
+  if math.floor(tonumber(optionList["reactorOffAt"])) ~= math.floor(reactorOffAt) then
     if lang == "de" then
-      mon.write("Reaktor aus bei ueber "..math.floor(tonumber(optionList[11])).."% -> "..math.floor(reactorOffAt).."%   ")
+      mon.write("Reaktor aus bei ueber "..math.floor(tonumber(optionList["reactorOffAt"])).."% -> "..math.floor(reactorOffAt).."%   ")
     elseif lang == "en" then
-      mon.write("Reactor off above "..math.floor(tonumber(optionList[11])).."% -> "..math.floor(reactorOffAt).."%   ")
+      mon.write("Reactor off above "..math.floor(tonumber(optionList["reactorOffAt"])).."% -> "..math.floor(reactorOffAt).."%   ")
     end
   else
     if lang == "de" then
@@ -228,11 +228,11 @@ function mainMenu()
   end
 
   mon.setCursorPos(24,10)
-  if math.floor(tonumber(optionList[13])) ~= math.floor(reactorOnAt) then
+  if math.floor(tonumber(optionList["reactorOnAt"])) ~= math.floor(reactorOnAt) then
     if lang == "de" then
-      mon.write("Reaktor an bei unter "..math.floor(tonumber(optionList[13])).."% -> "..math.floor(reactorOnAt).."%   ")
+      mon.write("Reaktor an bei unter "..math.floor(tonumber(optionList["reactorOnAt"])).."% -> "..math.floor(reactorOnAt).."%   ")
     elseif lang == "en" then
-      mon.write("Reactor on below "..math.floor(tonumber(optionList[13])).."% -> "..math.floor(reactorOnAt).."%   ")
+      mon.write("Reactor on below "..math.floor(tonumber(optionList["reactorOnAt"])).."% -> "..math.floor(reactorOnAt).."%   ")
     end
 
   else
@@ -244,11 +244,11 @@ function mainMenu()
   end
   
   mon.setCursorPos(24,12)
-  if tonumber(optionList[25]) ~= turbineTargetSpeed then
+  if tonumber(optionList["turbineTargetSpeed"]) ~= turbineTargetSpeed then
     if lang == "de" then
-      mon.write("Turbinen Max. Speed: "..(input.formatNumber(math.floor(tonumber(optionList[25])))).." -> "..(input.formatNumber(turbineTargetSpeed)).."RPM      ")
+      mon.write("Turbinen Max. Speed: "..(input.formatNumber(math.floor(tonumber(optionList["turbineTargetSpeed"])))).." -> "..(input.formatNumber(turbineTargetSpeed)).."RPM      ")
     elseif lang == "en" then
-      mon.write("Turbines Max. Speed: "..(input.formatNumberComma(math.floor(tonumber(optionList[25])))).." -> "..(input.formatNumberComma(turbineTargetSpeed)).."RPM      ")
+      mon.write("Turbines Max. Speed: "..(input.formatNumberComma(math.floor(tonumber(optionList["turbineTargetSpeed"])))).." -> "..(input.formatNumberComma(turbineTargetSpeed)).."RPM      ")
     end
 
   else
@@ -260,11 +260,11 @@ function mainMenu()
   end
 
   mon.setCursorPos(24,14)
-  if tonumber(optionList[27]) ~= targetSteam then
+  if tonumber(optionList["targetSteam"]) ~= targetSteam then
     if lang == "de" then
-      mon.write("Turbinen Steam-Input: "..(input.formatNumber(math.floor(tonumber(optionList[27])))).." -> "..(input.formatNumber(targetSteam)).."mb/t      ")
+      mon.write("Turbinen Steam-Input: "..(input.formatNumber(math.floor(tonumber(optionList["targetSteam"])))).." -> "..(input.formatNumber(targetSteam)).."mb/t      ")
     elseif lang == "en" then
-      mon.write("Turbines Steam Input: "..(input.formatNumberComma(math.floor(tonumber(optionList[27])))).." -> "..(input.formatNumberComma(targetSteam)).."mb/t      ")
+      mon.write("Turbines Steam Input: "..(input.formatNumberComma(math.floor(tonumber(optionList["targetSteam"])))).." -> "..(input.formatNumberComma(targetSteam)).."mb/t      ")
     end
 
   else
@@ -281,7 +281,7 @@ function mainMenu()
   elseif lang == "en" then
     mon.write("Config available: ")
   end
-  if math.floor(tonumber(optionList[5])) ~= math.floor(rodLevel) then
+  if math.floor(tonumber(optionList["rodLevel"])) ~= math.floor(rodLevel) then
     if lang == "de" then
       mon.write("ja -> nein")
     elseif lang == "en" then
@@ -302,7 +302,7 @@ function mainMenu()
       end
     end
   end
-  getClick(mainMenu)
+  getClick(backToMainMenu)
 end
 
 --Function for setting the background color
@@ -535,7 +535,7 @@ end
 function resetConfig()
   rodLevel = 0
   targetSteam = 2000
-  mainMenu()
+  backToMainMenu()
 end
 
 --Check for click events
@@ -553,4 +553,4 @@ end
 --Run
 mon.clear()
 createAllButtons()
-mainMenu()
+backToMainMenu()
