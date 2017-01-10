@@ -1,8 +1,9 @@
--- Reactor- und Turbine control by Thor_s_Crafter --
+-- Reactor- and Turbine control by Thor_s_Crafter --
 -- Version 2.4 --
 -- Start program --
 
---Global variables
+--========== Global variables for all program parts ==========
+
 --All options
 optionList = {}
 version = 0
@@ -12,7 +13,6 @@ textColor = 0
 reactorOffAt = 0
 reactorOnAt = 0
 mainMenu = ""
-autoUpdate = "" --deprecated
 lang = ""
 overallMode = ""
 program = ""
@@ -20,89 +20,93 @@ turbineTargetSpeed = 0
 targetSteam = 0
 --Peripherals
 mon = "" --Monitor
-r = ""
-v = ""
-t = {}
-
+r = "" --Reactor
+v = "" --Energy Storage
+t = {} --Turbines
+--Total count of all turbines
 amountTurbines = 0
---Touchpoint
+--TouchpointLocation (same as the monitor)
 touchpointLocation = {}
 
---Global functions
---Loads the options.txt file
+
+--========== Global functions for all program parts ==========
+
+
+--===== Functions for loading and saving the options =====
+
+--Loads the options.txt file and adds values to the global variables
 function loadOptionFile()
-	--Read the file
+	--Loads the file
 	local file = fs.open("/reactor-turbine-program/config/options.txt","r")
-	local listElement = file.readLine()
-	while listElement do
-		table.insert(optionList,listElement)
-		listElement = file.readLine()
-	end
+	local list = file.readAll()
 	file.close()
 
-	--Assign values
-	version = optionList[3]
-	rodLevel = tonumber(optionList[5])
-	backgroundColor = tonumber(optionList[7])
-	textColor = tonumber(optionList[9])
-	reactorOffAt = tonumber(optionList[11])
-	reactorOnAt = tonumber(optionList[13])
-	mainMenu = optionList[15]
-	autoUpdate = optionList[17] --deprecated
-	lang = optionList[19]
-	overallMode = optionList[21]
-	program = optionList[23]
-	turbineTargetSpeed = tonumber(optionList[25])
-	targetSteam  = tonumber(optionList[27])
+    --Insert Elements and assign values
+    optionList = textutils.unserialise(list)
+
+	--Assign values to variables
+	version = optionList["version"]
+	rodLevel = optionList["rodLevel"]
+	backgroundColor = tonumber(optionList["backgroundColor"])
+	textColor = tonumber(optionList["textColor"])
+	reactorOffAt = optionList["reactorOffAt"]
+	reactorOnAt = optionList["reactorOnAt"]
+	mainMenu = optionList["mainMenu"]
+	lang = optionList["lang"]
+	overallMode = optionList["overallMode"]
+	program = optionList["program"]
+	turbineTargetSpeed = optionList["turbineTargetSpeed"]
+	targetSteam  = optionList["targetSteam"]
+end
+
+--Refreshes the options list
+function refreshOptionList()
+	optionList["version"] = version
+	optionList["rodLevel"] = rodLevel
+	optionList["backgroundColor"] = backgroundColor
+	optionList["textColor"] = textColor
+	optionList["reactorOffAt"] = reactorOffAt
+	optionList["reactorOnAt"] = reactorOnAt
+	optionList["mainMenu"] = mainMenu
+	optionList["lang"] = lang
+	optionList["overallMode"] = overallMode
+	optionList["program"] = program
+	optionList["turbineTargetSpeed"] = turbineTargetSpeed
+	optionList["targetSteam"] = targetSteam
 end
 
 --Saves all data basck to the options.txt file
 function saveOptionFile()
-	--Aktualisieren
+	--Refresh option list
 	refreshOptionList()
-	--Daten in die Datei schreiben
+    --Serialise the table
+    local list = textutils.serialise(optionList)
+	--Save optionList to the config file
 	local file = fs.open("/reactor-turbine-program/config/options.txt","w")
-	for i=1,#optionList+1,1 do
-		file.writeLine(optionList[i])
-	end
+    file.writeLine(list)
 	file.close()
 	print("Saved.")
 end
 
---Refreshes th options list
-function refreshOptionList()
-	optionList[3] = version
-	optionList[5] = rodLevel
-	optionList[7] = backgroundColor
-	optionList[9] = textColor
-	optionList[11] = reactorOffAt
-	optionList[13] = reactorOnAt
-	optionList[15] = mainMenu
-	optionList[17] = autoUpdate
-	optionList[19] = lang
-	optionList[21] = overallMode
-	optionList[23] = program
-	optionList[25] = turbineTargetSpeed
-	optionList[27] = targetSteam
-end
 
---Initializing all attached peripherals
+--===== Initialization of all peripherals =====
+
 function initPeripherals()
-    --Get all peripherals
-    local peripheralList = peripheral.getNames()
-    for i = 1, #peripheralList do
-        --Turbinen
-        if peripheral.getType(peripheralList[i]) == "BigReactors-Turbine" then
-            t[amountTurbines] = peripheral.wrap(peripheralList[i])
-            amountTurbines = amountTurbines + 1
-        --Reactor
-        elseif peripheral.getType(peripheralList[i]) == "BigReactors-Reactor" then
-            r = peripheral.wrap(peripheralList[i])
-        --Monitor & Touchpoint
-        elseif peripheral.getType(peripheralList[i]) == "monitor" then
-            mon = peripheral.wrap(peripheralList[i])
-            touchpointLocation = peripheralList[i]
-        --Capacitorbank / Energycell / Energy Core
+	--Get all peripherals
+	local peripheralList = peripheral.getNames()
+	for i = 1, #peripheralList do
+		--Turbines
+		if peripheral.getType(peripheralList[i]) == "BigReactors-Turbine" then
+			t[amountTurbines] = peripheral.wrap(peripheralList[i])
+			amountTurbines = amountTurbines + 1
+			--Reactor
+		elseif peripheral.getType(peripheralList[i]) == "BigReactors-Reactor" then
+			r = peripheral.wrap(peripheralList[i])
+			--Monitor & Touchpoint
+		elseif peripheral.getType(peripheralList[i]) == "monitor" then
+			mon = peripheral.wrap(peripheralList[i])
+			touchpointLocation = peripheralList[i]
+			--Capacitorbank / Energycell / Energy Core
 		else
 			local tmp = peripheral.wrap(peripheralList[i])
 			local stat,err = pcall(function() tmp.getEnergyStored() end)
@@ -110,7 +114,7 @@ function initPeripherals()
 				v = tmp
 			end
 		end
-    end
+	end
 
 	--Check for errors
 	term.clear()
@@ -143,44 +147,38 @@ function initPeripherals()
 	amountTurbines = amountTurbines - 1
 end
 
---Restarts the computer
+
+--===== Shutdown and restart the computer =====
+
 function restart()
-	refreshOptionList()
 	saveOptionFile()
 	mon.clear()
 	mon.setCursorPos(38,8)
-	mon.write("Reboot...")
-	if autoUpdate == true then
-		shell.run("/reactor-turbine-program/install/installerUpdate.lua")
-	else
-		os.reboot()
-	end
+	mon.write("Rebooting...")
+	os.reboot()
 end
 
---Start the program
+
+--=========== Run the program ==========
+
+--Load the option file and initialize the peripherals
 loadOptionFile()
 initPeripherals()
 
---Deprecated
---if autoUpdate == "true" then
---	shell.run("/reactor-turbine-program/install/installerUpdate.lua")
---end
-
-if mainMenu == "true" then
+--Run program or main menu, based on the settings
+if mainMenu then
 	shell.run("/reactor-turbine-program/start/menu.lua")
 	shell.completeProgram("/reactor-turbine-program/start/start.lua")
-elseif mainMenu == "false" then
-  if program == "turbine" then
-	 shell.run("/reactor-turbine-program/program/turbineControl.lua")
-  elseif program == "reactor" then
-    shell.run("/reactor-turbine-program/program/reactorControl.lua")
-  end
+else
+	if program == "turbine" then
+		shell.run("/reactor-turbine-program/program/turbineControl.lua")
+	elseif program == "reactor" then
+		shell.run("/reactor-turbine-program/program/reactorControl.lua")
+	end
 	shell.completeProgram("/reactor-turbine-program/start/start.lua")
-
---Deprecated?
---else
---	mainMenu = "true"
---	saveOptionFile()
---	shell.run("/reactor-turbine-program/start/menu.lua")
---	shell.completeProgram("/reactor-turbine-program/start/start.lua")
+	--else
+	--@TODO insert failsave for main menu bug(s)
 end
+
+
+--========== END OF THE START.LUA FILE ==========

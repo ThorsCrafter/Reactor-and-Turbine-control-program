@@ -2,7 +2,9 @@
 -- Version 2.4 --
 -- Installer (Deutsch) --
 
---Variables
+
+--===== URL for Downloads =====
+
 local relUrl = "https://raw.githubusercontent.com/ThorsCrafter/Reactor-and-Turbine-control-program/master/turbineControl_v2/src/"
 
 --Functions

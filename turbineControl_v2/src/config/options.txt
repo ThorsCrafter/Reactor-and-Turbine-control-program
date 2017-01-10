@@ -1,27 +1,15 @@
-
-version
-2.4
-rodLevel
-0
-backgroundColor
-128
-textColor
-1
-reactorOffAt
-90
-reactorOnAt
-50
-mainMenu
-true
-autoUpdate
-false
-lang
-de
-mode
-auto
-program
-turbine
-turbineTargetSpeed
-1820
-turbineTargetSteam
-2000
+{
+  mainMenu = true,
+  rodLevel = 0,
+  targetSpeed = 2000,
+  overallMode = "auto",
+  reactorOffAt = 80,
+  backgroundColor = 128,
+  reactorOnAt = 50,
+  targetSteam = 2000,
+  turbineTargetSpeed = 1820,
+  version = "2.5 - beta01",
+  textColor = 1,
+  program = "turbine",
+  lang = "de",
+}

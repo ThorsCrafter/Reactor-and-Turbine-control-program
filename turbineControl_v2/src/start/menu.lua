@@ -2,7 +2,7 @@
 -- Version 2.3 --
 -- Hauptmenue --
 
---Lädt die Touchpoint API (von Lyqyd)
+--Loads the Touchpoint API (by Lyqyd)
 shell.run("cp /reactor-turbine-program/config/touchpoint.lua /touchpoint")
 os.loadAPI("touchpoint")
 shell.run("rm touchpoint")
@@ -14,7 +14,7 @@ local page = touchpoint.new(touchpointLocation)
 local startOn = {}
 local startOff = {}
 
---Erstellt die Buttons im Hauptmenü
+--Erstellt die Buttons im Hauptmenu
 function createButtons()
   page:add("Deutsch",nil,39,15,49,15)
   page:add("English",nil,39,17,49,17)
