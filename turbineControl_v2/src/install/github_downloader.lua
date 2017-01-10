@@ -5,7 +5,7 @@
 --===== Local variables =====
 
 --Release or beta version?
-local selectInstaller = "release"
+local selectInstaller = ""
 
 --Branch & Relative paths to the url and path
 local installLang = ""
@@ -38,26 +38,31 @@ function selectBranch()
 	if installLang == "de" then
 		print("Welche Version soll geladen werden?")
 		print("Verfuegbar:")
-		print("1) master (Realeases)")
-		print("2) build-2.4.2 (Betatestversion)")
+		print("1) master (Releases)")
+		print("2) beta (Betaversionen)")
 		term.write("Eingabe (1-2): ")
 	elseif installLang == "en" then
 		print("Which version should be downloaded?")
 		print("Available:")
 		print("1) master (Realeases)")
-		print("2) build-2.4.2 (Betaversion)")
+		print("2) beta (Betaversions)")
 		term.write("Input (1-2): ")
 	end	
 	local input = read()
-	if input == "1" then branch = "master"
-	elseif input == "2" then branch = "build-2.4.2"
+	if input == "1" then
+		branch = "master"
+		relUrl = "https://raw.githubusercontent.com/ThorsCrafter/Reactor-and-Turbine-control-program/"..branch.."/turbineControl_v2/src/"
+		releaseVersion()
+	elseif input == "2" then
+		branch = "beta"
+		relUrl = "https://raw.githubusercontent.com/ThorsCrafter/Reactor-and-Turbine-control-program/"..branch.."/turbineControl_v2/src/"
+		betaVersion()
 	else
 		if installLang == "de" then print("Ungueltige Eingabe!")
 		elseif installLang == "en" then print("Invalid input!") end
 		sleep(2)
 		selectBranch()
 	end
-	relUrl = "https://raw.githubusercontent.com/ThorsCrafter/Reactor-and-Turbine-control-program/"..branch.."/turbineControl_v2/src/"
 end
 
 --Removes old installations
@@ -83,7 +88,7 @@ function getURL(path)
 	local gotUrl = http.get(relUrl..path)
 	if gotUrl == nil then
 		clearTerm()
-		error("File not found! Please check, if the branch is correct!")
+		error("File not found! Please check!\nFailed at "..relUrl..path)
 	else
 		return gotUrl.readAll()
 	end
@@ -128,9 +133,6 @@ function clearTerm()
 end
 
 function releaseVersion()
-	--Set branch (relUrl) to "master"
-	relUrl = "https://raw.githubusercontent.com/ThorsCrafter/Reactor-and-Turbine-control-program/master/turbineControl_v2/src/"
-
 	removeAll()
 	--Downloads the installer
 	if installLang == "de" then
@@ -142,7 +144,6 @@ function releaseVersion()
 end
 
 function betaVersion()
-	selectBranch()
 	removeAll()
 	getFiles()
 	print("Done!")
@@ -152,12 +153,5 @@ end
 --Run
 selectLanguage()
 
-if selectInstaller == "beta" then
-	betaVersion()
-elseif selectInstaller == "release" then
-	releaseVersion()
-else
-	error("Enter a release version! (\"beta\"/\"release\") in line 5!")
-end
-
+selectBranch()
 os.reboot()
