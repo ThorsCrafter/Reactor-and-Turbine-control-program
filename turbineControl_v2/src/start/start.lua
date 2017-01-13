@@ -122,9 +122,9 @@ function initPeripherals()
 	--No Monitor
 	if mon == "" then
 		if lang == "de" then
-			error("Monitor nicht gefunden! Bitte pruefen und den Computer neu starten (Strg+R gedrueckt halten)")
+			error("Monitor nicht gefunden!\nBitte pruefen und den Computer neu starten (Strg+R gedrueckt halten)")
 		elseif lang == "en" then
-			error("Monitor not found! Please check and reboot the computer (Press and hold Ctrl+R)")
+			error("Monitor not found!\nPlease check and reboot the computer (Press and hold Ctrl+R)")
 		end
 	end
 	--Monitor clear
@@ -136,11 +136,11 @@ function initPeripherals()
 	local monX,monY = mon.getSize()
 	if monX < 71 or monY < 26 then
 		if lang == "de" then
-			mon.write("Monitor zu klein. Bitte min. 7 breit und 4 hoch bauen und den Computer neu starten (Strg+R gedrueckt halten)")
-			error("Monitor zu klein. Bitte min. 7 breit und 4 hoch bauen  und den Computer neu starten (Strg+R gedrueckt halten)")
+			mon.write("Monitor zu klein.\nBitte min. 7 breit und 4 hoch bauen und den Computer neu starten\n(Strg+R gedrueckt halten)")
+			error("Monitor zu klein.\nBitte min. 7 breit und 4 hoch bauen und den Computer neu starten\n(Strg+R gedrueckt halten)")
 		elseif lang == "en" then
-			mon.write("Monitor too small. Must be at least 7 in length and 4 in height.  Please check and reboot the computer (Press and hold Ctrl+R)")
-			error("Monitor too small. Must be at least 7 in length and 4 in height.  Please check and reboot the computer (Press and hold Ctrl+R)")
+			mon.write("Monitor too small\n Must be at least 7 in length and 4 in height.\nPlease check and reboot the computer (Press and hold Ctrl+R)")
+			error("Monitor too small.\nMust be at least 7 in length and 4 in height.\nPlease check and reboot the computer (Press and hold Ctrl+R)")
 		end
 	end
 
