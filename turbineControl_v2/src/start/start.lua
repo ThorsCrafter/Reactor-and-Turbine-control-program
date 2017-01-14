@@ -104,7 +104,7 @@ function checkUpdates()
 	end
 
 	--Get Remote version file
-	downloadFile("https://raw.githubusercontent.com/ThorsCrafter/Reactor-and-Turbine-control-program/".."build-2.5-02".."/turbineControl_v2/src/",currBranch..".ver")
+	downloadFile("https://raw.githubusercontent.com/ThorsCrafter/Reactor-and-Turbine-control-program/"..currBranch.."/turbineControl_v2/src/",currBranch..".ver")
 
 	--Compare local and remote version
 	local file = fs.open(currBranch..".ver","r")
@@ -119,7 +119,7 @@ function checkUpdates()
 	if remoteVer > version then
 		print("Update...")
 		sleep(2)
-		doUpdate(remoteVer)
+		doUpdate(remoteVer,currBranch)
 	end
 
 	--Remove remote version file
@@ -127,7 +127,7 @@ function checkUpdates()
 end
 
 
-function doUpdate(toVer)
+function doUpdate(toVer,branch)
 
 	--Set the monitor up
 	local x,y = mon.getSize()
@@ -195,23 +195,38 @@ function doUpdate(toVer)
 
 	--Run Counter for installation skipping
 	local count = 10
+	local out = false
+
 	term.setCursorPos(tx/2-5,ty)
 	term.write(" -- 10 -- ")
+
 	while true do
+
 		local timer1 = os.startTimer(1)
+
 		while true do
+
 			local event, p1 = os.pullEvent()
+
 			if event == "key" then
+
 				if p1 == 36 or p1 == 21 then
-					--TODO Update
+					shell.run("/reactor-turbine-program/install/installer.lua update "..branch)
+					out = true
+					break
 				end
+
 			elseif event == "timer" and p1 == timer1 then
+
 				count = count - 1
 				term.setCursorPos(tx/2-5,ty)
 				term.write(" -- 0"..count.." -- ")
 				break
 			end
 		end
+
+		if out then break end
+
 		if count == 0 then
 			term.clear()
 			term.setCursorPos(1,1)
@@ -324,8 +339,6 @@ else
 		shell.run("/reactor-turbine-program/program/reactorControl.lua")
 	end
 	shell.completeProgram("/reactor-turbine-program/start/start.lua")
-	--else
-	--@TODO insert failsave for main menu bug(s)
 end
 
 
