@@ -3,11 +3,46 @@
 -- Installer (Deutsch) --
 
 
---===== URL for Downloads =====
+--===== Local Variables =====
 
-local relUrl = "https://raw.githubusercontent.com/ThorsCrafter/Reactor-and-Turbine-control-program/master/turbineControl_v2/src/"
+local arg = {... }
+local update
+local branch = ""
 
---Functions
+--Program arguments for updates
+if #arg == 0 then
+
+  --No update
+  update = false
+
+elseif #arg == 2 then
+
+  if arg[1] == "update" then
+
+    --Update!
+    update = true
+
+    --Select update branch
+    if arg[2] == "release" then branch = "release"
+    elseif arg[2] == "beta" then branch = "beta"
+    else
+      error("Invalid 2nd argument!")
+    end
+
+  else
+    error("Invalid 1st argument!")
+  end
+
+else
+  error("0 or 2 arguments required!")
+end
+
+--Url for file downloads
+local relUrl = "https://raw.githubusercontent.com/ThorsCrafter/Reactor-and-Turbine-control-program/"..branch.."/turbineControl_v2/src/"
+
+
+--===== Functions =====
+
 --Writes the files to the computer
 function writeFile(url,path)
   local file = fs.open("/reactor-turbine-program/"..path,"w")
@@ -20,17 +55,14 @@ function getURL(path)
   local gotUrl = http.get(relUrl..path)
   if gotUrl == nil then
     clearTerm()
-    error("File not found! Please check, if the branch is correct!")
+    error("File not found! Please check!\nFailed at "..relUrl..path)
   else
     return gotUrl.readAll()
   end
 end
 
---Update?
-if fs.exists("/reactor-turbine-program/program/turbineControl.lua") then
-  update = true
-else update = false
-end
+
+--===== Run installation =====
 
 --First time installation
 if not update then
@@ -107,10 +139,13 @@ if not update then
   sleep(1)
 end --update
 
+
+
 term.clear()
 term.setCursorPos(1,1)
 
 print("Checke und loesche vorhandene Programme...")
+
 --Removes old files
 if fs.exists("/reactor-turbine-program/program/") then
     shell.run("rm /reactor-turbine-program/")
@@ -119,27 +154,32 @@ end
 --Download all program parts
 print("Lade neue Programmteile...")
 print("Getting new files...")
+
 --Changelog
 term.write("Downloading Changelog files...")
 writeFile(getURL("changelog/changelogDE.txt"),"changelog/changelogDE.txt")
 writeFile(getURL("changelog/changelogEn.txt"),"changelog/changelogDE.txt")
 print("     Done.")
+
 --Config
 term.write("Config files...")
 writeFile(getURL("config/input.lua"),"config/input.lua")
 writeFile(getURL("config/options.txt"),"config/options.txt")
 writeFile(getURL("config/touchpoint.lua"),"config/touchpoint.lua")
 print("     Done.")
+
 --Install
 term.write("Install files...")
 writeFile(getURL("install/installer.lua"),"install/installer.lua")
 print("     Done.")
+
 --Program
 term.write("Program files...")
 writeFile(getURL("program/editOptions.lua"),"program/editOptions.lua")
 writeFile(getURL("program/reactorControl.lua"),"program/reactorControl.lua")
 writeFile(getURL("program/turbineControl.lua"),"program/turbineControl.lua")
 print("     Done.")
+
 --Start
 term.write("Start files...")
 writeFile(getURL("start/menu.lua"),"start/menu.lua")

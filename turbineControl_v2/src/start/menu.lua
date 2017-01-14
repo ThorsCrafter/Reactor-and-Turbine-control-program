@@ -16,10 +16,8 @@ local startOff = {}
 
 --Erstellt die Buttons im Hauptmenu
 function createButtons()
-  page:add("Deutsch",nil,39,15,49,15)
-  page:add("English",nil,39,17,49,17)
-  
-  page:add("Update",updateManual,39,11,49,11)
+  page:add("Deutsch",nil,39,11,49,11)
+  page:add("English",nil,39,13,49,13)
 
   --In Deutsch
   if lang == "de" then
@@ -32,8 +30,8 @@ function createButtons()
     page:add("Programm beenden",exit,3,18,20,18)
     page:add("Neu starten",reboot,3,20,20,20)
     page:add("menuOn",nil,39,7,49,7)
-    startOn = {"   Ein    ",label = "menuOn"}
-    startOff = {"   Aus    ",label = "menuOn"}
+    startOn = {"   Ein   ",label = "menuOn"}
+    startOff = {"   Aus   ",label = "menuOn"}
     page:toggleButton("Deutsch")
     --Programm
     if program == "turbine" then
@@ -60,7 +58,7 @@ function createButtons()
     page:add("Reboot",restart,3,20,20,20)
     page:add("menuOn",nil,39,7,49,7)
     startOn = {"   On    ",label = "menuOn"}
-    startOff = {"   Off    ",label = "menuOn"}
+    startOff = {"   Off   ",label = "menuOn"}
     page:toggleButton("English")
     --Programm
     if program == "turbine" then
@@ -77,7 +75,7 @@ function createButtons()
   end
 
   --Aktiv, wenn mainMenu an ist
-  if mainMenu == "true" then
+  if mainMenu then
     page:rename("menuOn",startOn,true)
     page:toggleButton("menuOn")
   else
@@ -97,11 +95,6 @@ function exit()
   term.clear()
   term.setCursorPos(1,1)
   shell.completeProgram("/reactor-turbine-program/start/menu.lua")
-end
-
-function updateManual()
-   shell.run("/reactor-turbine-program/install/installer.lua")
-   os.reboot()
 end
 
 function switchProgram(currBut)
@@ -165,12 +158,12 @@ local function getClick(funct)
   if event == "button_click" then
     if but == "menuOn" then
       print("menuOn")
-      if mainMenu == "false" then
-        mainMenu = "true"
+      if not mainMenu then
+        mainMenu = true
         saveOptionFile()
         page:rename("menuOn",startOn,true)
-      elseif mainMenu == "true" then
-        mainMenu = "false"
+      elseif mainMenu then
+        mainMenu = false
         saveOptionFile()
         page:rename("menuOn",startOff,true)
       end
@@ -263,7 +256,7 @@ function displayMenu()
     mon.write("-- Hauptmenue --")
     mon.setCursorPos(39,5)
     mon.write("Hauptmenue zeigen: ")
-    mon.setCursorPos(39,13)
+    mon.setCursorPos(39,9)
     mon.write("Sprache: ")
     mon.setCursorPos(3,7)
     mon.write("Programm: ")
@@ -275,7 +268,7 @@ function displayMenu()
     mon.write("-- Main Menu --")
     mon.setCursorPos(39,5)
     mon.write("Show this screen on startup: ")
-    mon.setCursorPos(39,13)
+    mon.setCursorPos(39,9)
     mon.write("Language: ")
     mon.setCursorPos(3,7)
     mon.write("Program: ")
@@ -283,8 +276,7 @@ function displayMenu()
     mon.write("Mode:")
 
   end
-  mon.setCursorPos(39,9)
-  mon.write("Update:")
+
   getClick(displayMenu)
 end
 

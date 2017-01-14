@@ -89,6 +89,168 @@ function saveOptionFile()
 end
 
 
+--===== Automatic update detection =====
+
+--Check for updates
+function checkUpdates()
+
+	--Check current branch (release or beta)
+	local currBranch = ""
+	local tmpString = string.sub(version,5,5)
+	if tmpString == "" then
+		currBranch = "master"
+	elseif tmpString == "b" then
+		currBranch = "beta"
+	end
+
+	--Get Remote version file
+	downloadFile("https://raw.githubusercontent.com/ThorsCrafter/Reactor-and-Turbine-control-program/"..currBranch.."/turbineControl_v2/src/",currBranch..".ver")
+
+	--Compare local and remote version
+	local file = fs.open(currBranch..".ver","r")
+	local remoteVer = file.readLine()
+	file.close()
+
+	print("remoteVer: "..remoteVer)
+	print("localVer: "..version)
+	print("Update? -> "..tostring(remoteVer > version))
+
+	--Update if available
+	if remoteVer > version then
+		print("Update...")
+		sleep(2)
+		doUpdate(remoteVer,currBranch)
+	end
+
+	--Remove remote version file
+	shell.run("rm "..currBranch..".ver")
+end
+
+
+function doUpdate(toVer,branch)
+
+	--Set the monitor up
+	local x,y = mon.getSize()
+	mon.setBackgroundColor(colors.black)
+	mon.clear()
+
+	local x1 = x/2-15
+	local y1 = y/2-4
+	local x2 = x/2
+	local y2 = y/2
+
+	--Draw Box
+	mon.setBackgroundColor(colors.gray)
+	mon.setTextColor(colors.gray)
+	mon.setCursorPos(x1,y1)
+	for i=1,8 do
+		mon.setCursorPos(x1,y1+i-1)
+		mon.write("                              ") --30 chars
+	end
+
+	--Print update message
+	mon.setTextColor(colors.white)
+
+	if lang == "de" then
+
+		mon.setCursorPos(x2-9,y1+1)
+		mon.write("Update verfuegbar!") --18 chars
+
+		mon.setCursorPos(x2-(math.ceil(string.len(toVer)/2)),y1+3)
+		mon.write(toVer)
+
+		mon.setCursorPos(x2-8,y1+5)
+		mon.write("Zum installieren") --16 chars
+
+		mon.setCursorPos(x2-12,y1+6)
+		mon.write("in den Computer schauen") --23 chars
+
+	elseif lang == "en" then
+
+		mon.setCursorPos(x2-9,y1+1)
+		mon.write("Update available!") --17 chars
+
+		mon.setCursorPos(x2-(math.ceil(string.len(toVer)/2)),y1+3)
+		mon.write(toVer)
+
+		mon.setCursorPos(x2-8,y1+5)
+		mon.write("To install look") --15 chars
+
+		mon.setCursorPos(x2-12,y1+6)
+		mon.write("at the computer terminal") --24 chars
+	end
+
+	--Print install instructions to the terminal
+	term.clear()
+	term.setCursorPos(1,1)
+	local tx,ty = term.getSize()
+
+	if lang == "de" then
+		print("Soll das Update installiert werden (j/n)?")
+		term.write("Eingabe: ")
+	elseif lang == "en" then
+		print("Do you want to install the update (y/n)?")
+		term.write("Input: ")
+	end
+
+	--Run Counter for installation skipping
+	local count = 10
+	local out = false
+
+	term.setCursorPos(tx/2-5,ty)
+	term.write(" -- 10 -- ")
+
+	while true do
+
+		local timer1 = os.startTimer(1)
+
+		while true do
+
+			local event, p1 = os.pullEvent()
+
+			if event == "key" then
+
+				if p1 == 36 or p1 == 21 then
+					shell.run("/reactor-turbine-program/install/installer.lua update "..branch)
+					out = true
+					break
+				end
+
+			elseif event == "timer" and p1 == timer1 then
+
+				count = count - 1
+				term.setCursorPos(tx/2-5,ty)
+				term.write(" -- 0"..count.." -- ")
+				break
+			end
+		end
+
+		if out then break end
+
+		if count == 0 then
+			term.clear()
+			term.setCursorPos(1,1)
+			break
+		end
+	end
+end
+
+--Download Files (For Remote version file)
+function downloadFile(relUrl,path)
+	local gotUrl = http.get(relUrl..path)
+	if gotUrl == nil then
+		term.clear()
+		error("File not found! Please check!\nFailed at "..relUrl..path)
+	else
+		url = gotUrl.readAll()
+	end
+
+	local file = fs.open(path,"w")
+	file.write(url)
+	file.close()
+end
+
+
 --===== Initialization of all peripherals =====
 
 function initPeripherals()
@@ -122,9 +284,9 @@ function initPeripherals()
 	--No Monitor
 	if mon == "" then
 		if lang == "de" then
-			error("Monitor nicht gefunden! Bitte pruefen und den Computer neu starten (Strg+R gedrueckt halten)")
+			error("Monitor nicht gefunden!\nBitte pruefen und den Computer neu starten (Strg+R gedrueckt halten)")
 		elseif lang == "en" then
-			error("Monitor not found! Please check and reboot the computer (Press and hold Ctrl+R)")
+			error("Monitor not found!\nPlease check and reboot the computer (Press and hold Ctrl+R)")
 		end
 	end
 	--Monitor clear
@@ -136,11 +298,11 @@ function initPeripherals()
 	local monX,monY = mon.getSize()
 	if monX < 71 or monY < 26 then
 		if lang == "de" then
-			mon.write("Monitor zu klein. Bitte min. 7 breit und 4 hoch bauen und den Computer neu starten (Strg+R gedrueckt halten)")
-			error("Monitor zu klein. Bitte min. 7 breit und 4 hoch bauen  und den Computer neu starten (Strg+R gedrueckt halten)")
+			mon.write("Monitor zu klein.\nBitte min. 7 breit und 4 hoch bauen und den Computer neu starten\n(Strg+R gedrueckt halten)")
+			error("Monitor zu klein.\nBitte min. 7 breit und 4 hoch bauen und den Computer neu starten\n(Strg+R gedrueckt halten)")
 		elseif lang == "en" then
-			mon.write("Monitor too small. Must be at least 7 in length and 4 in height.  Please check and reboot the computer (Press and hold Ctrl+R)")
-			error("Monitor too small. Must be at least 7 in length and 4 in height.  Please check and reboot the computer (Press and hold Ctrl+R)")
+			mon.write("Monitor too small\n Must be at least 7 in length and 4 in height.\nPlease check and reboot the computer (Press and hold Ctrl+R)")
+			error("Monitor too small.\nMust be at least 7 in length and 4 in height.\nPlease check and reboot the computer (Press and hold Ctrl+R)")
 		end
 	end
 
@@ -164,6 +326,7 @@ end
 --Load the option file and initialize the peripherals
 loadOptionFile()
 initPeripherals()
+checkUpdates()
 
 --Run program or main menu, based on the settings
 if mainMenu then
@@ -176,8 +339,6 @@ else
 		shell.run("/reactor-turbine-program/program/reactorControl.lua")
 	end
 	shell.completeProgram("/reactor-turbine-program/start/start.lua")
-	--else
-	--@TODO insert failsave for main menu bug(s)
 end
 
 
