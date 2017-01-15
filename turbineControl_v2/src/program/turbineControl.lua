@@ -91,7 +91,7 @@ function startAutoMode()
     --Init SpeedTables
     initSpeedTable()
     while not allAtTargetSpeed() do
-       getToTargetSpeed()
+        getToTargetSpeed()
         sleep(1)
         term.setCursorPos(1, 2)
         for i = 0, amountTurbines, 1 do
@@ -104,13 +104,13 @@ function startAutoMode()
             mon.setCursorPos(1, (i + 3))
             if i >= 16 then mon.setCursorPos(28, (i - 16 + 3)) end
             if lang == "de" then
-                if (i+1) < 10 then
+                if (i + 1) < 10 then
                     mon.write("Turbine 0" .. (i + 1) .. ": " .. (input.formatNumber(math.floor(tSpeed))) .. " RPM")
                 else
                     mon.write("Turbine " .. (i + 1) .. ": " .. (input.formatNumber(math.floor(tSpeed))) .. " RPM")
                 end
             elseif lang == "en" then
-                if (i+1) < 10 then
+                if (i + 1) < 10 then
                     mon.write("Turbine 0" .. (i + 1) .. ": " .. (input.formatNumberComma(math.floor(tSpeed))) .. " RPM")
                 else
                     mon.write("Turbine " .. (i + 1) .. ": " .. (input.formatNumberComma(math.floor(tSpeed))) .. " RPM")
@@ -147,9 +147,7 @@ function startAutoMode()
     printStatsAuto(0)
 
     --run
-    while true do
-        clickEvent()
-    end
+    clickEvent()
 end
 
 --Init manual mode
@@ -170,9 +168,7 @@ function startManualMode()
     printStatsMan(0)
 
     --run
-    while true do
-        clickEvent()
-    end
+    clickEvent()
 end
 
 --Checks if all required peripherals are attached
@@ -580,7 +576,7 @@ end
 
 --Sets the tables for checking the current turbineSpeeds
 function initSpeedTable()
-    for i=0, amountTurbines do
+    for i = 0, amountTurbines do
         lastSpeed[i] = 0
         currSpeed[i] = 0
         speedFailCounter[i] = 0
@@ -606,41 +602,41 @@ function getToTargetSpeed()
         end
 
 
-    --Not working yet - Needs reworking
---        --Write speed to the currSpeed table
---        currSpeed[i] = tspeed
---
---        --Check turbine speed progression
---        if currSpeed[i] < lastSpeed[i]-50 then
---
---            print(speedFailCounter)
---
---            --Return error message
---            if speedFailCounter[i] >= 3 then
---                mon.setBackgroundColor(colors.black)
---                mon.clear()
---                mon.setTextColor(colors.red)
---                mon.setCursorPos(1, 1)
---                if lang == "de" then
---                    mon.write("Turbinen koennen nicht auf Speed gebracht werden!")
---                    mon.setCursorPos(1,2)
---                    mon.write("Bitte den Steam-Input pruefen!")
---                    error("Turbinen koennen nicht auf Speed gebracht werden!")
---                elseif lang == "en" then
---                    mon.write("Turbines can't get to speed!")
---                    mon.setCursorPos(1,2)
---                    mon.write("Please check your Steam-Input!")
---                    error("Turbines can't get to speed!")
---                end
---
---            --increase speedFailCounter
---            else
---                speedFailCounter[i] = speedFailCounter[i] + 1
---            end
---        end
---
---        --Write speed to the lastSpeed table
---        lastSpeed[i] = tspeed
+        --Not working yet - Needs reworking
+        --        --Write speed to the currSpeed table
+        --        currSpeed[i] = tspeed
+        --
+        --        --Check turbine speed progression
+        --        if currSpeed[i] < lastSpeed[i]-50 then
+        --
+        --            print(speedFailCounter)
+        --
+        --            --Return error message
+        --            if speedFailCounter[i] >= 3 then
+        --                mon.setBackgroundColor(colors.black)
+        --                mon.clear()
+        --                mon.setTextColor(colors.red)
+        --                mon.setCursorPos(1, 1)
+        --                if lang == "de" then
+        --                    mon.write("Turbinen koennen nicht auf Speed gebracht werden!")
+        --                    mon.setCursorPos(1,2)
+        --                    mon.write("Bitte den Steam-Input pruefen!")
+        --                    error("Turbinen koennen nicht auf Speed gebracht werden!")
+        --                elseif lang == "en" then
+        --                    mon.write("Turbines can't get to speed!")
+        --                    mon.setCursorPos(1,2)
+        --                    mon.write("Please check your Steam-Input!")
+        --                    error("Turbines can't get to speed!")
+        --                end
+        --
+        --            --increase speedFailCounter
+        --            else
+        --                speedFailCounter[i] = speedFailCounter[i] + 1
+        --            end
+        --        end
+        --
+        --        --Write speed to the lastSpeed table
+        --        lastSpeed[i] = tspeed
     end
 end
 
@@ -773,25 +769,32 @@ end
 --Checks for events (timer/clicks)
 function clickEvent()
 
-    --refresh screen
-    if overallMode == "auto" then
-        printStatsAuto(currStat)
-        checkEnergyLevel()
-    elseif overallMode == "manual" then
-        printStatsMan(currStat)
-    end
+    while true do
+        --timer
+        local timer1 = os.startTimer(1)
 
-    --timer
-    local time = os.startTimer(0.5)
+        while true do
+            --refresh screen
+            if overallMode == "auto" then
+                printStatsAuto(currStat)
+                checkEnergyLevel()
+            elseif overallMode == "manual" then
+                printStatsMan(currStat)
+            end
 
-    --gets the event
-    local event, but = page:handleEvents(os.pullEvent())
-    print(event)
+            --gets the event
+            local event, p1 = page:handleEvents(os.pullEvent())
+            print(event..", "..p1)
 
-    --execute a buttons function if clicked
-    if event == "button_click" then
-        page:flash(but)
-        page.buttonList[but].func()
+            --execute a buttons function if clicked
+            if event == "button_click" then
+                page:flash(p1)
+                page.buttonList[p1].func()
+                break
+            elseif event == "timer" and p1 == timer1 then
+                break
+            end
+        end
     end
 end
 
