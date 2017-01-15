@@ -545,7 +545,6 @@ function checkEnergyLevel()
             allTurbinesOff()
             r.setActive(false)
         end
-        print("end while")
 
         --Level < user setting (default: 50%)
     elseif getEnergyPer() < reactorOnAt then
@@ -770,18 +769,18 @@ end
 function clickEvent()
 
     while true do
+
+        --refresh screen
+        if overallMode == "auto" then
+            checkEnergyLevel()
+        elseif overallMode == "manual" then
+            printStatsMan(currStat)
+        end
+
         --timer
         local timer1 = os.startTimer(1)
 
         while true do
-            --refresh screen
-            if overallMode == "auto" then
-                printStatsAuto(currStat)
-                checkEnergyLevel()
-            elseif overallMode == "manual" then
-                printStatsMan(currStat)
-            end
-
             --gets the event
             local event, p1 = page:handleEvents(os.pullEvent())
             print(event..", "..p1)
