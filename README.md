@@ -18,10 +18,12 @@ The following list shows the features of the program:
 - Set up a Computer, connect all parts (Reactor, Energy Storage, Turbines) with ***Wired Modems***
 - ***Activate*** all modems
 - Type in the following into the computer:
+
     ```
     pastebin get HMtbgkwt git
     git
     ```
+        
 - Then follow the install instructions
 
 ## Have a look at my Update Videos on YouTube

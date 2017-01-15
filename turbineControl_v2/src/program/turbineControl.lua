@@ -104,16 +104,24 @@ function startAutoMode()
             mon.setCursorPos(1, (i + 3))
             if i >= 16 then mon.setCursorPos(28, (i - 16 + 3)) end
             if lang == "de" then
-                mon.write("Turbine " .. (i + 1) .. ": " .. (input.formatNumber(math.floor(tSpeed))) .. " RPM")
+                if (i+1) < 10 then
+                    mon.write("Turbine 0" .. (i + 1) .. ": " .. (input.formatNumber(math.floor(tSpeed))) .. " RPM")
+                else
+                    mon.write("Turbine " .. (i + 1) .. ": " .. (input.formatNumber(math.floor(tSpeed))) .. " RPM")
+                end
             elseif lang == "en" then
-                mon.write("Turbine " .. (i + 1) .. ": " .. (input.formatNumberComma(math.floor(tSpeed))) .. " RPM")
+                if (i+1) < 10 then
+                    mon.write("Turbine 0" .. (i + 1) .. ": " .. (input.formatNumberComma(math.floor(tSpeed))) .. " RPM")
+                else
+                    mon.write("Turbine " .. (i + 1) .. ": " .. (input.formatNumberComma(math.floor(tSpeed))) .. " RPM")
+                end
             end
             if tSpeed > turbineTargetSpeed then
                 mon.setTextColor(colors.green)
-                mon.write(" OK ")
+                mon.write(" OK  ")
             else
                 mon.setTextColor(colors.red)
-                mon.write(" ...")
+                mon.write(" ...  ")
             end
         end
     end
@@ -1013,7 +1021,7 @@ function printStatsMan(turbine)
     --Other status informations
     if lang == "de" then
         mon.setCursorPos(2, 5)
-        mon.write("RF-Produktion: " .. (input.formatNumber(math.floor(rfGen))) .. " RF/t      ")
+        mon.write("RF-Produktion: " .. (input.formatNumber(math.floor(rfGen))) .. " RF/t        ")
         mon.setCursorPos(2, 7)
         local fuelCons = tostring(r.getFuelConsumedLastTick())
         local fuelCons2 = string.sub(fuelCons, 0, 4)
