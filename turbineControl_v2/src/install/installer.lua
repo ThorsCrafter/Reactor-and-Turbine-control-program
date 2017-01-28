@@ -54,7 +54,8 @@ end
 function getURL(path)
   local gotUrl = http.get(relUrl..path)
   if gotUrl == nil then
-    clearTerm()
+    term.clear()
+    term.setCursorPos(1,1)
     error("File not found! Please check!\nFailed at "..relUrl..path)
   else
     return gotUrl.readAll()
