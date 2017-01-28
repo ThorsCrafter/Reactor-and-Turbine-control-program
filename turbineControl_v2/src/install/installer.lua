@@ -14,6 +14,7 @@ if #arg == 0 then
 
   --No update
   update = false
+  branch = "release"
 
 elseif #arg == 2 then
 
