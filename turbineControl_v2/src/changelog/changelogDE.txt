@@ -1,7 +1,22 @@
 ****************************************************************
 -- Reaktor- und Turbinenprogramm von Thor_s_Crafter --
 -- Komplettes Changelog -- 
--- Aktuelle Version: 2.4 --
+-- Aktuelle Version: 2.5 --
+****************************************************************
+Version 2.5
+- Automatische Updates implementiert
+- Git Downloader & Installer Updates
+- Readme in Github aktualisiert
+- Optionen Reworks
+- Energiespeicher werden nun anhand der Methode
+  getEnergyStored() erkannt
+- Bugfixes:
+    > Anzeigebugs
+    > Event Handling Fixes
+    > Buttons
+    > Hauptmenue Bugs
+    > Start Bugs
+    > Eine Menge Code-Cleanups
 ****************************************************************
 Version 2.4
 - Github Downloader hinzugefuegt (ersetzt installerUpdate)

@@ -1,25 +1,15 @@
 -- Reaktor- and Turbinen control by Thor_s_Crafter --
--- Version 2.4 --
+-- Version 2.5 --
 -- Touchpoint API by Lyqyd - Slightly changed --
 
-local backgroundColor
-local textColor
+local file = fs.open("/reactor-turbine-program/config/options.txt","r")
+local list = file.readAll()
+file.close()
 
-function loadOptions()
-	local optionList = {}
-	local file = fs.open("/reactor-turbine-program/config/options.txt","r")
-	local listElement = file.readLine()
-	while listElement do
-		table.insert(optionList,listElement)
-		listElement = file.readLine()
-	end
-	file.close()
-
-	backgroundColor = tonumber(optionList[7])
-	textColor = tonumber(optionList[9])
-end
-
-loadOptions()
+--Insert Elements and assign values
+optionList = textutils.unserialise(list)
+backgroundColor = tonumber(optionList["backgroundColor"])
+textColor = tonumber(optionList["textColor"])
 
 local function setupLabel(buttonLen, minY, maxY, name)
 	local labelTable = {}
@@ -50,8 +40,8 @@ end
 local Button = {
 	draw = function(self)
 		local old = term.redirect(self.mon)
-		term.setTextColor(textColor)
-		term.setBackgroundColor(backgroundColor)
+		term.setTextColor(tonumber(textColor))
+		term.setBackgroundColor(tonumber(backgroundColor))
 		term.clear()
 		for name, buttonData in pairs(self.buttonList) do
 			if buttonData.active then

@@ -1,8 +1,9 @@
--- Reactor- und Turbine control by Thor_s_Crafter --
--- Version 2.4 --
+-- Reactor- and Turbine control by Thor_s_Crafter --
+-- Version 2.5 --
 -- Start program --
 
---Global variables
+--========== Global variables for all program parts ==========
+
 --All options
 optionList = {}
 version = 0
@@ -12,7 +13,6 @@ textColor = 0
 reactorOffAt = 0
 reactorOnAt = 0
 mainMenu = ""
-autoUpdate = "" --deprecated
 lang = ""
 overallMode = ""
 program = ""
@@ -20,112 +20,263 @@ turbineTargetSpeed = 0
 targetSteam = 0
 --Peripherals
 mon = "" --Monitor
-r = ""
-v = ""
-t = {}
-
+r = "" --Reactor
+v = "" --Energy Storage
+t = {} --Turbines
+--Total count of all turbines
 amountTurbines = 0
---Touchpoint
+--TouchpointLocation (same as the monitor)
 touchpointLocation = {}
 
---Global functions
---Loads the options.txt file
+
+--========== Global functions for all program parts ==========
+
+
+--===== Functions for loading and saving the options =====
+
+--Loads the options.txt file and adds values to the global variables
 function loadOptionFile()
-	--Read the file
+	--Loads the file
 	local file = fs.open("/reactor-turbine-program/config/options.txt","r")
-	local listElement = file.readLine()
-	while listElement do
-		table.insert(optionList,listElement)
-		listElement = file.readLine()
-	end
+	local list = file.readAll()
 	file.close()
 
-	--Assign values
-	version = optionList[3]
-	rodLevel = tonumber(optionList[5])
-	backgroundColor = tonumber(optionList[7])
-	textColor = tonumber(optionList[9])
-	reactorOffAt = tonumber(optionList[11])
-	reactorOnAt = tonumber(optionList[13])
-	mainMenu = optionList[15]
-	autoUpdate = optionList[17] --deprecated
-	lang = optionList[19]
-	overallMode = optionList[21]
-	program = optionList[23]
-	turbineTargetSpeed = tonumber(optionList[25])
-	targetSteam  = tonumber(optionList[27])
+    --Insert Elements and assign values
+    optionList = textutils.unserialise(list)
+
+	--Assign values to variables
+	version = optionList["version"]
+	rodLevel = optionList["rodLevel"]
+	backgroundColor = tonumber(optionList["backgroundColor"])
+	textColor = tonumber(optionList["textColor"])
+	reactorOffAt = optionList["reactorOffAt"]
+	reactorOnAt = optionList["reactorOnAt"]
+	mainMenu = optionList["mainMenu"]
+	lang = optionList["lang"]
+	overallMode = optionList["overallMode"]
+	program = optionList["program"]
+	turbineTargetSpeed = optionList["turbineTargetSpeed"]
+	targetSteam  = optionList["targetSteam"]
+end
+
+--Refreshes the options list
+function refreshOptionList()
+	optionList["version"] = version
+	optionList["rodLevel"] = rodLevel
+	optionList["backgroundColor"] = backgroundColor
+	optionList["textColor"] = textColor
+	optionList["reactorOffAt"] = reactorOffAt
+	optionList["reactorOnAt"] = reactorOnAt
+	optionList["mainMenu"] = mainMenu
+	optionList["lang"] = lang
+	optionList["overallMode"] = overallMode
+	optionList["program"] = program
+	optionList["turbineTargetSpeed"] = turbineTargetSpeed
+	optionList["targetSteam"] = targetSteam
 end
 
 --Saves all data basck to the options.txt file
 function saveOptionFile()
-	--Aktualisieren
+	--Refresh option list
 	refreshOptionList()
-	--Daten in die Datei schreiben
+    --Serialise the table
+    local list = textutils.serialise(optionList)
+	--Save optionList to the config file
 	local file = fs.open("/reactor-turbine-program/config/options.txt","w")
-	for i=1,#optionList+1,1 do
-		file.writeLine(optionList[i])
-	end
+    file.writeLine(list)
 	file.close()
 	print("Saved.")
 end
 
---Refreshes th options list
-function refreshOptionList()
-	optionList[3] = version
-	optionList[5] = rodLevel
-	optionList[7] = backgroundColor
-	optionList[9] = textColor
-	optionList[11] = reactorOffAt
-	optionList[13] = reactorOnAt
-	optionList[15] = mainMenu
-	optionList[17] = autoUpdate
-	optionList[19] = lang
-	optionList[21] = overallMode
-	optionList[23] = program
-	optionList[25] = turbineTargetSpeed
-	optionList[27] = targetSteam
+
+--===== Automatic update detection =====
+
+--Check for updates
+function checkUpdates()
+
+	--Check current branch (release or beta)
+	local currBranch = ""
+	local tmpString = string.sub(version,5,5)
+	if tmpString == "" or tmpString == nil then
+		currBranch = "master"
+	elseif tmpString == "b" then
+		currBranch = "beta"
+	end
+
+	--Get Remote version file
+	downloadFile("https://raw.githubusercontent.com/ThorsCrafter/Reactor-and-Turbine-control-program/"..currBranch.."/turbineControl_v2/src/",currBranch..".ver")
+
+	--Compare local and remote version
+	local file = fs.open(currBranch..".ver","r")
+	local remoteVer = file.readLine()
+	file.close()
+
+	print("remoteVer: "..remoteVer)
+	print("localVer: "..version)
+	print("Update? -> "..tostring(remoteVer > version))
+
+	--Update if available
+	if remoteVer > version then
+		print("Update...")
+		sleep(2)
+		doUpdate(remoteVer,currBranch)
+	end
+
+	--Remove remote version file
+	shell.run("rm "..currBranch..".ver")
 end
 
---Initializing all attached peripherals
+
+function doUpdate(toVer,branch)
+
+	--Set the monitor up
+	local x,y = mon.getSize()
+	mon.setBackgroundColor(colors.black)
+	mon.clear()
+
+	local x1 = x/2-15
+	local y1 = y/2-4
+	local x2 = x/2
+	local y2 = y/2
+
+	--Draw Box
+	mon.setBackgroundColor(colors.gray)
+	mon.setTextColor(colors.gray)
+	mon.setCursorPos(x1,y1)
+	for i=1,8 do
+		mon.setCursorPos(x1,y1+i-1)
+		mon.write("                              ") --30 chars
+	end
+
+	--Print update message
+	mon.setTextColor(colors.white)
+
+	if lang == "de" then
+
+		mon.setCursorPos(x2-9,y1+1)
+		mon.write("Update verfuegbar!") --18 chars
+
+		mon.setCursorPos(x2-(math.ceil(string.len(toVer)/2)),y1+3)
+		mon.write(toVer)
+
+		mon.setCursorPos(x2-8,y1+5)
+		mon.write("Zum installieren") --16 chars
+
+		mon.setCursorPos(x2-12,y1+6)
+		mon.write("in den Computer schauen") --23 chars
+
+	elseif lang == "en" then
+
+		mon.setCursorPos(x2-9,y1+1)
+		mon.write("Update available!") --17 chars
+
+		mon.setCursorPos(x2-(math.ceil(string.len(toVer)/2)),y1+3)
+		mon.write(toVer)
+
+		mon.setCursorPos(x2-8,y1+5)
+		mon.write("To install look") --15 chars
+
+		mon.setCursorPos(x2-12,y1+6)
+		mon.write("at the computer terminal") --24 chars
+	end
+
+	--Print install instructions to the terminal
+	term.clear()
+	term.setCursorPos(1,1)
+	local tx,ty = term.getSize()
+
+	if lang == "de" then
+		print("Soll das Update installiert werden (j/n)?")
+		term.write("Eingabe: ")
+	elseif lang == "en" then
+		print("Do you want to install the update (y/n)?")
+		term.write("Input: ")
+	end
+
+	--Run Counter for installation skipping
+	local count = 10
+	local out = false
+
+	term.setCursorPos(tx/2-5,ty)
+	term.write(" -- 10 -- ")
+
+	while true do
+
+		local timer1 = os.startTimer(1)
+
+		while true do
+
+			local event, p1 = os.pullEvent()
+
+			if event == "key" then
+
+				if p1 == 36 or p1 == 21 then
+					shell.run("/reactor-turbine-program/install/installer.lua update "..branch)
+					out = true
+					break
+				end
+
+			elseif event == "timer" and p1 == timer1 then
+
+				count = count - 1
+				term.setCursorPos(tx/2-5,ty)
+				term.write(" -- 0"..count.." -- ")
+				break
+			end
+		end
+
+		if out then break end
+
+		if count == 0 then
+			term.clear()
+			term.setCursorPos(1,1)
+			break
+		end
+	end
+end
+
+--Download Files (For Remote version file)
+function downloadFile(relUrl,path)
+	local gotUrl = http.get(relUrl..path)
+	if gotUrl == nil then
+		term.clear()
+		error("File not found! Please check!\nFailed at "..relUrl..path)
+	else
+		url = gotUrl.readAll()
+	end
+
+	local file = fs.open(path,"w")
+	file.write(url)
+	file.close()
+end
+
+
+--===== Initialization of all peripherals =====
+
 function initPeripherals()
-    --Get all peripherals
-    local peripheralList = peripheral.getNames()
-    for i = 1, #peripheralList do
-        --Turbinen
-        if peripheral.getType(peripheralList[i]) == "BigReactors-Turbine" then
-            t[amountTurbines] = peripheral.wrap(peripheralList[i])
-            amountTurbines = amountTurbines + 1
-        end
-        --Reactor
-        if peripheral.getType(peripheralList[i]) == "BigReactors-Reactor" then
-            r = peripheral.wrap(peripheralList[i])
-        end
-        --Monitor & Touchpoint
-        if peripheral.getType(peripheralList[i]) == "monitor" then
-            mon = peripheral.wrap(peripheralList[i])
-            touchpointLocation = peripheralList[i]
-        end
-        --Capacitorbank / Energycell / Energy Core
-        if peripheral.getType(peripheralList[i]) == "tile_blockcapacitorbank_name" then
-            v = peripheral.wrap(peripheralList[i])
-        elseif peripheral.getType(peripheralList[i]) == "capacitor_bank" then
-            v = peripheral.wrap(peripheralList[i])
-        elseif peripheral.getType(peripheralList[i]) == "tile_thermalexpansion_cell_basic_name" then
-            v = peripheral.wrap(peripheralList[i])
-        elseif peripheral.getType(peripheralList[i]) == "tile_thermalexpansion_cell_hardened_name" then
-            v = peripheral.wrap(peripheralList[i])
-        elseif peripheral.getType(peripheralList[i]) == "tile_thermalexpansion_cell_reinforced_name" then
-            v = peripheral.wrap(peripheralList[i])
-        elseif peripheral.getType(peripheralList[i]) == "tile_thermalexpansion_cell_resonant_name" then
-            v = peripheral.wrap(peripheralList[i])
-        elseif peripheral.getType(peripheralList[i]) == "cofh_thermal_expansion_energycell" then
-            v = peripheralList.wrap(peripheralList[i])
-        elseif peripheral.getType(peripheralList[i]) == "draconic_rf_storage" then
-        v = peripheral.wrap(peripheralList[i])
-		elseif peripheral.getType(peripheralList[i]) == "powered_tile" then
-			v = peripheral.wrap(peripheralList[i])
-        end
-    end
+	--Get all peripherals
+	local peripheralList = peripheral.getNames()
+	for i = 1, #peripheralList do
+		--Turbines
+		if peripheral.getType(peripheralList[i]) == "BigReactors-Turbine" then
+			t[amountTurbines] = peripheral.wrap(peripheralList[i])
+			amountTurbines = amountTurbines + 1
+			--Reactor
+		elseif peripheral.getType(peripheralList[i]) == "BigReactors-Reactor" then
+			r = peripheral.wrap(peripheralList[i])
+			--Monitor & Touchpoint
+		elseif peripheral.getType(peripheralList[i]) == "monitor" then
+			mon = peripheral.wrap(peripheralList[i])
+			touchpointLocation = peripheralList[i]
+			--Capacitorbank / Energycell / Energy Core
+		else
+			local tmp = peripheral.wrap(peripheralList[i])
+			local stat,err = pcall(function() tmp.getEnergyStored() end)
+			if stat then
+				v = tmp
+			end
+		end
+	end
 
 	--Check for errors
 	term.clear()
@@ -133,9 +284,9 @@ function initPeripherals()
 	--No Monitor
 	if mon == "" then
 		if lang == "de" then
-			error("Monitor nicht gefunden! Bitte pruefen und den Computer neu starten (Strg+R gedrueckt halten)")
+			error("Monitor nicht gefunden!\nBitte pruefen und den Computer neu starten (Strg+R gedrueckt halten)")
 		elseif lang == "en" then
-			error("Monitor not found! Please check and reboot the computer (Press and hold Ctrl+R)")
+			error("Monitor not found!\nPlease check and reboot the computer (Press and hold Ctrl+R)")
 		end
 	end
 	--Monitor clear
@@ -147,55 +298,48 @@ function initPeripherals()
 	local monX,monY = mon.getSize()
 	if monX < 71 or monY < 26 then
 		if lang == "de" then
-			mon.write("Monitor zu klein. Bitte min. 7 breit und 4 hoch bauen und den Computer neu starten (Strg+R gedrueckt halten)")
-			error("Monitor zu klein. Bitte min. 7 breit und 4 hoch bauen  und den Computer neu starten (Strg+R gedrueckt halten)")
+			mon.write("Monitor zu klein.\nBitte min. 7 breit und 4 hoch bauen und den Computer neu starten\n(Strg+R gedrueckt halten)")
+			error("Monitor zu klein.\nBitte min. 7 breit und 4 hoch bauen und den Computer neu starten\n(Strg+R gedrueckt halten)")
 		elseif lang == "en" then
-			mon.write("Monitor too small. Must be at least 7 in length and 4 in height.  Please check and reboot the computer (Press and hold Ctrl+R)")
-			error("Monitor too small. Must be at least 7 in length and 4 in height.  Please check and reboot the computer (Press and hold Ctrl+R)")
+			mon.write("Monitor too small\n Must be at least 7 in length and 4 in height.\nPlease check and reboot the computer (Press and hold Ctrl+R)")
+			error("Monitor too small.\nMust be at least 7 in length and 4 in height.\nPlease check and reboot the computer (Press and hold Ctrl+R)")
 		end
 	end
 
 	amountTurbines = amountTurbines - 1
 end
 
---Restarts the computer
+
+--===== Shutdown and restart the computer =====
+
 function restart()
-	refreshOptionList()
 	saveOptionFile()
 	mon.clear()
 	mon.setCursorPos(38,8)
-	mon.write("Reboot...")
-	if autoUpdate == true then
-		shell.run("/reactor-turbine-program/install/installerUpdate.lua")
-	else
-		os.reboot()
-	end
+	mon.write("Rebooting...")
+	os.reboot()
 end
 
---Start the program
+
+--=========== Run the program ==========
+
+--Load the option file and initialize the peripherals
 loadOptionFile()
 initPeripherals()
+checkUpdates()
 
---Deprecated
---if autoUpdate == "true" then
---	shell.run("/reactor-turbine-program/install/installerUpdate.lua")
---end
-
-if mainMenu == "true" then
+--Run program or main menu, based on the settings
+if mainMenu then
 	shell.run("/reactor-turbine-program/start/menu.lua")
 	shell.completeProgram("/reactor-turbine-program/start/start.lua")
-elseif mainMenu == "false" then
-  if program == "turbine" then
-	 shell.run("/reactor-turbine-program/program/turbineControl.lua")
-  elseif program == "reactor" then
-    shell.run("/reactor-turbine-program/program/reactorControl.lua")
-  end
+else
+	if program == "turbine" then
+		shell.run("/reactor-turbine-program/program/turbineControl.lua")
+	elseif program == "reactor" then
+		shell.run("/reactor-turbine-program/program/reactorControl.lua")
+	end
 	shell.completeProgram("/reactor-turbine-program/start/start.lua")
-
---Deprecated?
---else
---	mainMenu = "true"
---	saveOptionFile()
---	shell.run("/reactor-turbine-program/start/menu.lua")
---	shell.completeProgram("/reactor-turbine-program/start/start.lua")
 end
+
+
+--========== END OF THE START.LUA FILE ==========
