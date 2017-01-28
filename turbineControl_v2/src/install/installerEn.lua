@@ -2,10 +2,48 @@
 -- Version 2.5 --
 -- Installer (English) --
 
---Variables
-local relUrl = "https://raw.githubusercontent.com/ThorsCrafter/Reactor-and-Turbine-control-program/master/turbineControl_v2/src/"
 
---Functions
+--===== Local Variables =====
+
+local arg = {... }
+local update
+local branch = ""
+
+--Program arguments for updates
+if #arg == 0 then
+
+  --No update
+  update = false
+  branch = "master"
+
+elseif #arg == 2 then
+
+  if arg[1] == "update" then
+
+    --Update!
+    update = true
+
+    --Select update branch
+    if arg[2] == "release" then branch = "master"
+    elseif arg[2] == "beta" then branch = "beta"
+    else
+      error("Invalid 2nd argument!")
+    end
+
+  else
+    error("Invalid 1st argument!")
+  end
+
+else
+  error("0 or 2 arguments required!")
+end
+
+--Url for file downloads
+local relUrl = "https://raw.githubusercontent.com/ThorsCrafter/Reactor-and-Turbine-control-program/"..branch.."/turbineControl_v2/src/"
+
+
+--===== Functions =====
+
 --Writes the files to the computer
 function writeFile(url,path)
   local file = fs.open("/reactor-turbine-program/"..path,"w")
@@ -17,18 +55,16 @@ end
 function getURL(path)
   local gotUrl = http.get(relUrl..path)
   if gotUrl == nil then
-    clearTerm()
-    error("File not found! Please check, if the branch is correct!")
+    term.clear()
+    term.setCursorPos(1,1)
+    error("File not found! Please check!\nFailed at "..relUrl..path)
   else
     return gotUrl.readAll()
   end
 end
 
---Update?
-if fs.exists("/reactor-turbine-program/program/turbineControl.lua") then
-  update = true
-else update = false
-end
+
+--===== Run installation =====
 
 --First time installation
 if not update then
@@ -108,7 +144,7 @@ end --update
 term.clear()
 term.setCursorPos(1,1)
 
-print("Checke und loesche vorhandene Programme...")
+print("Checking and deleting existing files...")
 --Removes old files
 if fs.exists("/reactor-turbine-program/program/") then
   shell.run("rm /reactor-turbine-program/")
@@ -120,7 +156,7 @@ print("Getting new files...")
 --Changelog
 term.write("Downloading Changelog files...")
 writeFile(getURL("changelog/changelogDE.txt"),"changelog/changelogDE.txt")
-writeFile(getURL("changelog/changelogEn.txt"),"changelog/changelogDE.txt")
+writeFile(getURL("changelog/changelogEn.txt"),"changelog/changelogEn.txt")
 print("     Done.")
 --Config
 term.write("Config files...")
@@ -183,6 +219,7 @@ if not update then
     sleep(1)
   end
 end
-error("Installer terminated. (This is not an error! Please ignore!)")
+
+shell.completeProgram("/reactor-turbine-program/install/installer.lua")
 
 

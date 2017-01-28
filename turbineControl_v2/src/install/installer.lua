@@ -14,7 +14,7 @@ if #arg == 0 then
 
   --No update
   update = false
-  branch = "release"
+  branch = "master"
 
 elseif #arg == 2 then
 
@@ -24,7 +24,7 @@ elseif #arg == 2 then
     update = true
 
     --Select update branch
-    if arg[2] == "release" then branch = "release"
+    if arg[2] == "release" then branch = "master"
     elseif arg[2] == "beta" then branch = "beta"
     else
       error("Invalid 2nd argument!")
