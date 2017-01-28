@@ -70,7 +70,7 @@ if not update then
   term.clear()
   term.setCursorPos(1,1)
   print("Reaktor- und Turbinenprogramm von Thor_s_Crafter")
-  print("Version 2.4")
+  print("Version 2.5")
   print()
   print("Ueber das Programm:")
   print("Das Programm kontrolliert einen BigReactors-Reaktor.")

@@ -36,7 +36,7 @@ if not update then
   term.clear()
   term.setCursorPos(1,1)
   print("Reactor- and Turbine control by Thor_s_Crafter")
-  print("Version 2.4")
+  print("Version 2.5")
   print()
   print("About this program:")
   print("The program controls one BigReactors reactor.")
