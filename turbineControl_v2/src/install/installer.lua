@@ -159,7 +159,7 @@ print("Getting new files...")
 --Changelog
 term.write("Downloading Changelog files...")
 writeFile(getURL("changelog/changelogDE.txt"),"changelog/changelogDE.txt")
-writeFile(getURL("changelog/changelogEn.txt"),"changelog/changelogDE.txt")
+writeFile(getURL("changelog/changelogEn.txt"),"changelog/changelogEn.txt")
 print("     Done.")
 
 --Config
