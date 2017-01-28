@@ -1,5 +1,5 @@
 -- Reactor- and Turbine control by Thor_s_Crafter --
--- Version 2.4 --
+-- Version 2.5 --
 -- Start program --
 
 --========== Global variables for all program parts ==========
@@ -97,7 +97,7 @@ function checkUpdates()
 	--Check current branch (release or beta)
 	local currBranch = ""
 	local tmpString = string.sub(version,5,5)
-	if tmpString == "" then
+	if tmpString == "" or tmpString == nil then
 		currBranch = "master"
 	elseif tmpString == "b" then
 		currBranch = "beta"

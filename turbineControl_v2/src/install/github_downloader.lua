@@ -1,5 +1,5 @@
 -- Reactor- und Turbine control by Thor_s_Crafter --
--- Betaversion downloader (GitHub) --
+-- Init Program Downloader (GitHub) --
 
 
 --===== Local variables =====

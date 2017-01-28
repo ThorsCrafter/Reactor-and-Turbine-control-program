@@ -1,7 +1,22 @@
 ****************************************************************
 -- Reactor- und Turbine control by Thor_s_Crafter --
 -- Complete Changelog --
--- Current Version: 2.4 --
+-- Current Version: 2.5 --
+****************************************************************
+Version 2.5
+- Reimplemented automatic updates
+- Git Downloader & Installer Updates
+- Updated Readme in Github
+- Option Reworks
+- Energy Storage is now being detected by the function
+  getEnergyStored()
+- Bugfixes:
+    > Visual Bugfixes
+    > Event Handling Fixes
+    > Buttons
+    > Hauptmenu Bugs
+    > Start Bugs
+    > Lots of Code-Cleanups
 ****************************************************************
 Version 2.4
 - Added Github Downloader (replaces installerUpdate)
