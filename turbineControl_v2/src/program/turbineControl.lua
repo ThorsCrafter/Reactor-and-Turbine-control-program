@@ -528,49 +528,36 @@ end
 --Checks the current energy level and controlls turbines/reactor
 --based on user settings (reactorOn, reactorOff)
 function checkEnergyLevel()
+	printStatsAuto(currStat)
     --Level > user setting (default: 90%)
     if getEnergyPer() >= reactorOffAt then
-        printStatsAuto(currStat)
         print("Energy >= reactorOffAt")
-        --Get to target speed
-        if not allAtTargetSpeed() then
-            for i = 0, amountTurbines do
-                if t[i].getRotorSpeed() < turbineTargetSpeed then
-                    t[i].setInductorEngaged(false)
-                end
-            end
-        else
-            --Disable reactor and turbines
-            print("AllAtTargetSpeed.")
-            allTurbinesOff()
-            r.setActive(false)
-        end
-
+        allTurbinesOn()
+        r.setActive(false)
         --Level < user setting (default: 50%)
     elseif getEnergyPer() < reactorOnAt then
         r.setActive(true)
         for i = 0, amountTurbines do
             t[i].setFluidFlowRateMax(targetSteam)
-            if t[i].getRotorSpeed() < turbineTargetSpeed then
+            if t[i].getRotorSpeed() < turbineTargetSpeed * 0.98 then
                 t[i].setInductorEngaged(false)
             end
             if t[i].getRotorSpeed() > turbineTargetSpeed * 1.02 then
                 t[i].setInductorEngaged(true)
             end
         end
-
     else
         if r.getActive() then
             for i = 0, amountTurbines do
-                if t[i].getRotorSpeed() < turbineTargetSpeed then
+                if t[i].getRotorSpeed() < turbineTargetSpeed * 0.98 then
                     t[i].setInductorEngaged(false)
                 end
                 if t[i].getRotorSpeed() > turbineTargetSpeed * 1.02 then
                     t[i].setInductorEngaged(true)
                 end
-            end --for
-        end --if
-    end --else
+            end
+        end
+    end
 end
 
 --Sets the tables for checking the current turbineSpeeds
