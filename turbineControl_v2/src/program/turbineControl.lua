@@ -535,7 +535,7 @@ function checkEnergyLevel()
         allTurbinesOn()
         r.setActive(false)
         --Level < user setting (default: 50%)
-    elseif getEnergyPer() < reactorOnAt then
+    elseif getEnergyPer() <= reactorOnAt then
         r.setActive(true)
         for i = 0, amountTurbines do
             t[i].setFluidFlowRateMax(targetSteam)
