@@ -37,21 +37,11 @@ function createButtons()
         modeM = { "  Manual   ", label = "modeSwitch" }
     end
 
-    page:add("modeSwitch", switchMode, 19, 22, 33, 22)
-    if overallMode == "auto" then
-        page:rename("modeSwitch", modeA, true)
-    elseif overallMode == "manual" then
-        page:rename("modeSwitch", modeM, true)
-    end
     --In Deutsch
     if lang == "de" then
-        page:add("Neu starten", restart, 2, 18, 17, 18)
-        page:add("Optionen", function() run("/reactor-turbine-program/program/editOptions.lua") end, 2, 20, 17, 20)
         page:add("Hauptmenue", function() run("/reactor-turbine-program/start/menu.lua") end, 2, 22, 17, 22)
         --In Englisch
     elseif lang == "en" then
-        page:add("Reboot", restart, 2, 18, 17, 18)
-        page:add("Options", function() run("/reactor-turbine-program/program/editOptions.lua") end, 2, 20, 17, 20)
         page:add("Main Menu", function() run("/reactor-turbine-program/start/menu.lua") end, 2, 22, 17, 22)
     end
     page:draw()
