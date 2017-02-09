@@ -14,6 +14,7 @@ if #arg == 0 then
 
   --No update
   update = false
+  branch = "master"
 
 elseif #arg == 2 then
 
@@ -23,7 +24,7 @@ elseif #arg == 2 then
     update = true
 
     --Select update branch
-    if arg[2] == "release" then branch = "release"
+    if arg[2] == "release" then branch = "master"
     elseif arg[2] == "beta" then branch = "beta"
     else
       error("Invalid 2nd argument!")
@@ -54,7 +55,8 @@ end
 function getURL(path)
   local gotUrl = http.get(relUrl..path)
   if gotUrl == nil then
-    clearTerm()
+    term.clear()
+    term.setCursorPos(1,1)
     error("File not found! Please check!\nFailed at "..relUrl..path)
   else
     return gotUrl.readAll()
@@ -70,7 +72,7 @@ if not update then
   term.clear()
   term.setCursorPos(1,1)
   print("Reaktor- und Turbinenprogramm von Thor_s_Crafter")
-  print("Version 2.4")
+  print("Version 2.5")
   print()
   print("Ueber das Programm:")
   print("Das Programm kontrolliert einen BigReactors-Reaktor.")
@@ -158,7 +160,7 @@ print("Getting new files...")
 --Changelog
 term.write("Downloading Changelog files...")
 writeFile(getURL("changelog/changelogDE.txt"),"changelog/changelogDE.txt")
-writeFile(getURL("changelog/changelogEn.txt"),"changelog/changelogDE.txt")
+writeFile(getURL("changelog/changelogEn.txt"),"changelog/changelogEn.txt")
 print("     Done.")
 
 --Config

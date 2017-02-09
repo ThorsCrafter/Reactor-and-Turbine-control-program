@@ -27,9 +27,9 @@ The following list shows the features of the program:
 - Then follow the install instructions
 
 ## Have a look at my Update Videos on YouTube
-- Current version (2.4):
-    - https://www.youtube.com/watch?v=UnPru3xhrjo (English)
-    - https://www.youtube.com/watch?v=XNlsU0tSHOc&t=1s (German)
+- Current version (2.5):
+    - https://youtu.be/LDkz9RqkG0Y (English)
+    - https://youtu.be/RAUSIKaEuyI (German)
     
     
 ## Do you want to help me developing the program?
