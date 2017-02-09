@@ -1,5 +1,5 @@
 -- Reactor- and Turbine control by Thor_s_Crafter --
--- Version 2.5 --
+-- Version 2.6-beta01 --
 -- Start program --
 
 --========== Global variables for all program parts ==========
