@@ -25,8 +25,6 @@ local aTOff
 local aTN = { "  -  ", label = "aTurbinesOn" }
 local cOn
 local cOff
-local modeA
-local modeM
 --Last/Current turbine (for switching)
 local lastStat = 0
 local currStat = 0
@@ -45,8 +43,6 @@ if lang == "de" then
     aTOff = { " Aus ", label = "aTurbinesOn" }
     cOn = { " Ein ", label = "coilsOn" }
     cOff = { " Aus ", label = "coilsOn" }
-    modeA = { " Automatisch ", label = "modeSwitch" }
-    modeM = { "  Manuell   ", label = "modeSwitch" }
 elseif lang == "en" then
     rOn = { " On  ", label = "reactorOn" }
     rOff = { " Off ", label = "reactorOn" }
@@ -56,8 +52,6 @@ elseif lang == "en" then
     aTOff = { " Off ", label = "aTurbinesOn" }
     cOn = { " On  ", label = "coilsOn" }
     cOff = { " Off ", label = "coilsOn" }
-    modeA = { " Automatic ", label = "modeSwitch" }
-    modeM = { "  Manual   ", label = "modeSwitch" }
 end
 
 
