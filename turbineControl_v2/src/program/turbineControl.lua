@@ -1,5 +1,5 @@
 -- Reactor- und Turbine control by Thor_s_Crafter --
--- Version 2.5 --
+-- Version 2.6-beta01 --
 -- Turbine control --
 
 --Loads the touchpoint API
@@ -528,12 +528,12 @@ end
 --Checks the current energy level and controlls turbines/reactor
 --based on user settings (reactorOn, reactorOff)
 function checkEnergyLevel()
-	printStatsAuto(currStat)
+    printStatsAuto(currStat)
     --Level > user setting (default: 90%)
     if getEnergyPer() >= reactorOffAt then
         print("Energy >= reactorOffAt")
         allTurbinesOn()
-        r.setActive(false)
+		r.setActive(false)
         --Level < user setting (default: 50%)
     elseif getEnergyPer() <= reactorOnAt then
         r.setActive(true)
@@ -546,6 +546,7 @@ function checkEnergyLevel()
                 t[i].setInductorEngaged(true)
             end
         end
+
     else
         if r.getActive() then
             for i = 0, amountTurbines do
@@ -555,9 +556,9 @@ function checkEnergyLevel()
                 if t[i].getRotorSpeed() > turbineTargetSpeed * 1.02 then
                     t[i].setInductorEngaged(true)
                 end
-            end
-        end
-    end
+            end --for
+        end --if
+    end --else
 end
 
 --Sets the tables for checking the current turbineSpeeds
