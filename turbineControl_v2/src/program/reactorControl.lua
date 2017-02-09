@@ -23,8 +23,6 @@ local isOn
 local enPerR
 local rOn
 local rOff
-local modeA
-local modeM
 local internalBuffer
 
 --Create the buttons
