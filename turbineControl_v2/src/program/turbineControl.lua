@@ -644,20 +644,6 @@ function run(program)
     error("terminated.")
 end
 
---Switches between auto and manual mode
-function switchMode()
-    if overallMode == "auto" then
-        overallMode = "manual"
-        saveOptionFile()
-    elseif overallMode == "manual" then
-        overallMode = "auto"
-        saveOptionFile()
-    end
-    page = ""
-    mon.clear()
-    run("/reactor-turbine-program/program/turbineControl.lua")
-end
-
 --Creates all required buttons
 function createAllButtons()
     local x1 = 40
@@ -699,21 +685,10 @@ function createAllButtons()
     end --for
 
     --Other buttons
-    page:add("modeSwitch", switchMode, 19, 23, 33, 23)
-    if overallMode == "auto" then
-        page:rename("modeSwitch", modeA, true)
-    elseif overallMode == "manual" then
-        page:rename("modeSwitch", modeM, true)
-    end
-
     if lang == "de" then
-        page:add("Neu starten", restart, 2, 19, 17, 19)
-        page:add("Optionen", function() run("/reactor-turbine-program/program/editOptions.lua") end, 2, 21, 17, 21)
         page:add("Hauptmenue", function() run("/reactor-turbine-program/start/menu.lua") end, 2, 23, 17, 23)
-        --In Englisch
+    --In Englisch
     elseif lang == "en" then
-        page:add("Reboot", restart, 2, 19, 17, 19)
-        page:add("Options", function() run("/reactor-turbine-program/program/editOptions.lua") end, 2, 21, 17, 21)
         page:add("Main Menu", function() run("/reactor-turbine-program/start/menu.lua") end, 2, 23, 17, 23)
     end
     page:draw()
@@ -879,8 +854,6 @@ function printStatsAuto(turbine)
         mon.write("Steam: " .. (input.formatNumber(math.floor(r.getHotFluidProducedLastTick()))) .. "mb/t    ")
         mon.setCursorPos(40, 2)
         mon.write("Turbinen: " .. (amountTurbines + 1) .. "  ")
-        mon.setCursorPos(19, 21)
-        mon.write("Modus:")
         mon.setCursorPos(2, 12)
         mon.write("-- Turbine " .. (turbine + 1) .. " --")
     elseif lang == "en" then
@@ -889,8 +862,6 @@ function printStatsAuto(turbine)
         mon.write("Steam: " .. (input.formatNumberComma(math.floor(r.getHotFluidProducedLastTick()))) .. "mb/t    ")
         mon.setCursorPos(40, 2)
         mon.write("Turbines: " .. (amountTurbines + 1) .. "  ")
-        mon.setCursorPos(19, 21)
-        mon.write("Mode:")
         mon.setCursorPos(2, 12)
         mon.write("-- Turbine " .. (turbine + 1) .. " --")
     end
@@ -1039,8 +1010,6 @@ function printStatsMan(turbine)
         mon.write((input.formatNumberComma(math.floor(t[turbine].getRotorSpeed()))) .. " RPM     ")
         mon.setCursorPos(2, 11)
         mon.write("Reactor: ")
-        mon.setCursorPos(19, 21)
-        mon.write("Mode:")
         mon.setCursorPos(2, 13)
         mon.write("Current Turbine: ")
         mon.setCursorPos(2, 17)
