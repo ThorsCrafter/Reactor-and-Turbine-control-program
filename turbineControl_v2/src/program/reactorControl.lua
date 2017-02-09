@@ -29,14 +29,6 @@ local internalBuffer
 
 --Create the buttons
 function createButtons()
-    if lang == "de" then
-        modeA = { " Automatisch ", label = "modeSwitch" }
-        modeM = { "  Manuell   ", label = "modeSwitch" }
-    elseif lang == "en" then
-        modeA = { " Automatic ", label = "modeSwitch" }
-        modeM = { "  Manual   ", label = "modeSwitch" }
-    end
-
     --In Deutsch
     if lang == "de" then
         page:add("Hauptmenue", function() run("/reactor-turbine-program/start/menu.lua") end, 2, 22, 17, 22)
@@ -161,20 +153,6 @@ function getClick()
         mon.write("Programm abgebrochen!")
         error("Manuell abgebrochen")
     end
-end
-
---Switches mode between auto/manual
-function switchMode()
-    if overallMode == "auto" then
-        overallMode = "manual"
-        saveOptionFile()
-    elseif overallMode == "manual" then
-        overallMode = "auto"
-        saveOptionFile()
-    end
-    page = ""
-    mon.clear()
-    run("/reactor-turbine-program/program/reactorControl.lua")
 end
 
 --Displays the data on the screen (auto mode)
