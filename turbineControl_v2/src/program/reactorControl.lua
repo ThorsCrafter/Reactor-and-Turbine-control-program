@@ -23,35 +23,15 @@ local isOn
 local enPerR
 local rOn
 local rOff
-local modeA
-local modeM
 local internalBuffer
 
 --Create the buttons
 function createButtons()
-    if lang == "de" then
-        modeA = { " Automatisch ", label = "modeSwitch" }
-        modeM = { "  Manuell   ", label = "modeSwitch" }
-    elseif lang == "en" then
-        modeA = { " Automatic ", label = "modeSwitch" }
-        modeM = { "  Manual   ", label = "modeSwitch" }
-    end
-
-    page:add("modeSwitch", switchMode, 19, 22, 33, 22)
-    if overallMode == "auto" then
-        page:rename("modeSwitch", modeA, true)
-    elseif overallMode == "manual" then
-        page:rename("modeSwitch", modeM, true)
-    end
     --In Deutsch
     if lang == "de" then
-        page:add("Neu starten", restart, 2, 18, 17, 18)
-        page:add("Optionen", function() run("/reactor-turbine-program/program/editOptions.lua") end, 2, 20, 17, 20)
         page:add("Hauptmenue", function() run("/reactor-turbine-program/start/menu.lua") end, 2, 22, 17, 22)
         --In Englisch
     elseif lang == "en" then
-        page:add("Reboot", restart, 2, 18, 17, 18)
-        page:add("Options", function() run("/reactor-turbine-program/program/editOptions.lua") end, 2, 20, 17, 20)
         page:add("Main Menu", function() run("/reactor-turbine-program/start/menu.lua") end, 2, 22, 17, 22)
     end
     page:draw()
@@ -171,20 +151,6 @@ function getClick()
         mon.write("Programm abgebrochen!")
         error("Manuell abgebrochen")
     end
-end
-
---Switches mode between auto/manual
-function switchMode()
-    if overallMode == "auto" then
-        overallMode = "manual"
-        saveOptionFile()
-    elseif overallMode == "manual" then
-        overallMode = "auto"
-        saveOptionFile()
-    end
-    page = ""
-    mon.clear()
-    run("/reactor-turbine-program/program/reactorControl.lua")
 end
 
 --Displays the data on the screen (auto mode)
