@@ -1,7 +1,7 @@
 ****************************************************************
 -- Reactor- und Turbine control by Thor_s_Crafter --
 -- Complete Changelog --
--- Current Version: 2.5 --
+-- Current Version: 2.6-beta01 --
 ****************************************************************
 Version 2.5
 - Reimplemented automatic updates
