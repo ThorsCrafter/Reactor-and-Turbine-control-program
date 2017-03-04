@@ -221,6 +221,11 @@ function getEnergyPer()
     return enPer
 end
 
+--Returns the current energy fill status of a turbine
+function getTurbineEnergy(turbine)
+    return t[turbine].getEnergyStored()
+end
+
 --Toggles the reactor status and the button
 function toggleReactor()
     r.setActive(not r.getActive())
@@ -527,7 +532,7 @@ function checkEnergyLevel()
     if getEnergyPer() >= reactorOffAt then
         print("Energy >= reactorOffAt")
         allTurbinesOn()
-		r.setActive(false)
+        r.setActive(false)
         --Level < user setting (default: 50%)
     elseif getEnergyPer() <= reactorOnAt then
         r.setActive(true)
@@ -681,7 +686,7 @@ function createAllButtons()
     --Other buttons
     if lang == "de" then
         page:add("Hauptmenue", function() run("/reactor-turbine-program/start/menu.lua") end, 2, 23, 17, 23)
-    --In Englisch
+        --In Englisch
     elseif lang == "en" then
         page:add("Main Menu", function() run("/reactor-turbine-program/start/menu.lua") end, 2, 23, 17, 23)
     end
@@ -740,7 +745,7 @@ function clickEvent()
         while true do
             --gets the event
             local event, p1 = page:handleEvents(os.pullEvent())
-            print(event..", "..p1)
+            print(event .. ", " .. p1)
 
             --execute a buttons function if clicked
             if event == "button_click" then
@@ -896,6 +901,16 @@ function printStatsAuto(turbine)
         mon.write((input.formatNumberComma(math.floor(t[turbine].getRotorSpeed()))) .. " RPM    ")
         mon.setCursorPos(2, 15)
         mon.write("RF-Production: " .. (input.formatNumberComma(math.floor(t[turbine].getEnergyProducedLastTick()))) .. " RF/t           ")
+    end
+
+    --Internal buffer of the turbine
+    mon.setCursorPos(2, 15)
+    if lang == "de" then
+        mon.write("Interne Energie: ")
+        mon.write(input.formatNumber(getTurbineEnergy(turbine)).." RF          ")
+    elseif lang == "en" then
+        mon.write("Internal Energy: ")
+        mon.write(input.formatNumberComma(getTurbineEnergy(turbine)).." RF          ")
     end
 
     --prints the current program version
