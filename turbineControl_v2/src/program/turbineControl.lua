@@ -816,7 +816,7 @@ function printStatsAuto(turbine)
     for i=1,part1 do
         mon.write("=")
     end
-    mon.setTextColor(colors.white)
+    mon.setTextColor(textColor)
 
     --prints the overall energy production
     mon.setBackgroundColor(tonumber(backgroundColor))
