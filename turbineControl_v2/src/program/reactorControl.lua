@@ -309,6 +309,13 @@ function displayDataAuto()
     local caseTemp = string.sub(caT, 0, 6)
     local coT = tostring(r.getFuelTemperature())
     local coreTemp = string.sub(coT, 0, 6)
+	
+	mon.setCursorPos(2, 14)
+    if lang == "de" then
+        mon.write("Effizienz: " .. input.formatNumberComma(math.floor(rfGen/fuelCons2)) .. " RF/mb    ")
+    elseif lang == "en" then
+        mon.write("Efficiency: " .. input.formatNumberComma(math.floor(rfGen/fuelCons2)) .. " RF/mb    ")
+    end
 
     mon.setCursorPos(2, 16)
     if lang == "de" then
