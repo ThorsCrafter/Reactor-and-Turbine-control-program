@@ -309,7 +309,7 @@ function displayDataAuto()
     mon.setCursorPos(2, 14)
 
     --Calculation and formatting of the efficiency
-    local fuelEfficiency = tostring(rfGen / fuelCons)
+    local fuelEfficiency = rfGen / fuelCons
     if tonumber(fuelCons) == 0 then fuelEfficiency = 0 end
     local fuelEfficiency2 = math.floor(fuelEfficiency)
 
@@ -455,7 +455,7 @@ function displayDataMan()
     mon.setCursorPos(2, 14)
 
     --Calculation and formatting of the efficiency
-    local fuelEfficiency = tostring(rfGen / fuelCons)
+    local fuelEfficiency = rfGen / fuelCons
     if tonumber(fuelCons) == 0 then fuelEfficiency = 0 end
     local fuelEfficiency2 = math.floor(fuelEfficiency)
 
