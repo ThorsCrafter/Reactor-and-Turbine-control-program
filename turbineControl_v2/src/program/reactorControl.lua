@@ -312,7 +312,7 @@ function displayDataAuto()
 	
 	mon.setCursorPos(2, 14)
     if lang == "de" then
-        mon.write("Effizienz: " .. input.formatNumberComma(math.floor(rfGen/fuelCons2)) .. " RF/mb    ")
+        mon.write("Effizienz: " .. input.formatNumber(math.floor(rfGen/fuelCons2)) .. " RF/mb    ")
     elseif lang == "en" then
         mon.write("Efficiency: " .. input.formatNumberComma(math.floor(rfGen/fuelCons2)) .. " RF/mb    ")
     end
@@ -448,7 +448,7 @@ function displayDataMan()
 	
 	mon.setCursorPos(2, 14)
     if lang == "de" then
-        mon.write("Effizienz: " .. input.formatNumberComma(math.floor(rfGen/fuelCons2)) .. " RF/mb    ")
+        mon.write("Effizienz: " .. input.formatNumber(math.floor(rfGen/fuelCons2)) .. " RF/mb    ")
     elseif lang == "en" then
         mon.write("Efficiency: " .. input.formatNumberComma(math.floor(rfGen/fuelCons2)) .. " RF/mb    ")
     end
