@@ -295,8 +295,8 @@ function displayDataAuto()
 
     mon.setTextColor(tonumber(textColor))
 
+    --Display Fuel Consumption
     mon.setCursorPos(2, 12)
-    local fuelCons = tostring(r.getFuelConsumedLastTick())
     local fuelCons2 = string.sub(fuelCons, 0, 4)
 
     if lang == "de" then
@@ -305,17 +305,25 @@ function displayDataAuto()
         mon.write("Fuel Consumption: " .. fuelCons2 .. "mb/t     ")
     end
 
+    --Display Reactor Efficiency (RF/mb)
+    mon.setCursorPos(2, 14)
+
+    --Calculation and formatting of the efficiency
+    local fuelEfficiency = tostring(rfGen / fuelCons)
+    if tonumber(fuelCons) == 0 then fuelEfficiency = 0 end
+    local fuelEfficiency2 = math.floor(fuelEfficiency)
+
+    if lang == "de" then
+        mon.write("Effizienz: " .. input.formatNumber(fuelEfficiency2) .. " RF/mb    ")
+    elseif lang == "en" then
+        mon.write("Efficiency: " .. input.formatNumberComma(fuelEfficiency2) .. " RF/mb    ")
+    end
+
+    --Display the current Casing/Core Temperature
     local caT = tostring(r.getCasingTemperature())
     local caseTemp = string.sub(caT, 0, 6)
     local coT = tostring(r.getFuelTemperature())
     local coreTemp = string.sub(coT, 0, 6)
-	
-	mon.setCursorPos(2, 14)
-    if lang == "de" then
-        mon.write("Effizienz: " .. input.formatNumber(math.floor(rfGen/fuelCons2)) .. " RF/mb    ")
-    elseif lang == "en" then
-        mon.write("Efficiency: " .. input.formatNumberComma(math.floor(rfGen/fuelCons2)) .. " RF/mb    ")
-    end
 
     mon.setCursorPos(2, 16)
     if lang == "de" then
@@ -415,6 +423,7 @@ function displayDataMan()
     mon.setTextColor(textColor)
     mon.setBackgroundColor(tonumber(backgroundColor))
 
+    --Print the current RF Production of the reactor
     mon.setCursorPos(2, 8)
     if lang == "de" then
         mon.write("RF-Produktion: " .. input.formatNumber(math.floor(rfGen)) .. " RF/t      ")
@@ -422,6 +431,7 @@ function displayDataMan()
         mon.write("RF-Production: " .. input.formatNumberComma(math.floor(rfGen)) .. " RF/t      ")
     end
 
+    --Print the current status of the reactor
     mon.setCursorPos(2, 10)
     if lang == "de" then
         mon.write("Reaktor: ")
@@ -431,9 +441,9 @@ function displayDataMan()
 
     mon.setTextColor(tonumber(textColor))
 
+    --Display Fuel Consumption
     mon.setCursorPos(2, 12)
-    local fuelCons = tostring(r.getFuelConsumedLastTick())
-    local fuelCons2 = string.sub(fuelCons, 0, 4)
+    local fuelCons2 = string.sub(tostring(fuelCons), 0, 4)
 
     if lang == "de" then
         mon.write("Reaktor-Verbrauch: " .. fuelCons2 .. "mb/t     ")
@@ -441,17 +451,25 @@ function displayDataMan()
         mon.write("Fuel Consumption: " .. fuelCons2 .. "mb/t     ")
     end
 
+    --Display Reactor Efficiency (RF/mb)
+    mon.setCursorPos(2, 14)
+
+    --Calculation and formatting of the efficiency
+    local fuelEfficiency = tostring(rfGen / fuelCons)
+    if tonumber(fuelCons) == 0 then fuelEfficiency = 0 end
+    local fuelEfficiency2 = math.floor(fuelEfficiency)
+
+    if lang == "de" then
+        mon.write("Effizienz: " .. input.formatNumber(fuelEfficiency2) .. " RF/mb    ")
+    elseif lang == "en" then
+        mon.write("Efficiency: " .. input.formatNumberComma(fuelEfficiency2) .. " RF/mb    ")
+    end
+
+    --Display the current Casing/Core temperature of the reactor
     local caT = tostring(r.getCasingTemperature())
     local caseTemp = string.sub(caT, 0, 6)
     local coT = tostring(r.getFuelTemperature())
     local coreTemp = string.sub(coT, 0, 6)
-	
-	mon.setCursorPos(2, 14)
-    if lang == "de" then
-        mon.write("Effizienz: " .. input.formatNumber(math.floor(rfGen/fuelCons2)) .. " RF/mb    ")
-    elseif lang == "en" then
-        mon.write("Efficiency: " .. input.formatNumberComma(math.floor(rfGen/fuelCons2)) .. " RF/mb    ")
-    end
 
     mon.setCursorPos(2, 16)
     if lang == "de" then
@@ -464,7 +482,7 @@ function displayDataMan()
         mon.write("Core Temperature: " .. coreTemp .. "C    ")
     end
 
-
+    --Print the current version
     mon.setCursorPos(2, 25)
     mon.write("Version " .. version)
 end
