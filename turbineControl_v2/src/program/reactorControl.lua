@@ -310,14 +310,14 @@ function displayDataAuto()
     local coT = tostring(r.getFuelTemperature())
     local coreTemp = string.sub(coT, 0, 6)
 
-    mon.setCursorPos(2, 14)
+    mon.setCursorPos(2, 16)
     if lang == "de" then
         mon.write("Huellentemperatur: " .. caseTemp .. "C    ")
-        mon.setCursorPos(2, 15)
+        mon.setCursorPos(2, 17)
         mon.write("Kerntemperatur: " .. coreTemp .. "C    ")
     elseif lang == "en" then
         mon.write("Casing Temperature: " .. caseTemp .. "C    ")
-        mon.setCursorPos(2, 15)
+        mon.setCursorPos(2, 17)
         mon.write("Core Temperature: " .. coreTemp .. "C    ")
     end
 
@@ -438,15 +438,22 @@ function displayDataMan()
     local caseTemp = string.sub(caT, 0, 6)
     local coT = tostring(r.getFuelTemperature())
     local coreTemp = string.sub(coT, 0, 6)
+	
+	mon.setCursorPos(2, 14)
+    if lang == "de" then
+        mon.write("Effizienz: " .. input.formatNumberComma(math.floor(rfGen/fuelCons2)) .. " RF/mb    ")
+    elseif lang == "en" then
+        mon.write("Efficiency: " .. input.formatNumberComma(math.floor(rfGen/fuelCons2)) .. " RF/mb    ")
+    end
 
-    mon.setCursorPos(2, 14)
+    mon.setCursorPos(2, 16)
     if lang == "de" then
         mon.write("Huellentemperatur: " .. caseTemp .. "C    ")
-        mon.setCursorPos(2, 15)
+        mon.setCursorPos(2, 17)
         mon.write("Kerntemperatur: " .. coreTemp .. "C    ")
     elseif lang == "en" then
         mon.write("Casing Temperature: " .. caseTemp .. "C    ")
-        mon.setCursorPos(2, 15)
+        mon.setCursorPos(2, 17)
         mon.write("Core Temperature: " .. coreTemp .. "C    ")
     end
 
