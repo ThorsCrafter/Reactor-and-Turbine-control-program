@@ -1,5 +1,5 @@
 -- Reactor- und Turbine control by Thor_s_Crafter --
--- Version 2.6-beta01 --
+-- Version 2.6-beta02 --
 -- Turbine control --
 
 --Loads the touchpoint API
@@ -219,6 +219,11 @@ function getEnergyPer()
     local enMax = getEnergyMax()
     local enPer = math.floor(en / enMax * 100)
     return enPer
+end
+
+--Returns the current energy fill status of a turbine
+function getTurbineEnergy(turbine)
+    return t[turbine].getEnergyStored()
 end
 
 --Toggles the reactor status and the button
@@ -527,7 +532,7 @@ function checkEnergyLevel()
     if getEnergyPer() >= reactorOffAt then
         print("Energy >= reactorOffAt")
         allTurbinesOn()
-		r.setActive(false)
+        r.setActive(false)
         --Level < user setting (default: 50%)
     elseif getEnergyPer() <= reactorOnAt then
         r.setActive(true)
@@ -681,7 +686,7 @@ function createAllButtons()
     --Other buttons
     if lang == "de" then
         page:add("Hauptmenue", function() run("/reactor-turbine-program/start/menu.lua") end, 2, 23, 17, 23)
-    --In Englisch
+        --In Englisch
     elseif lang == "en" then
         page:add("Main Menu", function() run("/reactor-turbine-program/start/menu.lua") end, 2, 23, 17, 23)
     end
@@ -740,7 +745,7 @@ function clickEvent()
         while true do
             --gets the event
             local event, p1 = page:handleEvents(os.pullEvent())
-            print(event..", "..p1)
+            print(event .. ", " .. p1)
 
             --execute a buttons function if clicked
             if event == "button_click" then
@@ -787,7 +792,8 @@ function printStatsAuto(turbine)
     end
 
     --prints the energy bar
-    mon.setCursorPos(2, 3)
+
+--[[mon.setCursorPos(2, 3)
     mon.setBackgroundColor(colors.green)
     for i = 0, getEnergyPer(), 5 do
         mon.write(" ")
@@ -799,7 +805,18 @@ function printStatsAuto(turbine)
     mon.setCursorPos(pos, 3)
     for i = 0, (19 - tmpEn), 1 do
         mon.write(" ")
+    end ]]
+
+    local part1 = getEnergyPer()/5
+    mon.setCursorPos(2,3)
+    mon.setTextColor(colors.white)
+    mon.write("|--------------------|")
+    mon.setTextColor(colors.green)
+    mon.setCursorPos(3,3)
+    for i=1,part1 do
+        mon.write("=")
     end
+    mon.setTextColor(textColor)
 
     --prints the overall energy production
     mon.setBackgroundColor(tonumber(backgroundColor))
@@ -898,6 +915,16 @@ function printStatsAuto(turbine)
         mon.write("RF-Production: " .. (input.formatNumberComma(math.floor(t[turbine].getEnergyProducedLastTick()))) .. " RF/t           ")
     end
 
+    --Internal buffer of the turbine
+    mon.setCursorPos(2, 15)
+    if lang == "de" then
+        mon.write("Interne Energie: ")
+        mon.write(input.formatNumber(math.floor(getTurbineEnergy(turbine))).." RF          ")
+    elseif lang == "en" then
+        mon.write("Internal Energy: ")
+        mon.write(input.formatNumberComma(math.floor(getTurbineEnergy(turbine))).." RF          ")
+    end
+
     --prints the current program version
     mon.setCursorPos(2, 25)
     mon.write("Version " .. version)
@@ -950,7 +977,7 @@ function printStatsMan(turbine)
         mon.write("Energy: " .. getEnergyPer() .. "%  ")
     end
 
-    --prints the energy bar
+--[[    --prints the energy bar
     mon.setCursorPos(2, 3)
     mon.setBackgroundColor(colors.green)
     for i = 0, getEnergyPer(), 5 do
@@ -963,7 +990,18 @@ function printStatsMan(turbine)
     mon.setCursorPos(pos, 3)
     for i = 0, (19 - tmpEn), 1 do
         mon.write(" ")
+    end]]
+
+    local part1 = getEnergyPer()/5
+    mon.setCursorPos(2,3)
+    mon.setTextColor(colors.white)
+    mon.write("|--------------------|")
+    mon.setTextColor(colors.green)
+    mon.setCursorPos(3,3)
+    for i=1,part1 do
+        mon.write("=")
     end
+    mon.setTextColor(colors.white)
 
     --prints the overall energy production
     local rfGen = 0
@@ -986,8 +1024,6 @@ function printStatsMan(turbine)
         mon.write((input.formatNumber(math.floor(t[turbine].getRotorSpeed()))) .. " RPM   ")
         mon.setCursorPos(2, 11)
         mon.write("Reaktor: ")
-        mon.setCursorPos(19, 21)
-        mon.write("Modus:")
         mon.setCursorPos(2, 13)
         mon.write("Aktuelle Turbine: ")
         mon.setCursorPos(2, 17)
@@ -1018,6 +1054,7 @@ function printStatsMan(turbine)
     elseif lang == "en" then
         mon.write("Turbines: " .. (amountTurbines + 1) .. "  ")
     end
+
 
     --prints the current program version
     mon.setCursorPos(2, 25)
