@@ -11,5 +11,6 @@
   version = "2.6-beta02",
   textColor = 1,
   program = "turbine",
+  turbineOnOff = "off",
   lang = "de",
 }

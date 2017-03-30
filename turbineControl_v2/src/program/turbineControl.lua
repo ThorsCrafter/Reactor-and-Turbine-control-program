@@ -531,7 +531,11 @@ function checkEnergyLevel()
     --Level > user setting (default: 90%)
     if getEnergyPer() >= reactorOffAt then
         print("Energy >= reactorOffAt")
-        allTurbinesOn()
+        if turbineOnOff == "on" then
+            allTurbinesOn()
+        elseif turbineOnOff == "off" then
+            allTurbinesOff()
+        end
         r.setActive(false)
         --Level < user setting (default: 50%)
     elseif getEnergyPer() <= reactorOnAt then

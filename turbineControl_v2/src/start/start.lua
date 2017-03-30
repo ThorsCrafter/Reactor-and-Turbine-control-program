@@ -18,6 +18,7 @@ overallMode = ""
 program = ""
 turbineTargetSpeed = 0
 targetSteam = 0
+turbineOnOff = ""
 --Peripherals
 mon = "" --Monitor
 r = "" --Reactor
@@ -57,6 +58,8 @@ function loadOptionFile()
 	program = optionList["program"]
 	turbineTargetSpeed = optionList["turbineTargetSpeed"]
 	targetSteam  = optionList["targetSteam"]
+	turbineOnOff = optionList["turbineOnOff"]
+
 end
 
 --Refreshes the options list
@@ -73,6 +76,7 @@ function refreshOptionList()
 	optionList["program"] = program
 	optionList["turbineTargetSpeed"] = turbineTargetSpeed
 	optionList["targetSteam"] = targetSteam
+	optionList["turbineOnOff"] = turbineOnOff
 end
 
 --Saves all data basck to the options.txt file

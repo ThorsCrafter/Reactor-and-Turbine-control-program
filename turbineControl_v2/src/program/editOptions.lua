@@ -31,7 +31,7 @@ function saveConfigFile()
   shell.completeProgram("/reactor-turbine-program/program/editOptions.lua")
 end
 
---Go back to the program
+--Go back to the program -- deprecated
 function exit()
   mon.clear()
   continue = false
@@ -45,6 +45,7 @@ end
 
 --Go back to the main menu
 function displayMenu()
+  loadOptionFile()
   mon.clear()
   shell.run("/reactor-turbine-program/start/menu.lua")
   shell.completeProgram("/reactor-turbine-program/program/editOptions.lua")
@@ -62,7 +63,8 @@ function createAllButtons()
     touch1:add("Reaktor An",setOnAt,3,10,19,10)
     touch1:add("Turbinen Speed",setTurbineSpeed,3,12,19,12)
     touch1:add("Steam Input",setTurbineSteamRate,3,14,19,14)
-    touch1:add("Config loeschen",resetConfig,3,16,19,16)
+    touch1:add("Turbine an/aus",changeTurbineBehaviour,3,16,19,16)
+    touch1:add("Config loeschen",resetConfig,3,18,19,18)
     touch1:add("Speichern",saveConfigFile,3,21,19,21)
     --touch1:add("Programm starten",exit,3,21,19,21) --removed
     touch1:add("Hauptmenue",displayMenu,3,23,19,23)
@@ -115,7 +117,8 @@ function createAllButtons()
     touch1:add("Reactor On",setOnAt,3,10,19,10)
     touch1:add("Turbine Speed",setTurbineSpeed,3,12,19,12)
     touch1:add("Steam Input",setTurbineSteamRate,3,14,19,14)
-    touch1:add("Delete Config",resetConfig,3,16,19,16)
+    touch1:add("Turbine On/Off",changeTurbineBehaviour,3,16,19,16)
+    touch1:add("Delete Config",resetConfig,3,18,19,18)
     touch1:add("Save",saveConfigFile,3,21,19,21)
     --touch1:add("Start program",exit,3,21,19,21) --removed
     touch1:add("Main menu",displayMenu,3,23,19,23)
@@ -276,6 +279,42 @@ function backToMainMenu()
   end
 
   mon.setCursorPos(24,16)
+  local turbineOnOffString1 = ""
+  local turbineOnOffString2 = ""
+  if optionList["turbineOnOff"] ~= turbineOnOff then
+    if lang == "de" then
+      if optionList["turbineOnOff"] == "off" then
+        turbineOnOffString1 = "nein   "
+        turbineOnOffString2 = "ja"
+      elseif optionList["turbineOnOff"] == "on" then
+        turbineOnOffString1 = "ja   "
+        turbineOnOffString2 = "nein"
+      end
+      mon.write("Turbine bei "..reactorOffAt.."% ausschalten: "..turbineOnOffString2.." -> "..turbineOnOffString1)
+    elseif lang == "en" then
+      if optionList["turbineOnOff"] == "off" then
+        turbineOnOffString1 = "no   "
+        turbineOnOffString2 = "yes"
+      elseif optionList["turbineOnOff"] == "on" then
+        turbineOnOffString1 = "yes   "
+        turbineOnOffString2 = "no"
+      end
+      mon.write("Disable turbine at "..reactorOffAt.."%: "..turbineOnOffString2.." -> "..turbineOnOffString1)
+    end
+
+  else
+    if lang == "de" then
+      if optionList["turbineOnOff"] == "off" then turbineOnOffString2 = "ja"
+      elseif optionList["turbineOnOff"] == "on" then turbineOnOffString2 = "nein" end
+      mon.write("Turbine bei "..reactorOffAt.."% ausschalten: "..turbineOnOffString2.."   ")
+    elseif lang == "en" then
+      if optionList["turbineOnOff"] == "off" then turbineOnOffString2 = "yes"
+      elseif optionList["turbineOnOff"] == "on" then turbineOnOffString2 = "no" end
+      mon.write("Disable turbine at "..reactorOffAt.."%: "..turbineOnOffString2.."   ")
+    end
+  end
+
+  mon.setCursorPos(24,18)
   if lang == "de" then
     mon.write("Config vorhanden: ")
   elseif lang == "en" then
@@ -529,6 +568,13 @@ function setTurbineSteamRate()
   --refreshOptionList()
   getClick(setTurbineSteamRate)
   setTurbineSteamRate()
+end
+
+--Enable/Disable turbine at targetSpeed?
+function changeTurbineBehaviour()
+  if turbineOnOff == "off" then turbineOnOff = "on"
+  elseif turbineOnOff == "on" then turbineOnOff = "off" end
+  backToMainMenu()
 end
 
 --Reset the config file
