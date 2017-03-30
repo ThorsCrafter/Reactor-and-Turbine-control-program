@@ -55,7 +55,7 @@ function createAllButtons()
   --German buttons
   if lang == "de" then
 
-    --Overwiev buttons
+    --Overview buttons
     touch1:add("Hintergrund",setBackground,3,4,19,4)
     touch1:add("Text",setText,3,6,19,6)
     touch1:add("Reaktor Aus",setOffAt,3,8,19,8)
@@ -63,8 +63,8 @@ function createAllButtons()
     touch1:add("Turbinen Speed",setTurbineSpeed,3,12,19,12)
     touch1:add("Steam Input",setTurbineSteamRate,3,14,19,14)
     touch1:add("Config loeschen",resetConfig,3,16,19,16)
-    touch1:add("Speichern",saveConfigFile,3,19,19,19)
-    touch1:add("Programm starten",exit,3,21,19,21)
+    touch1:add("Speichern",saveConfigFile,3,21,19,21)
+    --touch1:add("Programm starten",exit,3,21,19,21) --removed
     touch1:add("Hauptmenue",displayMenu,3,23,19,23)
 
     --Color buttons
@@ -116,8 +116,8 @@ function createAllButtons()
     touch1:add("Turbine Speed",setTurbineSpeed,3,12,19,12)
     touch1:add("Steam Input",setTurbineSteamRate,3,14,19,14)
     touch1:add("Delete Config",resetConfig,3,16,19,16)
-    touch1:add("Save",saveConfigFile,3,19,19,19)
-    touch1:add("Start program",exit,3,21,19,21)
+    touch1:add("Save",saveConfigFile,3,21,19,21)
+    --touch1:add("Start program",exit,3,21,19,21) --removed
     touch1:add("Main menu",displayMenu,3,23,19,23)
 
     --Color buttons
