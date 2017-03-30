@@ -1,5 +1,5 @@
 -- Reactor- und Turbine control by Thor_s_Crafter --
--- Version 2.6-beta02 --
+-- Version 2.6-beta03 --
 -- Options menu --
 
 --Loads the touchpoint and input APIs

@@ -1,5 +1,5 @@
 -- Reaktor- und Turbinenprogramm von Thor_s_Crafter --
--- Version 2.6-beta02 --
+-- Version 2.6-beta03 --
 -- Hauptmenue --
 
 --Loads the Touchpoint API (by Lyqyd)
