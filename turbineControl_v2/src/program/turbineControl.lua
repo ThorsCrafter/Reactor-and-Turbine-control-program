@@ -796,29 +796,14 @@ function printStatsAuto(turbine)
     end
 
     --prints the energy bar
-
---[[mon.setCursorPos(2, 3)
-    mon.setBackgroundColor(colors.green)
-    for i = 0, getEnergyPer(), 5 do
-        mon.write(" ")
-    end
-
-    mon.setBackgroundColor(colors.lightGray)
-    local tmpEn = getEnergyPer() / 5
-    local pos = 22 - (19 - tmpEn)
-    mon.setCursorPos(pos, 3)
-    for i = 0, (19 - tmpEn), 1 do
-        mon.write(" ")
-    end ]]
-
     local part1 = getEnergyPer()/5
     mon.setCursorPos(2,3)
-    mon.setTextColor(colors.white)
-    mon.write("|--------------------|")
-    mon.setTextColor(colors.green)
-    mon.setCursorPos(3,3)
+    mon.setBackgroundColor(colors.lightGray)
+    mon.write("                    ")
+    mon.setBackgroundColor(colors.green)
+    mon.setCursorPos(2,3)
     for i=1,part1 do
-        mon.write("=")
+        mon.write(" ")
     end
     mon.setTextColor(textColor)
 
@@ -981,31 +966,17 @@ function printStatsMan(turbine)
         mon.write("Energy: " .. getEnergyPer() .. "%  ")
     end
 
---[[    --prints the energy bar
-    mon.setCursorPos(2, 3)
-    mon.setBackgroundColor(colors.green)
-    for i = 0, getEnergyPer(), 5 do
-        mon.write(" ")
-    end
-
-    mon.setBackgroundColor(colors.lightGray)
-    local tmpEn = getEnergyPer() / 5
-    local pos = 22 - (19 - tmpEn)
-    mon.setCursorPos(pos, 3)
-    for i = 0, (19 - tmpEn), 1 do
-        mon.write(" ")
-    end]]
-
+    --prints the energy bar
     local part1 = getEnergyPer()/5
     mon.setCursorPos(2,3)
-    mon.setTextColor(colors.white)
-    mon.write("|--------------------|")
-    mon.setTextColor(colors.green)
-    mon.setCursorPos(3,3)
+    mon.setBackgroundColor(colors.lightGray)
+    mon.write("                    ")
+    mon.setBackgroundColor(colors.green)
+    mon.setCursorPos(2,3)
     for i=1,part1 do
-        mon.write("=")
+        mon.write(" ")
     end
-    mon.setTextColor(colors.white)
+    mon.setTextColor(textColor)
 
     --prints the overall energy production
     local rfGen = 0
