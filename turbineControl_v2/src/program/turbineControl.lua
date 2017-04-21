@@ -1,5 +1,5 @@
 -- Reactor- und Turbine control by Thor_s_Crafter --
--- Version 2.6-beta02 --
+-- Version 2.6-beta03 --
 -- Turbine control --
 
 --Loads the touchpoint API
@@ -531,7 +531,11 @@ function checkEnergyLevel()
     --Level > user setting (default: 90%)
     if getEnergyPer() >= reactorOffAt then
         print("Energy >= reactorOffAt")
-        allTurbinesOn()
+        if turbineOnOff == "on" then
+            allTurbinesOn()
+        elseif turbineOnOff == "off" then
+            allTurbinesOff()
+        end
         r.setActive(false)
         --Level < user setting (default: 50%)
     elseif getEnergyPer() <= reactorOnAt then

@@ -1,5 +1,5 @@
 -- Reaktor- and Turbinen control by Thor_s_Crafter --
--- Version 2.6-beta02 --
+-- Version 2.6-beta03 --
 -- Touchpoint API by Lyqyd - Slightly changed --
 
 local file = fs.open("/reactor-turbine-program/config/options.txt","r")
