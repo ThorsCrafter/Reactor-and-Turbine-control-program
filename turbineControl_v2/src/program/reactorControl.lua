@@ -1,5 +1,5 @@
 -- Reactor- und Turbine control by Thor_s_Crafter --
--- Version 2.6-beta03 --
+-- Version 2.6-beta04 --
 -- Reactor control --
 
 --Loads the touchpoint and input APIs
@@ -212,12 +212,12 @@ function displayDataAuto()
     mon.setCursorPos(2, 3)
     local part1 = enPer / 5
     mon.setCursorPos(2, 3)
-    mon.setTextColor(colors.white)
-    mon.write("|--------------------|")
-    mon.setTextColor(colors.green)
-    mon.setCursorPos(3, 3)
+    mon.setBackgroundColor(colors.lightGray)
+    mon.write("                    ")
+    mon.setBackgroundColor(colors.green)
+    mon.setCursorPos(2, 3)
     for i = 1, part1 do
-        mon.write("=")
+        mon.write(" ")
     end
 
     mon.setTextColor(textColor)
@@ -234,12 +234,12 @@ function displayDataAuto()
     mon.setCursorPos(2, 6)
     local part2 = enPerR / 5
     mon.setCursorPos(2, 6)
-    mon.setTextColor(colors.white)
-    mon.write("|--------------------|")
-    mon.setTextColor(colors.green)
-    mon.setCursorPos(3, 6)
+    mon.setBackgroundColor(colors.lightGray)
+    mon.write("                    ")
+    mon.setBackgroundColor(colors.green)
+    mon.setCursorPos(2, 6)
     for i = 1, part2 do
-        mon.write("=")
+        mon.write(" ")
     end
 
     mon.setTextColor(textColor)
@@ -252,12 +252,12 @@ function displayDataAuto()
 
     local part3 = rodLevel / 5
     mon.setCursorPos(30, 3)
-    mon.setTextColor(colors.white)
-    mon.write("|--------------------|")
-    mon.setTextColor(colors.green)
-    mon.setCursorPos(31, 3)
+    mon.setBackgroundColor(colors.lightGray)
+    mon.write("                    ")
+    mon.setBackgroundColor(colors.green)
+    mon.setCursorPos(30, 3)
     for i = 1, part3 do
-        mon.write("=")
+        mon.write(" ")
     end
 
     mon.setTextColor(textColor)
@@ -372,12 +372,12 @@ function displayDataMan()
     mon.setCursorPos(2, 3)
     local part1 = enPer / 5
     mon.setCursorPos(2, 3)
-    mon.setTextColor(colors.white)
-    mon.write("|--------------------|")
-    mon.setTextColor(colors.green)
-    mon.setCursorPos(3, 3)
+    mon.setBackgroundColor(colors.lightGray)
+    mon.write("                    ")
+    mon.setBackgroundColor(colors.green)
+    mon.setCursorPos(2, 3)
     for i = 1, part1 do
-        mon.write("=")
+        mon.write(" ")
     end
 
     mon.setTextColor(textColor)
@@ -394,12 +394,12 @@ function displayDataMan()
     mon.setCursorPos(2, 6)
     local part2 = enPerR / 5
     mon.setCursorPos(2, 6)
-    mon.setTextColor(colors.white)
-    mon.write("|--------------------|")
-    mon.setTextColor(colors.green)
-    mon.setCursorPos(3, 6)
+    mon.setBackgroundColor(colors.lightGray)
+    mon.write("                    ")
+    mon.setBackgroundColor(colors.green)
+    mon.setCursorPos(2, 6)
     for i = 1, part2 do
-        mon.write("=")
+        mon.write(" ")
     end
 
     mon.setTextColor(textColor)
@@ -412,12 +412,12 @@ function displayDataMan()
 
     local part3 = rodLevel / 5
     mon.setCursorPos(30, 3)
-    mon.setTextColor(colors.white)
-    mon.write("|--------------------|")
-    mon.setTextColor(colors.green)
-    mon.setCursorPos(31, 3)
+    mon.setBackgroundColor(colors.lightGray)
+    mon.write("                    ")
+    mon.setBackgroundColor(colors.green)
+    mon.setCursorPos(30, 3)
     for i = 1, part3 do
-        mon.write("=")
+        mon.write(" ")
     end
 
     mon.setTextColor(textColor)
@@ -490,7 +490,7 @@ end
 --Runs another program
 function run(program)
     shell.run(program)
-    shell.completeProgram("/reactor-turbine-program/program/reactorControl.lua")
+    error("terminated.")
 end
 
 --Run
