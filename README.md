@@ -27,14 +27,15 @@ The following list shows the features of the program:
 - Then follow the install instructions
 
 ## Have a look at my Update Videos on YouTube
-- Current version (2.5):
-    - https://youtu.be/LDkz9RqkG0Y (English)
-    - https://youtu.be/RAUSIKaEuyI (German)
+- Current version (2.6):
+    - (Coming soon) (English)
+    - (Coming soon) (German)
     
     
 ## Do you want to help me developing the program?
 - Use my beta versions!
 - Report bugs and send me suggestions for new features
+- Do Merge Requests
 
 ## 
 

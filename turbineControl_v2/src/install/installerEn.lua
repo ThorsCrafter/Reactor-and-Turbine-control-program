@@ -1,5 +1,5 @@
 -- Reactor- und Turbine control by Thor_s_Crafter --
--- Version 2.5 --
+-- Version 2.6 --
 -- Installer (English) --
 
 

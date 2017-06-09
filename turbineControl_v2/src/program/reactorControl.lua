@@ -1,5 +1,5 @@
 -- Reactor- und Turbine control by Thor_s_Crafter --
--- Version 2.5 --
+-- Version 2.6 --
 -- Reactor control --
 
 --Loads the touchpoint and input APIs
@@ -23,43 +23,34 @@ local isOn
 local enPerR
 local rOn
 local rOff
-local modeA
-local modeM
 local internalBuffer
 
 --Create the buttons
 function createButtons()
-    if lang == "de" then
-        modeA = { " Automatisch ", label = "modeSwitch" }
-        modeM = { "  Manuell   ", label = "modeSwitch" }
-    elseif lang == "en" then
-        modeA = { " Automatic ", label = "modeSwitch" }
-        modeM = { "  Manual   ", label = "modeSwitch" }
-    end
-
-    page:add("modeSwitch", switchMode, 19, 22, 33, 22)
-    if overallMode == "auto" then
-        page:rename("modeSwitch", modeA, true)
-    elseif overallMode == "manual" then
-        page:rename("modeSwitch", modeM, true)
-    end
     --In Deutsch
     if lang == "de" then
-        page:add("Neu starten", restart, 2, 18, 17, 18)
-        page:add("Optionen", function() run("/reactor-turbine-program/program/editOptions.lua") end, 2, 20, 17, 20)
         page:add("Hauptmenue", function() run("/reactor-turbine-program/start/menu.lua") end, 2, 22, 17, 22)
         --In Englisch
     elseif lang == "en" then
-        page:add("Reboot", restart, 2, 18, 17, 18)
-        page:add("Options", function() run("/reactor-turbine-program/program/editOptions.lua") end, 2, 20, 17, 20)
         page:add("Main Menu", function() run("/reactor-turbine-program/start/menu.lua") end, 2, 22, 17, 22)
     end
+
+    --Control Rods Buttons
+    page:add("-1", function() setControlRods("-", 1) end, 45, 5, 48, 5)
+    page:add("-10", function() setControlRods("-", 10) end, 39, 5, 43, 5)
+    page:add("-100", function() setControlRods("-", 100) end, 32, 5, 37, 5)
+    page:add("+1", function() setControlRods("+", 1) end, 45, 7, 48, 7)
+    page:add("+10", function() setControlRods("+", 10) end, 39, 7, 43, 7)
+    page:add("+100", function() setControlRods("+", 100) end, 32, 7, 37, 7)
+
     page:draw()
 end
 
 --Create additional manual buttons
 function createButtonsMan()
     createButtons()
+
+    --Reactor Toggle Button
     if lang == "de" then
         rOn = { " Ein ", label = "reactorOn" }
         rOff = { " Aus ", label = "reactorOn" }
@@ -67,6 +58,7 @@ function createButtonsMan()
         rOn = { " On ", label = "reactorOn" }
         rOff = { " Off ", label = "reactorOn" }
     end
+
     page:add("reactorOn", toggleReactor, 11, 10, 15, 10)
     if r.getActive() then
         page:rename("reactorOn", rOn, true)
@@ -74,6 +66,8 @@ function createButtonsMan()
     else
         page:rename("reactorOn", rOff, true)
     end
+
+    --Print buttons
     page:draw()
 end
 
@@ -114,6 +108,19 @@ function toggleReactor()
     end
 end
 
+--Adjusts the control rods
+function setControlRods(operation, value)
+    local targetValue = r.getControlRodLevel(0)
+    if operation == "-" then
+        targetValue = targetValue - value
+        if targetValue < 1 then targetValue = 0 end
+    elseif operation == "+" then
+        targetValue = targetValue + value
+        if targetValue > 98 then targetValue = 99 end
+    end
+    r.setAllControlRodLevels(targetValue)
+end
+
 --Returns the current energy level (energy storage)
 function getEnergy()
     local en = v.getEnergyStored()
@@ -147,44 +154,37 @@ end
 
 --Checks for button clicks
 function getClick()
-    getReactorData()
 
-    if overallMode == "auto" then
-        displayDataAuto()
-    elseif overallMode == "manual" then
-        displayDataMan()
+    while true do
+
+        --Refresh Data
+        getReactorData()
+
+        --refresh screen
+        if overallMode == "auto" then
+            displayDataAuto()
+        elseif overallMode == "manual" then
+            displayDataMan()
+        end
+
+        --timer
+        local timer1 = os.startTimer(1)
+
+        while true do
+            --gets the event
+            local event, p1 = page:handleEvents(os.pullEvent())
+            print(event .. ", " .. p1)
+
+            --execute a buttons function if clicked
+            if event == "button_click" then
+                page:flash(p1)
+                page.buttonList[p1].func()
+                break
+            elseif event == "timer" and p1 == timer1 then
+                break
+            end
+        end
     end
-
-    local time = os.startTimer(0.8)
-
-    local event, but = page:handleEvents(os.pullEvent())
-    print(event)
-
-    if event == "button_click" then
-        page:flash(but)
-        page.buttonList[but].func()
-    elseif event == "terminate" then
-        sleep(2)
-        mon.clear()
-        mon.setCursorPos(1, 1)
-        mon.setTextColor(colors.red)
-        mon.write("Programm abgebrochen!")
-        error("Manuell abgebrochen")
-    end
-end
-
---Switches mode between auto/manual
-function switchMode()
-    if overallMode == "auto" then
-        overallMode = "manual"
-        saveOptionFile()
-    elseif overallMode == "manual" then
-        overallMode = "auto"
-        saveOptionFile()
-    end
-    page = ""
-    mon.clear()
-    run("/reactor-turbine-program/program/reactorControl.lua")
 end
 
 --Displays the data on the screen (auto mode)
@@ -195,76 +195,72 @@ function displayDataAuto()
         r.setActive(false)
     end
 
+    --Print all buttons
     page:draw()
 
     mon.setBackgroundColor(tonumber(backgroundColor))
     mon.setTextColor(tonumber(textColor))
 
+    --Print the energy bar
     mon.setCursorPos(2, 2)
     if lang == "de" then
         mon.write("Energie: " .. enPer .. "%  ")
     elseif lang == "en" then
         mon.write("Energy: " .. enPer .. "%  ")
     end
+
     mon.setCursorPos(2, 3)
-    mon.setBackgroundColor(colors.green)
-    for i = 0, enPer, 5 do
-        mon.write(" ")
-    end
+    local part1 = enPer / 5
+    mon.setCursorPos(2, 3)
     mon.setBackgroundColor(colors.lightGray)
-    local tmpEn = enPer / 5
-    local pos = 22 - (19 - tmpEn)
-    mon.setCursorPos(pos, 3)
-    for i = 0, (19 - tmpEn), 1 do
+    mon.write("                    ")
+    mon.setBackgroundColor(colors.green)
+    mon.setCursorPos(2, 3)
+    for i = 1, part1 do
         mon.write(" ")
     end
 
+    mon.setTextColor(textColor)
     mon.setBackgroundColor(tonumber(backgroundColor))
 
+    --Print the reactor energy bar
     mon.setCursorPos(2, 5)
     if lang == "de" then
         mon.write("Energie (Reaktor): " .. enPerR .. "%  ")
     elseif lang == "en" then
         mon.write("Energy (Reactor): " .. enPerR .. "%  ")
     end
+
     mon.setCursorPos(2, 6)
-    mon.setBackgroundColor(colors.green)
-    if enPerR > 5 then
-        for i = 0, enPerR, 5 do
-            mon.write(" ")
-        end
-    end
+    local part2 = enPerR / 5
+    mon.setCursorPos(2, 6)
     mon.setBackgroundColor(colors.lightGray)
-    if enPerR < 5 then
-        for i = 1, 20 do
-            mon.write(" ")
-        end
-    else
-        local tmpEnR = enPerR / 5
-        local posR = 22 - (19 - tmpEnR)
-        mon.setCursorPos(posR, 6)
-        for i = 0, (19 - tmpEnR), 1 do
-            mon.write(" ")
-        end
+    mon.write("                    ")
+    mon.setBackgroundColor(colors.green)
+    mon.setCursorPos(2, 6)
+    for i = 1, part2 do
+        mon.write(" ")
     end
 
+    mon.setTextColor(textColor)
     mon.setBackgroundColor(tonumber(backgroundColor))
 
+    --Print the RodLevel bar
     mon.setCursorPos(30, 2)
     mon.write("RodLevel: " .. rodLevel .. "  ")
     mon.setCursorPos(30, 3)
-    mon.setBackgroundColor(colors.green)
-    for i = 0, rodLevel, 5 do
-        mon.write(" ")
-    end
+
+    local part3 = rodLevel / 5
+    mon.setCursorPos(30, 3)
     mon.setBackgroundColor(colors.lightGray)
-    local tmpRod = rodLevel / 5
-    local posRL = 50 - (19 - tmpRod)
-    mon.setCursorPos(posRL, 3)
-    for i = 0, (19 - tmpRod), 1 do
+    mon.write("                    ")
+    mon.setBackgroundColor(colors.green)
+    mon.setCursorPos(30, 3)
+    for i = 1, part3 do
         mon.write(" ")
     end
 
+    mon.setTextColor(textColor)
     mon.setBackgroundColor(tonumber(backgroundColor))
 
     mon.setCursorPos(2, 8)
@@ -299,8 +295,8 @@ function displayDataAuto()
 
     mon.setTextColor(tonumber(textColor))
 
+    --Display Fuel Consumption
     mon.setCursorPos(2, 12)
-    local fuelCons = tostring(r.getFuelConsumedLastTick())
     local fuelCons2 = string.sub(fuelCons, 0, 4)
 
     if lang == "de" then
@@ -309,19 +305,34 @@ function displayDataAuto()
         mon.write("Fuel Consumption: " .. fuelCons2 .. "mb/t     ")
     end
 
+    --Display Reactor Efficiency (RF/mb)
+    mon.setCursorPos(2, 14)
+
+    --Calculation and formatting of the efficiency
+    local fuelEfficiency = rfGen / fuelCons
+    if tonumber(fuelCons) == 0 then fuelEfficiency = 0 end
+    local fuelEfficiency2 = math.floor(fuelEfficiency)
+
+    if lang == "de" then
+        mon.write("Effizienz: " .. input.formatNumber(fuelEfficiency2) .. " RF/mb    ")
+    elseif lang == "en" then
+        mon.write("Efficiency: " .. input.formatNumberComma(fuelEfficiency2) .. " RF/mb    ")
+    end
+
+    --Display the current Casing/Core Temperature
     local caT = tostring(r.getCasingTemperature())
     local caseTemp = string.sub(caT, 0, 6)
     local coT = tostring(r.getFuelTemperature())
     local coreTemp = string.sub(coT, 0, 6)
 
-    mon.setCursorPos(2, 14)
+    mon.setCursorPos(2, 16)
     if lang == "de" then
         mon.write("Huellentemperatur: " .. caseTemp .. "C    ")
-        mon.setCursorPos(2, 15)
+        mon.setCursorPos(2, 17)
         mon.write("Kerntemperatur: " .. coreTemp .. "C    ")
     elseif lang == "en" then
         mon.write("Casing Temperature: " .. caseTemp .. "C    ")
-        mon.setCursorPos(2, 15)
+        mon.setCursorPos(2, 17)
         mon.write("Core Temperature: " .. coreTemp .. "C    ")
     end
 
@@ -350,73 +361,69 @@ function displayDataMan()
     mon.setBackgroundColor(tonumber(backgroundColor))
     mon.setTextColor(tonumber(textColor))
 
+    --Print the energy bar
     mon.setCursorPos(2, 2)
     if lang == "de" then
         mon.write("Energie: " .. enPer .. "%  ")
     elseif lang == "en" then
         mon.write("Energy: " .. enPer .. "%  ")
     end
+
     mon.setCursorPos(2, 3)
-    mon.setBackgroundColor(colors.green)
-    for i = 0, enPer, 5 do
-        mon.write(" ")
-    end
+    local part1 = enPer / 5
+    mon.setCursorPos(2, 3)
     mon.setBackgroundColor(colors.lightGray)
-    local tmpEn = enPer / 5
-    local pos = 22 - (19 - tmpEn)
-    mon.setCursorPos(pos, 3)
-    for i = 0, (19 - tmpEn), 1 do
+    mon.write("                    ")
+    mon.setBackgroundColor(colors.green)
+    mon.setCursorPos(2, 3)
+    for i = 1, part1 do
         mon.write(" ")
     end
 
+    mon.setTextColor(textColor)
     mon.setBackgroundColor(tonumber(backgroundColor))
 
+    --Print the reactor energy bar
     mon.setCursorPos(2, 5)
     if lang == "de" then
         mon.write("Energie (Reaktor): " .. enPerR .. "%  ")
     elseif lang == "en" then
         mon.write("Energy (Reactor): " .. enPerR .. "%  ")
     end
+
     mon.setCursorPos(2, 6)
-    mon.setBackgroundColor(colors.green)
-    if enPerR > 5 then
-        for i = 0, enPerR, 5 do
-            mon.write(" ")
-        end
-    end
+    local part2 = enPerR / 5
+    mon.setCursorPos(2, 6)
     mon.setBackgroundColor(colors.lightGray)
-    if enPerR < 5 then
-        for i = 1, 20 do
-            mon.write(" ")
-        end
-    else
-        local tmpEnR = enPerR / 5
-        local posR = 22 - (19 - tmpEnR)
-        mon.setCursorPos(posR, 6)
-        for i = 0, (19 - tmpEnR), 1 do
-            mon.write(" ")
-        end
+    mon.write("                    ")
+    mon.setBackgroundColor(colors.green)
+    mon.setCursorPos(2, 6)
+    for i = 1, part2 do
+        mon.write(" ")
     end
 
+    mon.setTextColor(textColor)
     mon.setBackgroundColor(tonumber(backgroundColor))
 
+    --Print the RodLevel bar
     mon.setCursorPos(30, 2)
     mon.write("RodLevel: " .. rodLevel .. "  ")
     mon.setCursorPos(30, 3)
-    mon.setBackgroundColor(colors.green)
-    for i = 0, rodLevel, 5 do
-        mon.write(" ")
-    end
+
+    local part3 = rodLevel / 5
+    mon.setCursorPos(30, 3)
     mon.setBackgroundColor(colors.lightGray)
-    local tmpRod = rodLevel / 5
-    local posRL = 50 - (19 - tmpRod)
-    mon.setCursorPos(posRL, 3)
-    for i = 0, (19 - tmpRod), 1 do
+    mon.write("                    ")
+    mon.setBackgroundColor(colors.green)
+    mon.setCursorPos(30, 3)
+    for i = 1, part3 do
         mon.write(" ")
     end
 
+    mon.setTextColor(textColor)
     mon.setBackgroundColor(tonumber(backgroundColor))
 
+    --Print the current RF Production of the reactor
     mon.setCursorPos(2, 8)
     if lang == "de" then
         mon.write("RF-Produktion: " .. input.formatNumber(math.floor(rfGen)) .. " RF/t      ")
@@ -424,6 +431,7 @@ function displayDataMan()
         mon.write("RF-Production: " .. input.formatNumberComma(math.floor(rfGen)) .. " RF/t      ")
     end
 
+    --Print the current status of the reactor
     mon.setCursorPos(2, 10)
     if lang == "de" then
         mon.write("Reaktor: ")
@@ -433,9 +441,9 @@ function displayDataMan()
 
     mon.setTextColor(tonumber(textColor))
 
+    --Display Fuel Consumption
     mon.setCursorPos(2, 12)
-    local fuelCons = tostring(r.getFuelConsumedLastTick())
-    local fuelCons2 = string.sub(fuelCons, 0, 4)
+    local fuelCons2 = string.sub(tostring(fuelCons), 0, 4)
 
     if lang == "de" then
         mon.write("Reaktor-Verbrauch: " .. fuelCons2 .. "mb/t     ")
@@ -443,23 +451,38 @@ function displayDataMan()
         mon.write("Fuel Consumption: " .. fuelCons2 .. "mb/t     ")
     end
 
+    --Display Reactor Efficiency (RF/mb)
+    mon.setCursorPos(2, 14)
+
+    --Calculation and formatting of the efficiency
+    local fuelEfficiency = rfGen / fuelCons
+    if tonumber(fuelCons) == 0 then fuelEfficiency = 0 end
+    local fuelEfficiency2 = math.floor(fuelEfficiency)
+
+    if lang == "de" then
+        mon.write("Effizienz: " .. input.formatNumber(fuelEfficiency2) .. " RF/mb    ")
+    elseif lang == "en" then
+        mon.write("Efficiency: " .. input.formatNumberComma(fuelEfficiency2) .. " RF/mb    ")
+    end
+
+    --Display the current Casing/Core temperature of the reactor
     local caT = tostring(r.getCasingTemperature())
     local caseTemp = string.sub(caT, 0, 6)
     local coT = tostring(r.getFuelTemperature())
     local coreTemp = string.sub(coT, 0, 6)
 
-    mon.setCursorPos(2, 14)
+    mon.setCursorPos(2, 16)
     if lang == "de" then
         mon.write("Huellentemperatur: " .. caseTemp .. "C    ")
-        mon.setCursorPos(2, 15)
+        mon.setCursorPos(2, 17)
         mon.write("Kerntemperatur: " .. coreTemp .. "C    ")
     elseif lang == "en" then
         mon.write("Casing Temperature: " .. caseTemp .. "C    ")
-        mon.setCursorPos(2, 15)
+        mon.setCursorPos(2, 17)
         mon.write("Core Temperature: " .. coreTemp .. "C    ")
     end
 
-
+    --Print the current version
     mon.setCursorPos(2, 25)
     mon.write("Version " .. version)
 end
@@ -467,7 +490,7 @@ end
 --Runs another program
 function run(program)
     shell.run(program)
-    shell.completeProgram("/reactor-turbine-program/program/reactorControl.lua")
+    error("terminated.")
 end
 
 --Run
@@ -480,6 +503,4 @@ end
 mon.setBackgroundColor(tonumber(backgroundColor))
 mon.setTextColor(tonumber(textColor))
 mon.clear()
-while true do
-    getClick()
-end
+getClick()
