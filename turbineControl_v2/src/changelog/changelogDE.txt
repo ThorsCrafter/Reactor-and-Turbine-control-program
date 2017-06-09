@@ -1,7 +1,20 @@
 ****************************************************************
 -- Reaktor- und Turbinenprogramm von Thor_s_Crafter --
 -- Komplettes Changelog -- 
--- Aktuelle Version: 2.6-beta01 --
+-- Aktuelle Version: 2.6 --
+****************************************************************
+Version 2.6
+- Buttons für Modus, Optionen und Neu Starten entfernt
+- Reaktormodus: Fuel Rods koennen manuell geaendert werden
+- Neue Option: Turbine ausschalten, wenn Energie voll
+- Neue Anzeige: Effizienz in RF/mb
+- Neue Anzeige: Interne Energie der Turbine
+- Bugfixes:
+    > Event Handling
+    > Interne Code Umstrukturierungen
+    > Button Bugfixes
+    > Anzeige Bugfixes
+- Vielen Dank an Kimax89 fuers Helfen!
 ****************************************************************
 Version 2.5
 - Automatische Updates implementiert
