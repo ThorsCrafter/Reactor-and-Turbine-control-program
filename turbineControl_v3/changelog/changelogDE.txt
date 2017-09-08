@@ -1,0 +1,187 @@
+****************************************************************
+-- Reaktor- und Turbinenprogramm von Thor_s_Crafter --
+-- Komplettes Changelog -- 
+-- Aktuelle Version: 2.6 --
+****************************************************************
+Version 2.6
+- Buttons für Modus, Optionen und Neu Starten entfernt
+- Reaktormodus: Fuel Rods koennen manuell geaendert werden
+- Neue Option: Turbine ausschalten, wenn Energie voll
+- Neue Anzeige: Effizienz in RF/mb
+- Neue Anzeige: Interne Energie der Turbine
+- Bugfixes:
+    > Event Handling
+    > Interne Code Umstrukturierungen
+    > Button Bugfixes
+    > Anzeige Bugfixes
+- Vielen Dank an Kimax89 fuers Helfen!
+****************************************************************
+Version 2.5
+- Automatische Updates implementiert
+- Git Downloader & Installer Updates
+- Readme in Github aktualisiert
+- Optionen Reworks
+- Energiespeicher werden nun anhand der Methode
+  getEnergyStored() erkannt
+- Bugfixes:
+    > Anzeigebugs
+    > Event Handling Fixes
+    > Buttons
+    > Hauptmenue Bugs
+    > Start Bugs
+    > Eine Menge Code-Cleanups
+****************************************************************
+Version 2.4
+- Github Downloader hinzugefuegt (ersetzt installerUpdate)
+- installer verbesert
+- installerUpdate entfernt
+- RodLevel-Berechnung nochmals verbessert
+- Reaktor kann nun ohne Energiespeicher betrieben werden
+- Option zur Auswahl des Steamlevels hinzugefuegt
+- Program Beenden verbessert
+- Beschreibungen geaendert
+- Bugfixes:
+	> Anzeige der Zahlen gefixt
+	> Monitor not found in start.lua
+	> Weitere Form von Energiezelle hinzugefügt
+	> Weitere kleine Bugfixes
+****************************************************************
+Version 2.3
+- Unterstuetzung fuer bis zu 32 Turbinen hinzugefuegt
+- Erneute Verbesserung der RodLevel Berechnung
+- Verbesserung der checkEnergyLevel()-Funktion
+- Verbesserung der Update-Funktion
+- Auto-Update entfernt
+- InputAPI hinzugefuegt
+- Anzeige optimiert
+	> Grosse Zahlen werden formatiert (z.B. 1.000)
+	> Turbinenbuttons geaendert und verkleinert
+	> Standardhintergrund geaendert (grau)
+- Installationsprogramm verbessert
+	> Bessere Funktionalitaet
+	> Benutzerfreundlicher
+- Ordnerstruktur hinzugefuegt
+	> Bessere Uebersichtlichkeit
+- Weitere kleine Bugfixes
+	> Jede Menge, danke an die Community fuers finden!
+****************************************************************
+Version 2.2
+- Verbesserung der Berechnung der RodLevel
+- Neue Option: Turbinengeschwindingkeit anpassbar
+- Manueller Modus: Alle Turbinen gleichzeichtig kontrollierbar
+- Optionsmenue angepasst
+	> Turbinenspeed
+****************************************************************
+Version 2.1
+- Reaktorprogramm hinzugefuegt
+	> Steuerung ohne Turbinen moeglich
+	> Automatischer / Manueller Modus
+	> Anzeige inkl. Buttons hinzugefuegt
+- Hauptmenue angepasst (Reaktormodus)
+- Optionen gelten fuer den Reaktormodus
+- Installer angepasst
+- Kleinere Aenderungen
+****************************************************************
+Version 2.0
+- Manueller Modus hinzugefuegt
+	> Reaktor aus- und einschaltbar
+	> Turbinen aus- und einschaltbar
+	> Coils ein- und aushaengbar
+	> Auswahl aller Turbinen
+- Sprachoption hinzugefuegt
+	> Deutsch
+	> Englisch
+- Hauptmenue erweitert
+	> Modus auswaehlbar (Auto/Manuell)
+	> Sprache auswaehlbar
+- Modus-Button hinzugefuegt
+	> Direkter Wechsel im Programm (Auto/Manuell)
+- Weitreichende Ueberarbeitung des Programmcodes
+	> Vereinfachungen
+	> Umstellungen im Programmcode
+	> Neue Programmteile
+****************************************************************
+Version 1.7
+- Hauptmenue eingefuegt
+	> Programm starten
+	> Optionen aufrufen
+	> Programm beenden
+	> Programm Neu Starten
+	> Automatische Updates ein-/ausschalten
+- Optionsdatei angepasst
+- Button "Hauptmenue" im Programm hinzugefuegt
+- Button "Hauptmenue" in den Optionen hinzugefuegt
+- Kleinere Bugfixes beim (manuellen) Beenden (Strg+T)
+****************************************************************
+Version 1.6
+- Button API von Direwolf20 durch Touchpoint API
+   von Lyqyd ersetzt
+ 	> Performance-Verbesserungen
+ 	> Einfachere Gestaltung der Buttons
+- Optionen als Touch-Variante hinzugefuegt
+	> Hintergrundfarbe
+	> Textfarbe
+	> Reaktor aus
+	> Reaktor an
+	> Config loeschen
+- Einstellungsmöglichkeiten angepasst
+- Weitere kleinere Aenderungen
+****************************************************************
+Version 1.5
+- Optionen erweitert
+	> Beenden mit Speichern
+	> Beenden ohne Speichern
+	> Abbrechen
+- Aenderungen im  Berechnen des FuelRodLevels
+	> Anzeige auf dem Bildschirm
+- Aenderungen im Hochfahren der Turbinen
+	> Anzeige auf dem Bildschrim (+ Indikator)
+- Aktualisierung des Monitor_touch-Events
+  (Verbesserung der Reaktionszeit beim Klicken)
+- Weitere kleinere Bugfixes
+	> Bildschirmfarbe
+	> Textfarbe
+	> Kleinere Aenderungen im Installer-Programm
+****************************************************************
+Version 1.4
+- Optionen hinzugefuegt
+- Options-Button hinzugefuegt
+- showChangelog entfernt
+- Config Update-Button entfernt
+- config.txt entfernt
+- options.txt hinzugefuegt
+- Optionspunkte:
+	> Hintergrundfarbe anpassen
+	> Textfarbe anpassen
+	> Prozentwert des An- und Abschaltens des Reaktors anpassen
+	> Config loeschen
+- Viele Bugfixes und Aenderungen
+	> Codeumstellungen
+	> Optimierungen in der Reaktorsteuerung
+	> Weitere Kleinigkeiten
+****************************************************************
+Version 1.3
+- Aenderungen am UI
+	> Energieleiste hinzugefuegt
+	> Aenderung der Statusanzeigen (links)
+	> Aenderung der Turbinen-Buttons (rechts)
+- Changelog.txt geaendert
+- showChangelog zum Anzeigen des Changelogs im Computer hinzugefuegt
+- Changelog-Button entfernt
+- Kleinere Bugfixes und Aenderungen
+****************************************************************
+Version 1.2
+- Automatische Updates beim Neustart hinzugefuegt
+- Update-Button entfernt
+- Reboot-Button zu Reboot/Update-Button geandert
+- Changelog-Anzeige hinzugefuegt
+- Changelog-Button hinzugefuegt
+- Versionsanzeige hinzugefuegt
+- Kleinere Bugfixes
+****************************************************************
+Version 1.1
+- Optimierung des Programms (Turbinen + Reaktor)
+- Viele kleine Bugfixes
+****************************************************************
+Verion 1.0 (beta)
+- First Release (Beta-Stadium)

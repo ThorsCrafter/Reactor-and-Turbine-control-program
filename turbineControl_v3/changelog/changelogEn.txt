@@ -1,0 +1,177 @@
+****************************************************************
+-- Reactor- und Turbine control by Thor_s_Crafter --
+-- Complete Changelog --
+-- Current Version: 2.6 --
+****************************************************************
+Version 2.6
+- Removed Buttons for Mode Switch, Options and Reboot
+- Reactormode: Fuel Rods can now be set manually
+- New Option: Deactivate Turbine on energy high
+- New Display: Efficiency in RF/mb
+- New Display: Intenal Turbine Energy
+- Bugfixes:
+    > Event Handling
+    > Internal Code Rearrangements
+    > Button Bugfixes
+    > Display Bugfixes
+- Thanks a lot to Kimax89 for helping me with this version!
+****************************************************************
+Version 2.5
+- Reimplemented automatic updates
+- Git Downloader & Installer Updates
+- Updated Readme in Github
+- Option Reworks
+- Energy Storage is now being detected by the function
+  getEnergyStored()
+- Bugfixes:
+    > Visual Bugfixes
+    > Event Handling Fixes
+    > Buttons
+    > Hauptmenu Bugs
+    > Start Bugs
+    > Lots of Code-Cleanups
+****************************************************************
+Version 2.4
+- Added Github Downloader (replaces installerUpdate)
+- installer updated
+- removed installerUpdate
+- Improved RodLevel calculation
+- Reactor can now run without an energy storage
+- Added option for selecting the steam level
+- Program termination improved
+- Changed descriptions
+- Bugfixes:
+	> Number display
+	> Monitor not found in start.lua
+	> Added another type of energy cell
+	> More smaller Bugfixes
+****************************************************************
+Version 2.3
+- Now supporting up to 32 turbines
+- Better calculation of the RodLevel
+- Improved getEnergyStorage()-function
+- Improved update-function
+- Removed auto-update
+- Added input API
+- Improved display
+	> Formatting big numers (e.g. 1,000)
+	> Changed turbine buttons (smaller)
+	> Changed default background (gray)
+- Improved installer
+	> Works much better now ;)
+	> More user-friendly
+- Added folder structure
+- Lots of small bugfixes
+	> Thanks to you!
+****************************************************************
+Version 2.2
+- Better calculation of the RodLevel
+- New Option: Turbine speed customizable
+- Manual Mode: Switch all turbines at once
+- Changed option menu
+	> Change turbine speed
+****************************************************************
+Version 2.1
+- Added Reactorprogram
+	> Control without turbines
+	> Automatic / Manual Mode
+	> Display with buttons added
+- Main menu edited (Reactor mode)
+- Options edited
+- Installer edited
+- Small changes
+****************************************************************
+Version 2.0
+- Now supporting English!
+- Added Manual Mode
+	> Toggle reactor
+	> Toggle turbines
+	> Toggle turbine coils
+	> Switch turbines
+- Added language options
+	> German (default)
+	> English
+- Added menu options:
+	> Selecting Mode (Auto/Manual)
+	> Selecting language
+- Added mode switch button
+- Complete code reworking
+****************************************************************
+Version 1.7
+- Added main menu
+	> Start program
+	> Edit options
+	> Quit program
+	> Reboot
+	> Toggle automatic updates
+- Changed option file
+- Added "main menu" button (program+options)
+- Smaller Bugfixes
+****************************************************************
+Version 1.6
+- Replaced Button API (Direwolf20) by Touchpoint API (Lyqyd)
+ 	> Better Performance
+ 	> Easier Button handling
+- Options as touch version
+	> Background color
+	> Text color
+	> Reactor off
+	> Reactor on
+	> Reset config
+-Tweaked settings
+- More smaller changes
+****************************************************************
+Version 1.5
+- Added options:
+	> Quit with/without saving
+	> Cancel
+- Internal calculation changes
+	> Added Display
+- Optimizing monitor_touch events
+- More smaller Bugfixes
+	> Background color
+	> Text color
+	> Smaller changes at the installer
+****************************************************************
+Version 1.4
+- Added options
+- Added options button
+- Removed showChangelog
+- Removed Config Update button
+- Removed config.txt
+- Added options.txt
+- Options:
+	> Changing background color
+	> Changing text color
+	> Changing auto-on and -off of the reactor
+	> Reset config
+- Lots of Bugfixes and changes
+	> Codeu reworks
+	> Optimizing reactor control
+	> Smaller changes
+****************************************************************
+Version 1.3
+- UI changes
+	> Added Energy bar
+	> Changed Status display
+	> Changed Turbine buttons
+- Changed Changelog.txt
+- Added showChangelog
+- Removed changelog button
+- Smaller Bugfixes and changes
+****************************************************************
+Version 1.2
+- Added automatic updates
+- Removed update button
+- Changed reboot button to "Reboot/Update"
+- Added changelog display
+- Added changelog button
+- Added version display
+- Smaller Bugfixes
+****************************************************************
+Version 1.1
+- Program optimizing (Turbines + Reactor)
+- A lot of small Bugfixes
+****************************************************************
+Verion 1.0 (beta)
+- First Release (Beta)
