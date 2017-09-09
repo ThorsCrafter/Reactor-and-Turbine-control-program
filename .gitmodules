@@ -1,0 +1,3 @@
+[submodule "turbineControl_v3/lib/inputAPI"]
+	path = turbineControl_v3/lib/inputAPI
+	url = git@git.thorscrafter.de:computercraft/inputAPI.git
