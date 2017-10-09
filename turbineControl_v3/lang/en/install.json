@@ -1,0 +1,11 @@
+{
+  "selectBranch":"Which version should be loaded:",
+  "master":" Release Versions ",
+  "master_description": " (stable, Slower Updated)",
+  "beta":" Beta Versions ",
+  "beta_description": " (faster, possibly unstable)",
+  "installScreen": "Downloading files... This will take a moment.",
+  "installComplete":"The installation is complete.",
+  "final":"Have fun using the program!",
+  "restart": "The computer will reboot shortly!"
+}

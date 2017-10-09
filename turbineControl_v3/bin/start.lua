@@ -4,8 +4,8 @@
 
 -- Start program for loading neccesary files, initializing variables, etc.
 
-function init()
-    --Run necessary binary files
+local function initBinaries()
+    --Execute necessary binary files
     local binPath = "/reactor-turbine-program/bin/"
     shell.run(binPath.."File.lua")
     shell.run(binPath.."json.lua")

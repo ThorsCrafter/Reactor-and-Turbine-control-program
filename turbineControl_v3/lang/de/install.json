@@ -1,0 +1,11 @@
+{
+  "selectBranch":"Welche Version soll geladen werden:",
+  "master":" Release Versionen ",
+  "master_description": " (stabil, langsamere Updates)",
+  "beta":" Beta Versionen ",
+  "beta_description": " (schneller, moeglicherweise instabil)",
+  "installScreen": "Downloade Dateien... Dies dauert einen Moment.",
+  "installComplete":"Die Installation ist nun abgeschlossen.",
+  "final":"Viel Spass mit dem Programm!",
+  "restart": "Der Computer startet gleich neu!"
+}
