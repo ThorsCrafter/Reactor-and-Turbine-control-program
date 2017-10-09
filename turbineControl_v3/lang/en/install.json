@@ -5,7 +5,7 @@
   "beta":" Beta Versions ",
   "beta_description": " (faster, possibly unstable)",
   "installScreen": "Installing... This will take a moment.",
-  "installStatusFolder:": "Creating folder: ",
+  "installStatusFolder": "Creating folder: ",
   "installStatusFile": "Downloading File: ",
   "installComplete":"The installation is complete.",
   "final":"Have fun using the program!",

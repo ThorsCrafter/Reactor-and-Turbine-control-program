@@ -11,89 +11,6 @@ local text = {}
 --Terminal resolution
 local termX, termY
 
----------- File functions
-
---Downloads any file
-local function downloadFile(url, targetFile)
-    if debug then print("Downloading " .. targetFile) end
-    local request = http.get(url)
-    local file = fs.open(targetFile, "w")
-    file.write(request.readAll())
-    file.close()
-    request.close()
-end
-
---Download the json API
-local function getJson()
-    downloadFile("https://pastebin.com/raw/4nRg9CHU", "json")
-    shell.run("json")
-end
-
-local function getLanguageFiles(lang)
-    downloadFile("https://raw.githubusercontent.com/ThorsCrafter/Reactor-and-Turbine-control-program/feature/code_restructuring/turbineControl_v3/lang/" .. lang .. "/install.json", "strings.json") --TODO Change branch
-end
-
-local function loadLanguageFile()
-    local file = fs.open("strings.json", "r")
-    text = decode(file.readAll())
-    file.close()
-end
-
---Download content from the git repository
-local function downloadRepo(branch, rootDir)
-    --Create the root Folder
-    if fs.exists(rootDir) then shell.run("rm " .. rootDir) end
-    shell.run("mkdir "..rootDir)
-
-    --Get the folder structure of the repository
-    local request = http.get("https://api.github.com/repos/ThorsCrafter/Reactor-and-Turbine-control-program/git/trees/" .. branch .. "?recursive=1")
-    local folderStruct = decode(request.readAll())
-    request.close()
-
-    for _, entry in ipairs(folderStruct.tree) do
-        local request = http.get("https://raw.githubusercontent.com/ThorsCrafter/Reactor-and-Turbine-control-program/" .. branch .. "/" .. entry.path)
-
-        --Folders
-        if entry.mode == "040000" then
-            if debug then print("Creating Folder: " .. entry.path) end
-            installScreen("folder",entry.path)
-            shell.run("mkdir " .. rootDir .. "/" .. entry.path)
-
-            --Files
-        elseif entry.mode == "100644" then
-            if debug then print("Downloading File: " .. entry.path) end
-            installScreen("file",entry.path)
-            local file = fs.open(rootDir .. "/" .. entry.path, "w")
-            file.write(request.readAll())
-            file.close()
-            request.close()
-
-            --Other
-        else
-            if debug then print("Invalid Type: " .. entry.path .. "! Skipping!") end
-        end
-    end
-end
-
---Move files to the target folder
-local function moveFiles(srcDir, targetDir)
-    if not fs.exists(targetDir) then shell.run("mkdir " .. targetDir) end
-    if debug then print("Moving all files from " .. srcDir .. " to " .. targetDir) end
-    shell.run("mv " .. srcDir .. "/* " .. targetDir .. "/")
-end
-
---Delete (tmp) folder
-local function delFolder(folder)
-    if debug then print("Deleting " .. folder) end
-    shell.run("rm " .. folder)
-end
-
---Delete json API
-local function removeJson()
-    --Remove the json API
-    shell.run("rm json")
-end
-
 ---------- UI functions
 
 local function printHeader()
@@ -190,6 +107,89 @@ local function postInstallScreen()
     --Footer
     term.setCursorPos(1,termY)
     term.write("(c) 2017 Thor_s_Crafter")
+end
+
+---------- File functions
+
+--Downloads any file
+local function downloadFile(url, targetFile)
+    if debug then print("Downloading " .. targetFile) end
+    local request = http.get(url)
+    local file = fs.open(targetFile, "w")
+    file.write(request.readAll())
+    file.close()
+    request.close()
+end
+
+--Download the json API
+local function getJson()
+    downloadFile("https://pastebin.com/raw/4nRg9CHU", "json")
+    shell.run("json")
+end
+
+local function getLanguageFiles(lang)
+    downloadFile("https://raw.githubusercontent.com/ThorsCrafter/Reactor-and-Turbine-control-program/feature/code_restructuring/turbineControl_v3/lang/" .. lang .. "/install.json", "strings.json") --TODO Change branch
+end
+
+local function loadLanguageFile()
+    local file = fs.open("strings.json", "r")
+    text = decode(file.readAll())
+    file.close()
+end
+
+--Download content from the git repository
+local function downloadRepo(branch, rootDir)
+    --Create the root Folder
+    if fs.exists(rootDir) then shell.run("rm " .. rootDir) end
+    shell.run("mkdir "..rootDir)
+
+    --Get the folder structure of the repository
+    local request = http.get("https://api.github.com/repos/ThorsCrafter/Reactor-and-Turbine-control-program/git/trees/" .. branch .. "?recursive=1")
+    local folderStruct = decode(request.readAll())
+    request.close()
+
+    for _, entry in ipairs(folderStruct.tree) do
+        local request = http.get("https://raw.githubusercontent.com/ThorsCrafter/Reactor-and-Turbine-control-program/" .. branch .. "/" .. entry.path)
+
+        --Folders
+        if entry.mode == "040000" then
+            if debug then print("Creating Folder: " .. entry.path) end
+            installScreen("folder",entry.path)
+            shell.run("mkdir " .. rootDir .. "/" .. entry.path)
+
+            --Files
+        elseif entry.mode == "100644" then
+            if debug then print("Downloading File: " .. entry.path) end
+            installScreen("file",entry.path)
+            local file = fs.open(rootDir .. "/" .. entry.path, "w")
+            file.write(request.readAll())
+            file.close()
+            request.close()
+
+            --Other
+        else
+            if debug then print("Invalid Type: " .. entry.path .. "! Skipping!") end
+        end
+    end
+end
+
+--Move files to the target folder
+local function moveFiles(srcDir, targetDir)
+    if not fs.exists(targetDir) then shell.run("mkdir " .. targetDir) end
+    if debug then print("Moving all files from " .. srcDir .. " to " .. targetDir) end
+    shell.run("mv " .. srcDir .. "/* " .. targetDir .. "/")
+end
+
+--Delete (tmp) folder
+local function delFolder(folder)
+    if debug then print("Deleting " .. folder) end
+    shell.run("rm " .. folder)
+end
+
+--Delete json API
+local function removeJson()
+    --Remove the json API
+    shell.run("rm json")
 end
 
 ---------- Run installation
