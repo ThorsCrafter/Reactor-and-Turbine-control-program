@@ -186,10 +186,13 @@ local function delFolder(folder)
     shell.run("rm " .. folder)
 end
 
---Delete json API
-local function removeJson()
+--Cleanup installation
+local function postInstall()
     --Remove the json API
     shell.run("rm json")
+    --Remove the strings.json file
+    shell.run("rm strings.json")
+    --TODO Add startup
 end
 
 ---------- Run installation
@@ -207,7 +210,7 @@ local function runInstallation()
     delFolder("/tmp")
 
     postInstallScreen()
-    removeJson()
+    postInstall()
 
     sleep(5)
     os.reboot()
