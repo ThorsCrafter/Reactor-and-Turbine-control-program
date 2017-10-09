@@ -4,7 +4,14 @@
 
 -- Start program for loading neccesary files, initializing variables, etc.
 
--- TODO
+function init()
+    --Run necessary binary files
+    local binPath = "/reactor-turbine-program/bin/"
+    shell.run(binPath.."File.lua")
+    shell.run(binPath.."json.lua")
+    shell.run(binPath.."Options.lua")
+end
+
 
 
 
