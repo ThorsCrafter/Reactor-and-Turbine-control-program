@@ -4,7 +4,9 @@
   "master_description": " (stable, Slower Updated)",
   "beta":" Beta Versions ",
   "beta_description": " (faster, possibly unstable)",
-  "installScreen": "Downloading files... This will take a moment.",
+  "installScreen": "Installing... This will take a moment.",
+  "installStatusFolder:": "Creating folder: ",
+  "installStatusFile": "Downloading File: ",
   "installComplete":"The installation is complete.",
   "final":"Have fun using the program!",
   "restart": "The computer will reboot shortly!"

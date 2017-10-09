@@ -42,7 +42,8 @@ end
 --Download content from the git repository
 local function downloadRepo(branch, rootDir)
     --Create the root Folder
-    if not fs.exists(rootDir) then shell.run("mkdir " .. rootDir) end
+    if fs.exists(rootDir) then shell.run("rm " .. rootDir) end
+    shell.run("mkdir "..rootDir)
 
     --Get the folder structure of the repository
     local request = http.get("https://api.github.com/repos/ThorsCrafter/Reactor-and-Turbine-control-program/git/trees/" .. branch .. "?recursive=1")
@@ -55,11 +56,13 @@ local function downloadRepo(branch, rootDir)
         --Folders
         if entry.mode == "040000" then
             if debug then print("Creating Folder: " .. entry.path) end
+            installScreen("folder",entry.path)
             shell.run("mkdir " .. rootDir .. "/" .. entry.path)
 
             --Files
         elseif entry.mode == "100644" then
             if debug then print("Downloading File: " .. entry.path) end
+            installScreen("file",entry.path)
             local file = fs.open(rootDir .. "/" .. entry.path, "w")
             file.write(request.readAll())
             file.close()
@@ -99,7 +102,7 @@ local function printHeader()
     term.clear()
     term.setCursorPos(1, 1)
     for i = 1, termX do term.write("=") end
-    term.setCursorPos(math.floor(termY / 2) - math.floor(45 / 2) + 1, 2)
+    term.setCursorPos(math.floor(termX / 2) - math.floor(45 / 2) + 1, 2)
     term.write("Reactor and Turbine Control by Thor_s_Crafter")
     term.setCursorPos(1, 3)
     for i = 1, termX do term.write("=") end
@@ -159,12 +162,20 @@ local function selectVersion()
     end
 end
 
-local function installScreen()
+local function installScreen(status,file)
     printHeader()
 
     --Body
     term.setCursorPos(2, 5)
     term.write(text["installScreen"])
+    term.setCursorPos(2, 7)
+    if status == "folder" then
+        term.write(text["installStatusFolder"])
+        term.write(file.."          ")
+    elseif status == "file" then
+        term.write(text["installStatusFile"])
+        term.write(file.."          ")
+    end
 end
 
 local function postInstallScreen()
@@ -172,8 +183,9 @@ local function postInstallScreen()
 
     --Body
     term.setCursorPos(2, 5)
-    print(text["installComplete"])
-    print(text["final"])
+    term.write(text["installComplete"])
+    term.setCursorPos(2, 6)
+    term.write(text["final"])
 
     --Footer
     term.setCursorPos(1,termY)
@@ -189,8 +201,8 @@ local function runInstallation()
     loadLanguageFile()
 
     local version = selectVersion()
-    installScreen()
-    downloadRepo(version, "/tmp")
+    --installScreen()
+    downloadRepo("feature/code_restructuring", "/tmp") --TODO Change to real branch
     moveFiles("/tmp/turbineControl_v3", "/reactor-turbine-program")
     delFolder("/tmp")
 
