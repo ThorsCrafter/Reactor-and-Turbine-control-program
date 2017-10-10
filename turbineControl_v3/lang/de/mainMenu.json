@@ -1,0 +1,11 @@
+{
+  "buttons":{
+    "lang_de":"Deutsch",
+    "lang_en":"Englisch"
+  },
+  "title":"-- Hauptmenue --",
+  "displayMainMenu":"Hauptmenue zeigen: ",
+  "language":"Sprache: ",
+  "program":"Programm: ",
+  "mode":"Modus: "
+}

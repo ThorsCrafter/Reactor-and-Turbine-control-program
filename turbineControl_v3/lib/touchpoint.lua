@@ -1,3 +1,10 @@
+-- Reactor / Turbine Control
+-- (c) 2017 Thor_s_Crafter
+-- Version 3.0
+
+--touchpoint API by Lyqyd
+--slightly changed for the Reactor / Turbine program
+
 --[[
 The MIT License (MIT)
 
@@ -51,8 +58,9 @@ end
 local Button = {
     draw = function(self)
         local old = term.redirect(self.mon)
+        --TODO Change colors
         term.setTextColor(colors.white)
-        term.setBackgroundColor(colors.black)
+        term.setBackgroundColor(colors.gray)
         term.clear()
         for name, buttonData in pairs(self.buttonList) do
             if buttonData.active then

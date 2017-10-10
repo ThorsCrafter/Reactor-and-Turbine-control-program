@@ -15,7 +15,7 @@ local function searchPeripherals()
         elseif peripheral.getType(peripheralList[i]) == "BigReactors-Turbine" then
             turbineTable[#turbineTable + 1] = newTurbine("t" .. tostring(#turbineTable + 1), peripheral.wrap(peripheralList[i]))
         elseif peripheral.getType(peripheralList[i]) == "monitor" then
-            monitorTable[#monitorTable + 1] = newMonitor("m" .. tostring(#monitorTable + 1), peripheral.wrap(peripheralList[i]))
+            monitorTable[#monitorTable + 1] = newMonitor("m" .. tostring(#monitorTable + 1), peripheralList[i], peripheral.wrap(peripheralList[i]))
         else
             local tmp = peripheral.wrap(peripheralList[i])
             local success, err = pcall(function() tmp.getEnergyStored() end)
@@ -28,7 +28,7 @@ end
 
 local function checkPeripherals()
     if reactorTable[1] == nil then
-        error("No reactor found!")
+     --   error("No reactor found!")
     end
     if monitorTable[1] == nil then
         error("No monitor found!")

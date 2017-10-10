@@ -4,6 +4,7 @@
 
 local Monitor = {
     name = "",
+    side = "",
     id = {},
 
     size = function(self)
@@ -33,16 +34,20 @@ local Monitor = {
     setCursor = function(self, x, y)
         self.id.setCursorPos(x, y)
     end,
+    write = function(self,text)
+        self.id.write(text)
+    end,
     textScale = function(self, value)
         self.id.setTextScale(value)
     end
 }
 
-function newMonitor(name,id)
+function newMonitor(name,side,id)
     local monitor = {}
     setmetatable(monitor,{__index=Monitor})
 
     monitor.name = name
+    monitor.side = side
     monitor.id = id
 
     return monitor
