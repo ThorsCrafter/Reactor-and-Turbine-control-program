@@ -25,7 +25,7 @@ local Turbine = {
         return self.id.getFluidFlowRate()
     end,
 
-    setStatus = function(self, status)
+    setOn = function(self, status)
         self.id.setActive(status)
     end,
     setCoils = function(self, status)
