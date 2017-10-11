@@ -1,11 +1,21 @@
 {
   "buttons":{
-    "lang_de":"Deutsch",
+    "start":"Programm starten",
+    "exit":"Programm beenden",
+    "options":"    Optionen    ",
+    "program_reactor":"Reaktor ",
+    "program_turbine":"Turbinen",
+    "mode_auto":" Auto  ",
+    "mode_man":"Manuell",
+    "mainMenuOn":" An ",
+    "mainMenuOff":" Aus ",
+    "lang_de":"Deutsch ",
     "lang_en":"Englisch"
   },
-  "title":"-- Hauptmenue --",
+  "title":"Reaktor- und Turbinenprogramm - Hauptmenue",
   "displayMainMenu":"Hauptmenue zeigen: ",
   "language":"Sprache: ",
   "program":"Programm: ",
-  "mode":"Modus: "
+  "mode":"Modus: ",
+  "control":"Steuerung: "
 }

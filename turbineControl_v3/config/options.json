@@ -2,15 +2,15 @@
   "mainMenu" : true,
   "rodLevel" : 0,
   "targetSpeed" : 2000,
-  "overallMode" : "auto",
+  "mode" : "auto",
   "reactorOffAt" : 80,
   "backgroundColor" : 128,
   "reactorOnAt" : 50,
   "targetSteam" : 2000,
   "turbineTargetSpeed" : 1820,
-  "version" : "2.6-release",
+  "version" : "3.0-alpha",
   "textColor" : 1,
-  "program ": "turbine",
+  "program": "turbine",
   "turbineOnOff" : "off",
   "lang" : "de"
 }
