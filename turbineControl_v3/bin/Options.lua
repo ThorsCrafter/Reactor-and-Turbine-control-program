@@ -2,8 +2,6 @@
 -- (c) 2017 Thor_s_Crafter
 -- Version 3.0
 
-local optionFile
-
 local Options = {
 
     -- Load the option file
@@ -15,33 +13,28 @@ local Options = {
     save = function(self)
         local string = encodePretty(self.optionTable)
         writeFileContent(self.filePath,string)
+    end,
+    getOptions = function(self)
+        return self.optionTable
+    end,
+    get = function(self,option)
+        return self.optionTable[option]
+    end,
+    set = function(self,option,value)
+        self.optionTable[option] = value
     end
 
 }
 
-function createOptions()
-    optionFile = {
-        filePath = "/reactor-turbine-program/config/options.json",
+function newOptions(path)
+    local optionFile = {
+        filePath = path or "/reactor-turbine-program/config/options.json",
         optionTable = {}
     }
     setmetatable(optionFile,{__index=Options})
     optionTable = optionFile:load()
-end
 
-function saveOptions()
-    optionFile:save()
-end
-
-function getOptions()
-    return optionFile.optionTable
-end
-
-function getOption(name)
-    return optionFile.optionTable[name]
-end
-
-function setOption(option,value)
-    optionFile.optionTable[option] = value
+    return optionFile
 end
 
 

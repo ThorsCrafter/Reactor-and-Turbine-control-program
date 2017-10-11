@@ -29,14 +29,13 @@ local function initBinaries()
     shell.run(binPath.."Peripherals.lua")
 end
 
-local function load()
+function loadAll()
     initBinaries()
-    createOptions()
     initPeripherals()
 end
 
 
-load()
+loadAll()
 
 
 
