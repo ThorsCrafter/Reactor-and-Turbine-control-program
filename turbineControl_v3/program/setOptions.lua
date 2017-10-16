@@ -5,9 +5,9 @@
 ---------- Variables
 
 --Loads the Touchpoint API
-shell.run("cp /reactor-turbine-program/lib/touchpoint.lua /touchpoint")
-os.loadAPI("touchpoint")
-shell.run("rm touchpoint")
+--shell.run("cp /reactor-turbine-program/lib/touchpoint.lua /touchpoint")
+--os.loadAPI("touchpoint")
+--shell.run("rm touchpoint")
 
 local exit = false
 local mainButtons
@@ -58,13 +58,13 @@ end
 
 ---------- Appearance Submenu
 
----------- Appearance Button function
+---------- Appearance Button functions
 local function setColor(value)
     appearanceOptions:set(appearanceMode .. "Color", value)
 end
 
 local function createAppearanceButtons()
-    appearanceButtons = touchpoint.new(monitorTable[1].side)
+    appearanceButtons = newTouchpoint(monitorTable[1].side)
     appearanceButtons:add(menuText.buttons.background, function() appearanceMode = "background" end, 2, 9, 14, 9)
     appearanceButtons:add(menuText.buttons.text, function() appearanceMode = "text" end, 2, 11, 14, 11)
 
@@ -85,7 +85,7 @@ local function createAppearanceButtons()
     appearanceButtons:add(menuText.colors.red, function() setColor(16384) end, 35, 19, 48, 19)
     appearanceButtons:add(menuText.colors.black, function() setColor(32768) end, 50, 19, 63, 19)
 
-    appearanceButtons:add(menuText.buttons.save, function() appearanceOptions:save() options = createOptions() end, 2, 15, 3 + string.len(menuText.buttons.save), 15)
+    appearanceButtons:add(menuText.buttons.save, function() appearanceOptions:save() options = appearanceOptions  end, 2, 15, 3 + string.len(menuText.buttons.save), 15)
     appearanceButtons:add(menuText.buttons.backOnce, function() exit = true end, 2, 17, 3 + string.len(menuText.buttons.backOnce), 17)
 
     appearanceButtons:toggleButton(menuText.buttons[appearanceMode])
@@ -131,7 +131,7 @@ end
 
 ---------- Main Menu functions
 local function createMainButtons()
-    mainButtons = touchpoint.new(monitorTable[1].side)
+    mainButtons = newTouchpoint(monitorTable[1].side)
     mainButtons:add(menuText.buttons.appearance, function() drawSubMenu(appearanceMenu, appearanceButtons) end, 2, 7, 3 + string.len(menuText.buttons.appearance), 7)
     mainButtons:add(menuText.buttons.reactorSettings, nil, 2, 9, 3 + string.len(menuText.buttons.reactorSettings), 9)
     mainButtons:add(menuText.buttons.turbineSettings, nil, 2, 11, 3 + string.len(menuText.buttons.turbineSettings), 11)

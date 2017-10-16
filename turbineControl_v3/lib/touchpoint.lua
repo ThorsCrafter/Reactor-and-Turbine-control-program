@@ -29,6 +29,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 --]]
 
+
 local function setupLabel(buttonLen, minY, maxY, name)
     local labelTable = {}
     if type(name) == "table" then
@@ -39,10 +40,10 @@ local function setupLabel(buttonLen, minY, maxY, name)
     elseif type(name) == "string" then
         local buttonText = string.sub(name, 1, buttonLen - 2)
         if #buttonText < #name then
-            buttonText = " "..buttonText.." "
+            buttonText = " " .. buttonText .. " "
         else
-            local labelLine = string.rep(" ", math.floor((buttonLen - #buttonText) / 2))..buttonText
-            buttonText = labelLine..string.rep(" ", buttonLen - #labelLine)
+            local labelLine = string.rep(" ", math.floor((buttonLen - #buttonText) / 2)) .. buttonText
+            buttonText = labelLine .. string.rep(" ", buttonLen - #labelLine)
         end
         for i = 1, maxY - minY + 1 do
             if maxY == minY or i == math.floor((maxY - minY) / 2) + 1 then
@@ -59,8 +60,8 @@ local Button = {
     draw = function(self)
         local old = term.redirect(self.mon)
         --TODO Change colors
-        term.setTextColor(colors.white)
-        term.setBackgroundColor(colors.gray)
+        term.setTextColor(self.options:get("textColor"))
+        term.setBackgroundColor(self.options:get("backgroundColor"))
         term.clear()
         for name, buttonData in pairs(self.buttonList) do
             if buttonData.active then
@@ -131,15 +132,15 @@ local Button = {
     run = function(self)
         while true do
             self:draw()
-            local event = {self:handleEvents(os.pullEvent(self.side == "term" and "mouse_click" or "monitor_touch"))}
+            local event = { self:handleEvents(os.pullEvent(self.side == "term" and "mouse_click" or "monitor_touch")) }
             if event[1] == "button_click" then
                 self.buttonList[event[2]].func()
             end
         end
     end,
     handleEvents = function(self, ...)
-        local event = {...}
-        if #event == 0 then event = {os.pullEvent()} end
+        local event = { ... }
+        if #event == 0 then event = { os.pullEvent() } end
         if (self.side == "term" and event[1] == "mouse_click") or (self.side ~= "term" and event[1] == "monitor_touch" and event[2] == self.side) then
             local clicked = self.clickMap[event[3]][event[4]]
             if clicked and self.buttonList[clicked] then
@@ -173,17 +174,23 @@ local Button = {
     end,
 }
 
-function new(monSide)
+local function new(monSide, options)
     local buttonInstance = {
         side = monSide or "term",
         mon = monSide and peripheral.wrap(monSide) or term.current(),
         buttonList = {},
         clickMap = {},
+        options = options
     }
     local x, y = buttonInstance.mon.getSize()
     for i = 1, x do
         buttonInstance.clickMap[i] = {}
     end
-    setmetatable(buttonInstance, {__index = Button})
+    setmetatable(buttonInstance, { __index = Button })
     return buttonInstance
+end
+
+function newTouchpoint(monSide)
+    local options = newOptions()
+    return new(monSide, options)
 end

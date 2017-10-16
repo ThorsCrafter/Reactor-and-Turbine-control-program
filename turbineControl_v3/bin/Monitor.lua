@@ -6,16 +6,15 @@ local Monitor = {
     name = "",
     side = "",
     id = {},
-
     size = function(self)
         return self.id.getSize()
     end,
     x = function(self)
-        local x,y = self:size()
+        local x, y = self:size()
         return x
     end,
     y = function(self)
-        local x,y = self:size()
+        local x, y = self:size()
         return y
     end,
     textColor = function(self, color)
@@ -34,7 +33,7 @@ local Monitor = {
     setCursor = function(self, x, y)
         self.id.setCursorPos(x, y)
     end,
-    write = function(self,text)
+    write = function(self, text)
         self.id.write(text)
     end,
     textScale = function(self, value)
@@ -42,9 +41,9 @@ local Monitor = {
     end
 }
 
-function newMonitor(name,side,id)
+function newMonitor(name, side, id)
     local monitor = {}
-    setmetatable(monitor,{__index=Monitor})
+    setmetatable(monitor, { __index = Monitor })
 
     monitor.name = name
     monitor.side = side

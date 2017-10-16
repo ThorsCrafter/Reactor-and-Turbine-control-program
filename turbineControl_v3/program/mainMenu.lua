@@ -5,9 +5,9 @@
 ---------- Variables
 
 --Loads the Touchpoint API
-shell.run("cp /reactor-turbine-program/lib/touchpoint.lua /touchpoint")
-os.loadAPI("touchpoint")
-shell.run("rm touchpoint")
+--shell.run("cp /reactor-turbine-program/lib/touchpoint.lua /touchpoint")
+--os.loadAPI("touchpoint")
+--shell.run("rm touchpoint")
 
 local exit = false
 local buttons
@@ -59,7 +59,7 @@ end
 
 ---------- UI functions
 local function createButtons()
-    buttons = touchpoint.new(monitorTable[1].side)
+    buttons = newTouchpoint(monitorTable[1].side)
 
     buttons:add(menuText.buttons.program_reactor, function() selectProgram("reactor") end, 2, 7, 3 + string.len(menuText.buttons.program_reactor), 7)
     buttons:add(menuText.buttons.program_turbine, function() selectProgram("turbine") end, 2, 9, 3 + string.len(menuText.buttons.program_turbine), 9)
