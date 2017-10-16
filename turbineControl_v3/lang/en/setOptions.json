@@ -1,0 +1,46 @@
+{
+  "buttons":{
+    "appearance":"   Appearance    ",
+    "reactorSettings":"Reactor Settings ",
+    "turbineSettings":"Turbine Settings ",
+    "wirelessSettings":"Wireless Settings",
+    "advancedSettings":"Advanced Settings",
+    "manualEdit":"   Manual Edit   ",
+    "back":"    Main Menu    ",
+
+    "background":"Background",
+    "text":"Text",
+    "save":" Save ",
+    "backOnce":" Back "
+  },
+  "colors":{
+    "white":"White",
+    "orange":"Orange",
+    "magenta":"Magenta",
+    "lightblue":"Lightblue",
+    "yellow":"Yellow",
+    "lime":"Lime",
+    "pink":"Pink",
+    "gray":"Gray",
+    "lightgray":"Lightgray",
+    "cyan":"Cyan",
+    "purple":"Purple",
+    "blue":"Blue",
+    "brown":"Brown",
+    "green":"Green",
+    "red":"Red",
+    "black":"Black"
+  },
+  "title":"Reactor- and Turbine Control - Options",
+  "categories":"Categories:",
+  "appearance":"Color Settings, etc.",
+  "reactorSettings":"Settings for the Reactor",
+  "turbineSettings":"Settings for the Turbines",
+  "wirelessSettings":"Connect a PocketComputer, etc.",
+  "advancedSettings":"Even more Settings",
+  "manualEdit":"Edit the config file manually",
+
+  "appearanceMenu":"Reactor- and Turbine Control - Appearance Options",
+  "changeColor":"Change Color",
+  "mode":"Mode"
+}

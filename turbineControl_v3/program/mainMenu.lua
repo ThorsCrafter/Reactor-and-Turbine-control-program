@@ -21,7 +21,7 @@ local menuOff = { menuText.buttons.mainMenuOff, label = "menuOn" }
 
 ---------- Button functions
 local function switchLang(lang)
-    options:set("lang",lang)
+    options:set("lang", lang)
     options:save()
     menuText = loadLanguageFile(options:get("lang") .. "/mainMenu.json")
 end
@@ -33,23 +33,28 @@ local function quitProgram()
 end
 
 local function selectProgram(program)
-    options:set("program",program)
+    options:set("program", program)
     options:save()
 end
 
 local function selectMode(mode)
-    options:set("mode",mode)
+    options:set("mode", mode)
     options:save()
 end
 
 local function toggleMainMenu()
     if options:get("mainMenu") then
-        options:set("mainMenu",false)
+        options:set("mainMenu", false)
         buttons.buttonList["menuOn"].active = false
     else
-        options:set("mainMenu",true)
+        options:set("mainMenu", true)
         buttons.buttonList["menuOn"].active = true
     end
+end
+
+local function runProgram(program)
+    shell.run("/reactor-turbine-program/"..program)
+    exit = true
 end
 
 ---------- UI functions
@@ -63,7 +68,7 @@ local function createButtons()
 
     buttons:add(menuText.buttons.start, nil, 2, 19, 3 + string.len(menuText.buttons.start), 19) --TODO Change to start the program
     buttons:add(menuText.buttons.exit, quitProgram, 2, 21, 3 + string.len(menuText.buttons.exit), 21)
-    buttons:add(menuText.buttons.options, nil, 2, 23, 3 + string.len(menuText.buttons.options), 23) --TODO Change to start the options menu
+    buttons:add(menuText.buttons.options, function() runProgram("program/setOptions.lua") end, 2, 23, 3 + string.len(menuText.buttons.options), 23) --TODO Change to start the options menu
 
     buttons:add("menuOn", toggleMainMenu, 36, 7, 39 + string.len(menuText.buttons.mainMenuOn), 7)
     buttons:rename("menuOn", menuOff, true)
@@ -100,8 +105,8 @@ end
 local function drawMenu()
     mon:clear()
     buttons:draw()
-    mon:backgroundColor(colors.gray)
-    mon:textColor(colors.white)
+    mon:backgroundColor(options:get("backgroundColor"))
+    mon:textColor(options:get("textColor"))
 
     drawHeader()
 

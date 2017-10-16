@@ -1,0 +1,47 @@
+{
+  "buttons":{
+    "appearance":"    Darstellung    ",
+    "reactorSettings":" Reaktor Optionen  ",
+    "turbineSettings":" Turbinen Optionen ",
+    "wirelessSettings":" Drahtlos Optionen ",
+    "advancedSettings":"Erweiterte Optionen",
+    "manualEdit":"Manuelles Editieren",
+    "back":"  Zum Hauptmenue   ",
+
+    "background":"Hintergrund",
+    "text":"   Text    ",
+    "save":"Speichern",
+    "backOnce":"Zurueck"
+  },
+  "colors":{
+    "white":"Weiss",
+    "orange":"Orange",
+    "magenta":"Magenta",
+    "lightblue":"Hellblau",
+    "yellow":"Geld",
+    "lime":"Hellgruen",
+    "pink":"Pink",
+    "gray":"Grau",
+    "lightgray":"Hellgrau",
+    "cyan":"Cyan",
+    "purple":"Lila",
+    "blue":"Blau",
+    "brown":"Braun",
+    "green":"Gruen",
+    "red":"Rot",
+    "black":"Schwarz"
+  },
+  "title":"Reaktor- und Turbinenprogramm - Optionen",
+  "categories":"Kategorien:",
+  "appearance":"Farbeinstellungen, etc.",
+  "reactorSettings":"Einstellungen fuer den Reaktor",
+  "turbineSettings":"Einstellungen fuer die Turbinen",
+  "wirelessSettings":"Verbindung mit einem PocketComputer, etc.",
+  "advancedSettings":"Noch mehr Einstellungen",
+  "manualEdit":"Configdatei manuell bearbeiten",
+
+  "appearanceMenu":"Reaktor- und Turbinenprogramm - Darstellungsoptionen",
+  "changeColor":"Farbe aendern",
+  "mode":"Modus:"
+
+}
