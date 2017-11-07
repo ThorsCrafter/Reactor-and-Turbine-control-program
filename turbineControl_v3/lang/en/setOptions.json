@@ -42,5 +42,8 @@
 
   "appearanceMenu":"Reactor- and Turbine Control - Appearance Options",
   "changeColor":"Change Color",
-  "mode":"Mode"
+  "mode":"Mode",
+
+  "reactorMenu":"Reactor- and Turbine Control - Reactor Options",
+  "currRodLevel":"Current Rod Level Setting: "
 }

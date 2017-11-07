@@ -31,6 +31,7 @@
     "red":"Rot",
     "black":"Schwarz"
   },
+
   "title":"Reaktor- und Turbinenprogramm - Optionen",
   "categories":"Kategorien:",
   "appearance":"Farbeinstellungen, etc.",
@@ -42,6 +43,9 @@
 
   "appearanceMenu":"Reaktor- und Turbinenprogramm - Darstellungsoptionen",
   "changeColor":"Farbe aendern",
-  "mode":"Modus:"
+  "mode":"Modus:",
+
+  "reactorMenu":"Reaktor- und Turbinenprogramm - Reaktoroptionen",
+  "currRodLevel":"Aktuelle RodLevel Einstellung: "
 
 }
