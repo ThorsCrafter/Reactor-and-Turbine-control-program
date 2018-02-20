@@ -45,5 +45,8 @@
   "mode":"Mode",
 
   "reactorMenu":"Reactor- and Turbine Control - Reactor Options",
-  "currRodLevel":"Current Rod Level Setting: "
+  "currRodLevel":"Current Rod Level Setting: ",
+
+  "turbineMenu":"Reactor- and Turbinen Control - Turbine Options",
+  "currRotorSpeed":"Current Rotor Speed Setting: "
 }

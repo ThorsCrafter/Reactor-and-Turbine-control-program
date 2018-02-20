@@ -46,6 +46,9 @@
   "mode":"Modus:",
 
   "reactorMenu":"Reaktor- und Turbinenprogramm - Reaktoroptionen",
-  "currRodLevel":"Aktuelle RodLevel Einstellung: "
+  "currRodLevel":"Aktuelle RodLevel Einstellung: ",
+
+  "turbineMenu":"Reaktor- und Turbinenprogramm - Turbinenoptionen",
+  "currRotorSpeed":"Aktuelle Rotorgeschwindigkeitseinstellung: "
 
 }
