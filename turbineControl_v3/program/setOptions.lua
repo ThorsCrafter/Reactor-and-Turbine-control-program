@@ -60,16 +60,16 @@ local function quit()
 end
 
 local function drawSubMenu(subMenu)
-    shell.run("/reactor-turbine-program/program/"..subMenu".lua")
+    shell.run("/reactor-turbine-program/program/"..subMenu..".lua")
     options = newOptions()
 end
 
 ---------- Main Menu functions
 local function createMainButtons()
-    mainButtons = newTouchpoint(monitorTable[1].side)
-    mainButtons:add(menuText.buttons.appearance, function() drawSubMenu(appearanceMenu) end, 2, 7, 3 + string.len(menuText.buttons.appearance), 7)
-    mainButtons:add(menuText.buttons.reactorSettings, function() drawSubMenu(reactorMenu) end, 2, 9, 3 + string.len(menuText.buttons.reactorSettings), 9)
-    mainButtons:add(menuText.buttons.turbineSettings, function() drawSubMenu(turbineMenu) end, 2, 11, 3 + string.len(menuText.buttons.turbineSettings), 11)
+    mainButtons = newTouchpoint(mon.side)
+    mainButtons:add(menuText.buttons.appearance, function() drawSubMenu("appearanceMenu") end, 2, 7, 3 + string.len(menuText.buttons.appearance), 7)
+    mainButtons:add(menuText.buttons.reactorSettings, function() drawSubMenu("reactorMenu") end, 2, 9, 3 + string.len(menuText.buttons.reactorSettings), 9)
+    mainButtons:add(menuText.buttons.turbineSettings, function() drawSubMenu("turbineMenu") end, 2, 11, 3 + string.len(menuText.buttons.turbineSettings), 11)
     mainButtons:add(menuText.buttons.wirelessSettings, nil, 2, 13, 3 + string.len(menuText.buttons.wirelessSettings), 13)
     mainButtons:add(menuText.buttons.advancedSettings, nil, 2, 15, 3 + string.len(menuText.buttons.advancedSettings), 15)
     mainButtons:add(menuText.buttons.manualEdit, nil, 2, 17, 3 + string.len(menuText.buttons.manualEdit), 17)

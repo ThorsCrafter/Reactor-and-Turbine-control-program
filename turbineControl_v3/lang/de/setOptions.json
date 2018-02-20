@@ -11,7 +11,10 @@
     "background":"Hintergrund",
     "text":"   Text    ",
     "save":"Speichern",
-    "backOnce":" Zurueck "
+    "backOnce":" Zurueck ",
+
+    "rotorSpeed": "Rotor",
+    "steamInput": "Steam"
   },
   "colors":{
     "white":"Weiss",
@@ -49,6 +52,7 @@
   "currRodLevel":"Aktuelle RodLevel Einstellung: ",
 
   "turbineMenu":"Reaktor- und Turbinenprogramm - Turbinenoptionen",
-  "currRotorSpeed":"Aktuelle Rotorgeschwindigkeitseinstellung: "
+  "currRotorSpeed":"Aktuelle Rotorgeschwindigkeitseinstellung: ",
+  "currSteamInput":"Aktuelle Steam Input Einstellung: "
 
 }

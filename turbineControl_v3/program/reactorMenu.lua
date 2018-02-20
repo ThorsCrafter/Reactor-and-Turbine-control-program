@@ -7,7 +7,7 @@
 local reactorButtons
 local reactorOptions = newOptions()
 local mon = monitorTable[1]
-local menuText = loadLanguageFile(appearanceOptions:get("lang") .. "/setOptions.json")
+local menuText = loadLanguageFile(reactorOptions:get("lang") .. "/setOptions.json")
 local exit = false
 
 
@@ -45,8 +45,8 @@ end
 local function drawFooter()
     mon:setCursor(1, mon:y() - 1)
     for i = 1, mon:x() do mon:write("-") end
-    mon:setCursor(math.floor(mon:x() / 2 - string.len("Version " .. options:get("version") .. " - (c) 2017 Thor_s_Crafter") / 2), mon:y())
-    mon:write("Version " .. options:get("version") .. " - (c) 2017 Thor_s_Crafter")
+    mon:setCursor(math.floor(mon:x() / 2 - string.len("Version " .. reactorOptions:get("version") .. " - (c) 2017 Thor_s_Crafter") / 2), mon:y())
+    mon:write("Version " .. reactorOptions:get("version") .. " - (c) 2017 Thor_s_Crafter")
 end
 
 ---------- Button functions
@@ -61,7 +61,7 @@ local function setRodLevel(mode, count)
 end
 
 local function createReactorMenuButtons()
-    reactorButtons = newTouchpoint(monitorTable[i].side)
+    reactorButtons = newTouchpoint(mon.side)
 
     reactorButtons:add("-1", function() setRodLevel("-", 1) end, 3, 8, 6, 8)
     reactorButtons:add("-10", function() setRodLevel("-", 10) end, 8, 8, 12, 8)
@@ -95,7 +95,6 @@ end
 
 while not exit do
     reactorMenu()
-    handleClicks(reactorButtons)
 end
 
 

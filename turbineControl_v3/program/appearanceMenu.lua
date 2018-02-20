@@ -6,9 +6,9 @@
 
 local appearanceMode = "background"
 local appearanceButtons
-local appearanceappearanceOptions = newappearanceOptions()
+local appearanceOptions = newOptions()
 local mon = monitorTable[1]
-local menuText = loadLanguageFile(appearanceappearanceOptions:get("lang") .. "/setappearanceOptions.json")
+local menuText = loadLanguageFile(appearanceOptions:get("lang") .. "/setOptions.json")
 local exit = false
 
 
@@ -52,7 +52,7 @@ end
 
 ---------- Button functions
 local function setColor(value)
-    appearanceappearanceOptions:set(appearanceMode .. "Color", value)
+    appearanceOptions:set(appearanceMode .. "Color", value)
 end
 
 local function createAppearanceButtons()
@@ -77,7 +77,7 @@ local function createAppearanceButtons()
     appearanceButtons:add(menuText.colors.red, function() setColor(16384) end, 35, 19, 48, 19)
     appearanceButtons:add(menuText.colors.black, function() setColor(32768) end, 50, 19, 63, 19)
 
-    appearanceButtons:add(menuText.buttons.save, function() appearanceappearanceOptions:save() end, 2, 15, 3 + string.len(menuText.buttons.save), 15)
+    appearanceButtons:add(menuText.buttons.save, function() appearanceOptions:save() end, 2, 15, 3 + string.len(menuText.buttons.save), 15)
     appearanceButtons:add(menuText.buttons.backOnce, function() exit = true end, 2, 17, 3 + string.len(menuText.buttons.backOnce), 17)
 
     appearanceButtons:toggleButton(menuText.buttons[appearanceMode])
@@ -95,8 +95,8 @@ local function appearanceMenu()
 
     drawHeader(menuText.appearanceMenu)
 
-    mon:backgroundColor(appearanceappearanceOptions:get("backgroundColor"))
-    mon:textColor(appearanceappearanceOptions:get("textColor"))
+    mon:backgroundColor(appearanceOptions:get("backgroundColor"))
+    mon:textColor(appearanceOptions:get("textColor"))
 
     mon:setCursor(2, 5)
     mon:write(menuText.changeColor)
@@ -112,5 +112,4 @@ end
 
 while not exit do
     appearanceMenu()
-    handleClicks(appearanceButtons)
 end

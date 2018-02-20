@@ -11,7 +11,10 @@
     "background":"Background",
     "text":"Text",
     "save":" Save ",
-    "backOnce":" Back "
+    "backOnce":" Back ",
+
+    "rotorSpeed":"Rotor",
+    "steamInput":"Steam"
   },
   "colors":{
     "white":"White",
@@ -48,5 +51,6 @@
   "currRodLevel":"Current Rod Level Setting: ",
 
   "turbineMenu":"Reactor- and Turbinen Control - Turbine Options",
-  "currRotorSpeed":"Current Rotor Speed Setting: "
+  "currRotorSpeed":"Current Rotor Speed Setting: ",
+  "currSteamInput":"Current Steam Input Setting: "
 }
