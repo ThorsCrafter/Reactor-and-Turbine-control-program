@@ -53,6 +53,8 @@
 
   "turbineMenu":"Reaktor- und Turbinenprogramm - Turbinenoptionen",
   "currRotorSpeed":"Aktuelle Rotorgeschwindigkeitseinstellung: ",
-  "currSteamInput":"Aktuelle Steam Input Einstellung: "
+  "currSteamInput":"Aktuelle Steam Input Einstellung: ",
+
+  "wirelessMenu":"Reaktor- und Turbinenprogramm - Drahtlosoptionen"
 
 }

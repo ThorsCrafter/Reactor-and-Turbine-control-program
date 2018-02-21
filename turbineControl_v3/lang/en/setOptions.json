@@ -50,7 +50,9 @@
   "reactorMenu":"Reactor- and Turbine Control - Reactor Options",
   "currRodLevel":"Current Rod Level Setting: ",
 
-  "turbineMenu":"Reactor- and Turbinen Control - Turbine Options",
+  "turbineMenu":"Reactor- and Turbine Control - Turbine Options",
   "currRotorSpeed":"Current Rotor Speed Setting: ",
-  "currSteamInput":"Current Steam Input Setting: "
+  "currSteamInput":"Current Steam Input Setting: ",
+
+  "wirelessMenu":"Reactor- and Turbine Control - Wireless Options"
 }
