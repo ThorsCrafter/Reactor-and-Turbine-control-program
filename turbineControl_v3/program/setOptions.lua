@@ -26,7 +26,9 @@ local function handleClicks(buttonInstance)
 
         --execute a mainButtons function if clicked
         if event == "button_click" then
-            if buttonInstance.buttonList[but].func == nil then break end
+            if buttonInstance.buttonList[but].func == nil then
+                break
+            end
             buttonInstance:flash(but)
             buttonInstance.buttonList[but].func()
             break
@@ -39,16 +41,22 @@ end
 ---------- Header and Footer
 local function drawHeader(title)
     mon:setCursor(1, 1)
-    for i = 1, mon:x() do mon:write("=") end
+    for i = 1, mon:x() do
+        mon:write("=")
+    end
     mon:setCursor(math.floor(mon:x() / 2 - string.len(title) / 2), 2)
     mon:write(title)
     mon:setCursor(1, 3)
-    for i = 1, mon:x() do mon:write("=") end
+    for i = 1, mon:x() do
+        mon:write("=")
+    end
 end
 
 local function drawFooter()
     mon:setCursor(1, mon:y() - 1)
-    for i = 1, mon:x() do mon:write("-") end
+    for i = 1, mon:x() do
+        mon:write("-")
+    end
     mon:setCursor(math.floor(mon:x() / 2 - string.len("Version " .. options:get("version") .. " - (c) 2017 Thor_s_Crafter") / 2), mon:y())
     mon:write("Version " .. options:get("version") .. " - (c) 2017 Thor_s_Crafter")
 end
@@ -60,19 +68,32 @@ local function quit()
 end
 
 local function drawSubMenu(subMenu)
-    shell.run("/reactor-turbine-program/program/"..subMenu..".lua")
+    shell.run("/reactor-turbine-program/program/" .. subMenu .. ".lua")
     options = newOptions()
 end
+
 
 ---------- Main Menu functions
 local function createMainButtons()
     mainButtons = newTouchpoint(mon.side)
-    mainButtons:add(menuText.buttons.appearance, function() drawSubMenu("appearanceMenu") end, 2, 7, 3 + string.len(menuText.buttons.appearance), 7)
-    mainButtons:add(menuText.buttons.reactorSettings, function() drawSubMenu("reactorMenu") end, 2, 9, 3 + string.len(menuText.buttons.reactorSettings), 9)
-    mainButtons:add(menuText.buttons.turbineSettings, function() drawSubMenu("turbineMenu") end, 2, 11, 3 + string.len(menuText.buttons.turbineSettings), 11)
-    mainButtons:add(menuText.buttons.wirelessSettings, function() drawSubMenu("wirelessMenu") end, 2, 13, 3 + string.len(menuText.buttons.wirelessSettings), 13)
-    mainButtons:add(menuText.buttons.advancedSettings, function() drawSubMenu("advancedMenu") end, 2, 15, 3 + string.len(menuText.buttons.advancedSettings), 15)
-    mainButtons:add(menuText.buttons.manualEdit, nil, 2, 17, 3 + string.len(menuText.buttons.manualEdit), 17)
+    mainButtons:add(menuText.buttons.appearance, function()
+        drawSubMenu("appearanceMenu")
+    end, 2, 7, 3 + string.len(menuText.buttons.appearance), 7)
+    mainButtons:add(menuText.buttons.reactorSettings, function()
+        drawSubMenu("reactorMenu")
+    end, 2, 9, 3 + string.len(menuText.buttons.reactorSettings), 9)
+    mainButtons:add(menuText.buttons.turbineSettings, function()
+        drawSubMenu("turbineMenu")
+    end, 2, 11, 3 + string.len(menuText.buttons.turbineSettings), 11)
+    mainButtons:add(menuText.buttons.wirelessSettings, function()
+        drawSubMenu("wirelessMenu")
+    end, 2, 13, 3 + string.len(menuText.buttons.wirelessSettings), 13)
+    mainButtons:add(menuText.buttons.advancedSettings, function()
+        drawSubMenu("advancedMenu")
+    end, 2, 15, 3 + string.len(menuText.buttons.advancedSettings), 15)
+    mainButtons:add(menuText.buttons.manualEdit, function()
+        drawSubMenu("manualEditMenu")
+    end, 2, 17, 3 + string.len(menuText.buttons.manualEdit), 17)
     mainButtons:add(menuText.buttons.back, quit, 2, 20, 3 + string.len(menuText.buttons.back), 20)
 end
 
