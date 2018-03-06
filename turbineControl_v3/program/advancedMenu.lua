@@ -57,7 +57,8 @@ end
 local function createAdvancedMenuButtons()
     advancedButtons = newTouchpoint(mon.side)
 
-    advancedButtons:add(menuText.buttons.save, function() advancedButtons:save() end, 2, 15, 3 + string.len(menuText.buttons.save), 15)
+    --TODO Re-add Save Button
+    --advancedButtons:add(menuText.buttons.save, function() advancedButtons:save() end, 2, 15, 3 + string.len(menuText.buttons.save), 15)
     advancedButtons:add(menuText.buttons.backOnce, function() exit = true end, 2, 17, 3 + string.len(menuText.buttons.backOnce), 17)
 end
 
@@ -73,8 +74,7 @@ local function advancedMenu()
     drawHeader(menuText.advancedMenu)
 
     mon:setCursor(2, 5)
-    mon:write(menuText.currRodLevel)
-    mon:write(advancedOptions:get("rodLevel") .. "   ")
+    mon:write("Coming soon!")
 
     drawFooter()
     handleClicks(advancedButtons)

@@ -55,6 +55,7 @@
   "currRotorSpeed":"Aktuelle Rotorgeschwindigkeitseinstellung: ",
   "currSteamInput":"Aktuelle Steam Input Einstellung: ",
 
-  "wirelessMenu":"Reaktor- und Turbinenprogramm - Drahtlosoptionen"
+  "wirelessMenu":"Reaktor- und Turbinenprogramm - Drahtlosoptionen",
+  "advancedMenu":"Reaktor- und Turbinenprogramm - Erweiterte Optionen"
 
 }

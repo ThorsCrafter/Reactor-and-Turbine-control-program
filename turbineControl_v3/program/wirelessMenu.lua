@@ -45,8 +45,8 @@ end
 local function drawFooter()
     mon:setCursor(1, mon:y() - 1)
     for i = 1, mon:x() do mon:write("-") end
-    mon:setCursor(math.floor(mon:x() / 2 - string.len("Version " .. reactorOptions:get("version") .. " - (c) 2017 Thor_s_Crafter") / 2), mon:y())
-    mon:write("Version " .. reactorOptions:get("version") .. " - (c) 2017 Thor_s_Crafter")
+    mon:setCursor(math.floor(mon:x() / 2 - string.len("Version " .. wirelessOptions:get("version") .. " - (c) 2017 Thor_s_Crafter") / 2), mon:y())
+    mon:write("Version " .. wirelessOptions:get("version") .. " - (c) 2017 Thor_s_Crafter")
 end
 
 ---------- Button functions
@@ -57,7 +57,7 @@ local function createWirelessMenuButtons()
     wirelessButtons = newTouchpoint(mon.side)
 
     --TODO Re-add Save Button
-    --wirelessButtons:add(menuText.buttons.save, function() reactorButtons:save() end, 2, 15, 3 + string.len(menuText.buttons.save), 15)
+    --wirelessButtons:add(menuText.buttons.save, function() wirelessButtons:save() end, 2, 15, 3 + string.len(menuText.buttons.save), 15)
     wirelessButtons:add(menuText.buttons.backOnce, function() exit = true end, 2, 17, 3 + string.len(menuText.buttons.backOnce), 17)
 end
 

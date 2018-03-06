@@ -54,5 +54,6 @@
   "currRotorSpeed":"Current Rotor Speed Setting: ",
   "currSteamInput":"Current Steam Input Setting: ",
 
-  "wirelessMenu":"Reactor- and Turbine Control - Wireless Options"
+  "wirelessMenu":"Reactor- and Turbine Control - Wireless Options",
+  "advancedMenu":"Reactor- and Turbine Control - Advanced Options"
 }
