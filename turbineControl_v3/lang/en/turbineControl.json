@@ -1,0 +1,10 @@
+{
+  "buttons": {
+  },
+  "errors": {
+    "noReactor":"No reactor was found! Please check!",
+    "noTurbine":"Turbine(s) not found! Please check!",
+    "noEnergyStorage":"No Energy storage was found! Please check!"
+  },
+  "title": "Reactor- and Turbine Control - Turbine Control"
+}

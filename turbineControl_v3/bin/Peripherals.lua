@@ -20,7 +20,7 @@ local function searchPeripherals()
             local tmp = peripheral.wrap(peripheralList[i])
             local success, err = pcall(function() tmp.getEnergyStored() end)
             if success then
-                energyStorageTable[#energyStorageTable + 1] = newEnergyStorage("e" .. tostring(#energyStorageTable + 1), tmp)
+                energyStorageTable[#energyStorageTable + 1] = newEnergyStorage("e" .. tostring(#energyStorageTable + 1), tmp, peripheralList[i], peripheral.getType(peripheralList[i]))
             end
         end
     end

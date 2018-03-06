@@ -1,0 +1,12 @@
+{
+  "buttons": {
+  },
+  "errors": {
+    "noReactor":"Reaktor nicht gefunden! Bitte pruefen!",
+    "noTurbine":"Turbine(n) nicht gefunden! Bitte pruefen!",
+    "noEnergyStorage":"Energiespeicher nicht gefunden. Bitte pruefen!"
+  },
+
+  "title":"Reaktor- und Turbinenprogramm - Turbinenprogramm"
+
+}

@@ -5,6 +5,8 @@
 local EnergyStorage = {
     name = "",
     id = {},
+    side = "",
+    type = "",
     
     energy = function(self)
         return self.id.getEnergyStored()
@@ -20,12 +22,14 @@ local EnergyStorage = {
     end
 }
 
-function newEnergyStorage(name,id)
+function newEnergyStorage(name,id, side, type)
     local storage = {}
     setmetatable(storage,{__index=EnergyStorage})
 
     storage.name = name
     storage.id = id
+    storage.side = side
+    storage.type = type
 
     return storage
 end

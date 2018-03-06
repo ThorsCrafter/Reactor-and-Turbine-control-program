@@ -23,7 +23,6 @@ local Options = {
     set = function(self,option,value)
         self.optionTable[option] = value
     end
-
 }
 
 function newOptions(path)
