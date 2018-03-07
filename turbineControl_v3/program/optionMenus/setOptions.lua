@@ -40,7 +40,7 @@ local function quit()
 end
 
 local function drawSubMenu(subMenu)
-    shell.run("/reactor-turbine-program/program/" .. subMenu .. ".lua")
+    shell.run("/reactor-turbine-program/program/optionMenus/" .. subMenu .. ".lua")
     options = newOptions()
 end
 

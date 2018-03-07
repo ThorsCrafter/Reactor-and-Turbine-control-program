@@ -59,9 +59,9 @@ end
 
 local function startControl()
     if options:get("program") == "turbine" then
-        shell.run("/reactor-turbine-program/program/turbineControl.lua")
+        shell.run("/reactor-turbine-program/program/turbinePrograms/turbineControl.lua")
     elseif options:get("program") == "reactor" then
-        --shell.run("/reactor-turbine-program/program/reactorControl.lua") --TODO Implement reactorControl first
+        --shell.run("/reactor-turbine-program/program/reactorPrograms/reactorControl.lua") --TODO Implement reactorControl first
     end
 end
 
@@ -85,7 +85,7 @@ local function createButtons()
     buttons:add(menuText.buttons.start, startControl, 2, 19, 3 + string.len(menuText.buttons.start), 19) --TODO Change to start the program
     buttons:add(menuText.buttons.exit, quitProgram, 2, 21, 3 + string.len(menuText.buttons.exit), 21)
     buttons:add(menuText.buttons.options, function()
-        runProgram("program/setOptions.lua")
+        runProgram("program/optionMenus/setOptions.lua")
     end, 2, 23, 3 + string.len(menuText.buttons.options), 23) --TODO Change to start the options menu
 
     buttons:add("menuOn", toggleMainMenu, 36, 7, 39 + string.len(menuText.buttons.mainMenuOn), 7)
