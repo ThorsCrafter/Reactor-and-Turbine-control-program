@@ -4,11 +4,6 @@
 
 ---------- Variables
 
---Loads the Touchpoint API
---shell.run("cp /reactor-turbine-program/lib/touchpoint.lua /touchpoint")
---os.loadAPI("touchpoint")
---shell.run("rm touchpoint")
-
 local exit = false
 local mainButtons
 local mon = monitorTable[1]
@@ -38,29 +33,6 @@ local function handleClicks(buttonInstance)
     end
 end
 
----------- Header and Footer
-local function drawHeader(title)
-    mon:setCursor(1, 1)
-    for i = 1, mon:x() do
-        mon:write("=")
-    end
-    mon:setCursor(math.floor(mon:x() / 2 - string.len(title) / 2), 2)
-    mon:write(title)
-    mon:setCursor(1, 3)
-    for i = 1, mon:x() do
-        mon:write("=")
-    end
-end
-
-local function drawFooter()
-    mon:setCursor(1, mon:y() - 1)
-    for i = 1, mon:x() do
-        mon:write("-")
-    end
-    mon:setCursor(math.floor(mon:x() / 2 - string.len("Version " .. options:get("version") .. " - (c) 2017 Thor_s_Crafter") / 2), mon:y())
-    mon:write("Version " .. options:get("version") .. " - (c) 2017 Thor_s_Crafter")
-end
-
 ---------- Main Menu Button functions
 local function quit()
     shell.run("/reactor-turbine-program/program/mainMenu.lua")
@@ -71,7 +43,6 @@ local function drawSubMenu(subMenu)
     shell.run("/reactor-turbine-program/program/" .. subMenu .. ".lua")
     options = newOptions()
 end
-
 
 ---------- Main Menu functions
 local function createMainButtons()
@@ -98,33 +69,24 @@ local function createMainButtons()
 end
 
 local function drawMenu()
-    mon:clear()
+    local ui = newUI("setOptions", mon, menuText.title, options:get("version"), options:get("backgroundColor"), options:get("textColor"))
+    createMainButtons()
+
+    ui:clear()
     mainButtons:draw()
-    mon:backgroundColor(options:get("backgroundColor"))
-    mon:textColor(options:get("textColor"))
+    ui:drawFrame()
 
-    drawHeader(menuText.title)
+    ui:writeContent(2,5,menuText.categories)
+    ui:writeContent(25,7,menuText.appearance)
+    ui:writeContent(25,9,menuText.reactorSettings)
+    ui:writeContent(25,11,menuText.turbineSettings)
+    ui:writeContent(25,13,menuText.wirelessSettings)
+    ui:writeContent(25,15,menuText.advancedSettings)
+    ui:writeContent(25,17,menuText.manualEdit)
 
-    mon:setCursor(2, 5)
-    mon:write(menuText.categories)
-    mon:setCursor(25, 7)
-    mon:write(menuText.appearance)
-    mon:setCursor(25, 9)
-    mon:write(menuText.reactorSettings)
-    mon:setCursor(25, 11)
-    mon:write(menuText.turbineSettings)
-    mon:setCursor(25, 13)
-    mon:write(menuText.wirelessSettings)
-    mon:setCursor(25, 15)
-    mon:write(menuText.advancedSettings)
-    mon:setCursor(25, 17)
-    mon:write(menuText.manualEdit)
-
-    drawFooter()
+    handleClicks(mainButtons)
 end
 
 while not exit do
-    createMainButtons()
     drawMenu()
-    handleClicks(mainButtons)
 end

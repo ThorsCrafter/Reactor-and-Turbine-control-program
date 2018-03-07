@@ -32,23 +32,6 @@ local function handleClicks(buttonInstance)
     end
 end
 
----------- Header and Footer
-local function drawHeader(title)
-    mon:setCursor(1, 1)
-    for i = 1, mon:x() do mon:write("=") end
-    mon:setCursor(math.floor(mon:x() / 2 - string.len(title) / 2), 2)
-    mon:write(title)
-    mon:setCursor(1, 3)
-    for i = 1, mon:x() do mon:write("=") end
-end
-
-local function drawFooter()
-    mon:setCursor(1, mon:y() - 1)
-    for i = 1, mon:x() do mon:write("-") end
-    mon:setCursor(math.floor(mon:x() / 2 - string.len("Version " .. advancedOptions:get("version") .. " - (c) 2017 Thor_s_Crafter") / 2), mon:y())
-    mon:write("Version " .. advancedOptions:get("version") .. " - (c) 2017 Thor_s_Crafter")
-end
-
 ---------- Button functions
 
 --TODO Implement button functions
@@ -65,18 +48,14 @@ end
 ---------- Menu functions
 local function advancedMenu()
     createAdvancedMenuButtons()
+    local ui = newUI("advancedMenu",mon,menuText.advancedMenu,advancedOptions:get("version"),advancedOptions:get("backgroundColor"), advancedOptions:get("textColor"))
 
-    mon:clear()
+    ui:clear()
     advancedButtons:draw()
-    mon:backgroundColor(advancedOptions:get("backgroundColor"))
-    mon:textColor(advancedOptions:get("textColor"))
+    ui:drawFrame()
 
-    drawHeader(menuText.advancedMenu)
+    ui:writeContent(2,5,"Coming soon!")
 
-    mon:setCursor(2, 5)
-    mon:write("Coming soon!")
-
-    drawFooter()
     handleClicks(advancedButtons)
 end
 

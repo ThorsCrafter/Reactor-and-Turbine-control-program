@@ -108,48 +108,20 @@ local function createButtons()
     buttons:toggleButton(menuText.buttons["lang_" .. options:get("lang")])
 end
 
-local function drawHeader()
-    mon:setCursor(1, 1)
-    for i = 1, mon:x() do
-        mon:write("=")
-    end
-    mon:setCursor(math.floor(mon:x() / 2 - string.len(menuText.title) / 2), 2)
-    mon:write(menuText.title)
-    mon:setCursor(1, 3)
-    for i = 1, mon:x() do
-        mon:write("=")
-    end
-end
-
-local function drawFooter()
-    mon:setCursor(1, mon:y() - 1)
-    for i = 1, mon:x() do
-        mon:write("-")
-    end
-    mon:setCursor(math.floor(mon:x() / 2 - string.len("Version " .. options:get("version") .. " - (c) 2017 Thor_s_Crafter") / 2), mon:y())
-    mon:write("Version " .. options:get("version") .. " - (c) 2017 Thor_s_Crafter")
-end
-
 local function drawMenu()
-    mon:clear()
+    local ui = newUI("mainMenu", mon, menuText.title, options:get("version"), options:get("backgroundColor"), options:get("textColor"))
+    createButtons()
+
+    ui:clear()
     buttons:draw()
-    mon:backgroundColor(options:get("backgroundColor"))
-    mon:textColor(options:get("textColor"))
+    ui:drawFrame()
 
-    drawHeader()
+    ui:writeContent(2, 5, menuText.program)
+    ui:writeContent(2, 11, menuText.mode)
+    ui:writeContent(2, 17, menuText.control)
+    ui:writeContent(36, 5, menuText.displayMainMenu)
+    ui:writeContent(36, 9, menuText.language)
 
-    mon:setCursor(2, 5)
-    mon:write(menuText.program)
-    mon:setCursor(2, 11)
-    mon:write(menuText.mode)
-    mon:setCursor(2, 17)
-    mon:write(menuText.control)
-    mon:setCursor(36, 5)
-    mon:write(menuText.displayMainMenu)
-    mon:setCursor(36, 9)
-    mon:write(menuText.language)
-
-    drawFooter()
 end
 
 ---------- Event functions
@@ -176,13 +148,9 @@ local function handleClicks()
 end
 
 --------- Other functions
-local function menu()
-    createButtons()
-    drawMenu()
-end
 
 while not exit do
-    menu()
+    drawMenu()
     handleClicks()
 end
 

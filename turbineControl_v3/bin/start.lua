@@ -27,6 +27,7 @@ local function initBinaries()
     shell.run(binPath.."Monitor.lua")
     shell.run(binPath.."EnergyStorage.lua")
     shell.run(binPath.."Peripherals.lua")
+    shell.run(binPath.."UI.lua")
     shell.run("/reactor-turbine-program/lib/touchpoint.lua")
 end
 

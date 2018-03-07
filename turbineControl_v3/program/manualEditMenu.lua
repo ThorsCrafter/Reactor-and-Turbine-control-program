@@ -33,29 +33,6 @@ local function handleClicks(buttonInstance)
     end
 end
 
----------- Header and Footer
-local function drawHeader(title)
-    mon:setCursor(1, 1)
-    for i = 1, mon:x() do
-        mon:write("=")
-    end
-    mon:setCursor(math.floor(mon:x() / 2 - string.len(title) / 2), 2)
-    mon:write(title)
-    mon:setCursor(1, 3)
-    for i = 1, mon:x() do
-        mon:write("=")
-    end
-end
-
-local function drawFooter()
-    mon:setCursor(1, mon:y() - 1)
-    for i = 1, mon:x() do
-        mon:write("-")
-    end
-    mon:setCursor(math.floor(mon:x() / 2 - string.len("Version " .. manualOptions:get("version") .. " - (c) 2017 Thor_s_Crafter") / 2), mon:y())
-    mon:write("Version " .. manualOptions:get("version") .. " - (c) 2017 Thor_s_Crafter")
-end
-
 ---------- Button functions
 
 local function doManualEdit()
@@ -88,24 +65,17 @@ end
 
 local function manualMenu()
     createAdvancedMenuButtons()
+    local ui = newUI("manualEditMenu",mon,menuText.manualEditMenu,manualOptions:get("version"),manualOptions:get("backgroundColor"), manualOptions:get("textColor"))
 
-    mon:clear()
+    ui:clear()
     manualButtons:draw()
-    mon:backgroundColor(manualOptions:get("backgroundColor"))
-    mon:textColor(manualOptions:get("textColor"))
+    ui:drawFrame()
 
-    drawHeader(menuText.manualEditMenu)
+    ui:writeContent(2,5, menuText.manualEditWarning1)
+    ui:writeContent(2,7,menuText.manualEditWarning2)
+    ui:writeContent(2,9,menuText.manualEditWarning3)
+    ui:writeContent(2,12,menuText.manualEditConfirm)
 
-    mon:setCursor(2, 5)
-    mon:write(menuText.manualEditWarning1)
-    mon:setCursor(2, 7)
-    mon:write(menuText.manualEditWarning2)
-    mon:setCursor(2, 9)
-    mon:write(menuText.manualEditWarning3)
-    mon:setCursor(2, 12)
-    mon:write(menuText.manualEditConfirm)
-
-    drawFooter()
     handleClicks(manualButtons)
 end
 
