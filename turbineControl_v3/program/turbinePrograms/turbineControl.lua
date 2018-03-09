@@ -21,33 +21,6 @@ local mainButtons
 local selectPeripheralButtons
 
 
----------- Checking data functions (peripherals, etc.)
-
-local function checkPeripherals()
-    if #reactorTable == 0 then
-        errorTable.isPresent = true
-        errorTable.reason = text.errors.noReactor
-    end
-
-    if #turbineTable == 0 then
-        errorTable.isPresent = true
-        errorTable.reason = text.errors.noTurbine
-    end
-
-    if #energyStorageTable == 0 then
-        errorTable.isPresent = true
-        errorTable.reason = text.errors.noEnergyStorage
-    end
-
-    if #reactorTable > 1 then
-
-    end
-
-    if #energyStorageTable > 1 then
-
-    end
-end
-
 
 ---------- Control functions
 

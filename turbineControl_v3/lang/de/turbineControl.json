@@ -4,7 +4,10 @@
   "errors": {
     "noReactor":"Reaktor nicht gefunden! Bitte pruefen!",
     "noTurbine":"Turbine(n) nicht gefunden! Bitte pruefen!",
-    "noEnergyStorage":"Energiespeicher nicht gefunden. Bitte pruefen!"
+    "noEnergyStorage":"Energiespeicher nicht gefunden. Bitte pruefen!",
+
+    "selectReactor":"Bitte waehle einen Reaktor aus:",
+    "selectEnergyStorage":"Bitte waehle einen Energiespeicher aus:"
   },
 
   "title":"Reaktor- und Turbinenprogramm - Turbinenprogramm"

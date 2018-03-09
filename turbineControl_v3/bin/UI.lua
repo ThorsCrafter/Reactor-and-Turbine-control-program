@@ -46,9 +46,12 @@ local UI = {
         self:footer()
     end,
 
-    writeContent = function(self, row, column, content)
-        self.mon:backgroundColor(self.background)
-        self.mon:textColor(self.foreground)
+    writeContent = function(self, row, column, content, textColor, backgroundColor)
+        textColor = textColor or self.foreground
+        backgroundColor = backgroundColor or self.background
+
+        self.mon:backgroundColor(backgroundColor)
+        self.mon:textColor(textColor)
 
         self.mon:setCursor(row,column)
         self.mon:write(content)

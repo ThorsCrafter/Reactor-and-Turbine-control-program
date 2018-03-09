@@ -5,6 +5,8 @@
 local Reactor = {
     name = "",
     id = {},
+    side = "",
+    type = "",
 
     active = function(self)
         return self.id.getActive()
@@ -58,12 +60,14 @@ local Reactor = {
 }
 
 
-function newReactor(name,id)
+function newReactor(name,id, side, type)
     local reactor = {}
     setmetatable(reactor,{__index=Reactor})
 
     reactor.name = name
     reactor.id = id
+    reactor.side = side
+    reactor.type = type
 
     return reactor
 end

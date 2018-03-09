@@ -5,6 +5,8 @@
 local Turbine = {
     name = "",
     id = {},
+    side = "",
+    type = "",
 
     active = function(self)
         return self.id.getActive()
@@ -37,12 +39,14 @@ local Turbine = {
 
 }
 
-function newTurbine(name,id)
+function newTurbine(name,id, side, type)
     local turbine = {}
     setmetatable(turbine,{__index = Turbine})
 
     turbine.name = name
     turbine.id = id
+    turbine.side = side
+    turbine.type = type
 
     return turbine
 end

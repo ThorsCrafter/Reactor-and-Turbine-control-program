@@ -11,9 +11,9 @@ local function searchPeripherals()
     local peripheralList = peripheral.getNames()
     for i = 1, #peripheralList do
         if peripheral.getType(peripheralList[i]) == "BigReactors-Reactor" then
-            reactorTable[#reactorTable + 1] = newReactor("r" .. tostring(#reactorTable + 1), peripheral.wrap(peripheralList[i]))
+            reactorTable[#reactorTable + 1] = newReactor("r" .. tostring(#reactorTable + 1), peripheral.wrap(peripheralList[i]), peripheralList[i], peripheral.getType(peripheralList[i]))
         elseif peripheral.getType(peripheralList[i]) == "BigReactors-Turbine" then
-            turbineTable[#turbineTable + 1] = newTurbine("t" .. tostring(#turbineTable + 1), peripheral.wrap(peripheralList[i]))
+            turbineTable[#turbineTable + 1] = newTurbine("t" .. tostring(#turbineTable + 1), peripheral.wrap(peripheralList[i]), peripheralList[i], peripheral.getType(peripheralList[i]))
         elseif peripheral.getType(peripheralList[i]) == "monitor" then
             monitorTable[#monitorTable + 1] = newMonitor("m" .. tostring(#monitorTable + 1), peripheralList[i], peripheral.wrap(peripheralList[i]))
         else
