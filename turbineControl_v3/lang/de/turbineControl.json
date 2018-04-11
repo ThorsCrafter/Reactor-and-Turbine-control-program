@@ -7,7 +7,8 @@
     "noEnergyStorage":"Energiespeicher nicht gefunden. Bitte pruefen!",
 
     "selectReactor":"Bitte waehle einen Reaktor aus:",
-    "selectEnergyStorage":"Bitte waehle einen Energiespeicher aus:"
+    "selectEnergyStorage":"Bitte waehle einen Energiespeicher aus:",
+    "selectMonitor":"Bitte waehle einen Monitor aus:"
   },
 
   "title":"Reaktor- und Turbinenprogramm - Turbinenprogramm"

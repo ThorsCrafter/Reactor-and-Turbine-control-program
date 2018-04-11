@@ -7,6 +7,7 @@ local exit = false
 local options = newOptions()
 local rButtons
 local eSButtons
+local monButtons
 local text = loadLanguageFile(options:get("lang") .. "/turbineControl.json")
 local errorTable = { error = false }
 
@@ -40,6 +41,14 @@ local function checkPeripherals()
         errorTable.error = true
         errorTable["eS"] = { energyStorageCount = 1 }
     end
+
+    if #monitorTable > 1 then
+        errorTable.error = true
+        errorTable["m"] = { monitorCount = 1 }
+    end
+
+    -- TODO: Check peripheral config file
+
 
     if not errorTable.error then
         exit = true
@@ -86,12 +95,13 @@ end
 local function createButtons()
     rButtons = newTouchpoint(monitorTable[1].side)
     eSButtons = newTouchpoint(monitorTable[1].side)
+    monButtons = newTouchpoint(monitorTable[1].side)
 
     if errorTable.error and errorTable["r"].reactorCount == 1 then
         for i = 1, #reactorTable do
             rButtons:add("R" .. i, function()
                 selectPeripheral("r", reactorTable[i].side)
-            end, 2, 6 + i, 7, 6 + 1)
+            end, 2, 6 + i, 7, 6 + i)
         end
     end
 
@@ -99,7 +109,15 @@ local function createButtons()
         for i = 1, #energyStorageTable do
             eSButtons:add("S" .. i, function()
                 selectPeripheral("eS", energyStorageTable[i].side)
-            end, 37, 6 + i, 42, 6 + 1)
+            end, 2, 6 + i, 7, 6 + i)
+        end
+    end
+
+    if errorTable.error and errorTable["m"].monitorCount == 1 then
+        for i = 1, #monitorTable do
+            monButtons:add("M" .. i, function()
+                    selectPeripheral("m",monitorTable[i].side)
+            end, 2, 6 + i, 7, 6 + i)
         end
     end
 
@@ -151,6 +169,14 @@ local function drawMenu()
         ui:writeContent(2,5, text.errors.selectEnergyStorage)
 
         handleClicks(eSButtons)
+    elseif errorTable.error and errorTable["m"].monitorCount == 1 then
+        ui:clear()
+        monButtons:draw()
+        ui:drawFrame()
+
+        ui:writeContent(2,5, text.errors.selectMonitor)
+
+        handleClicks(monButtons)
     end
 
 
