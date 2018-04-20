@@ -17,7 +17,10 @@ local mon = monitorTable[1]
 ---------- Control functions
 
 local function checkPeripherals()
-    if #reactorTable == 0 then
+
+    local pOptions = newOptions("/reactor-turbine-program/config/peripherals.json")
+
+    if #reactorTable == 0 and pOptions:get("reactor") == nil then
         errorTable.error = true
         errorTable["r"] = { reactorCount = 0 }
     end
@@ -27,28 +30,25 @@ local function checkPeripherals()
         errorTable["t"] = { turbineCount = 0 }
     end
 
-    if #energyStorageTable == 0 then
+    if #energyStorageTable == 0 and pOptions:get("energyStorage") == nil then
         errorTable.error = true
         errorTable["eS"] = { energyStorageCount = 0 }
     end
 
-    if #reactorTable > 1 then
+    if #reactorTable > 1 and pOptions:get("reactor") == nil then
         errorTable.error = true
         errorTable["r"] = { reactorCount = 1 }
     end
 
-    if #energyStorageTable > 1 then
+    if #energyStorageTable > 1 and pOptions:get("energyStorage") == nil then
         errorTable.error = true
         errorTable["eS"] = { energyStorageCount = 1 }
     end
 
-    if #monitorTable > 1 then
+    if #monitorTable > 1 and pOptions:get("monitor") == nil then
         errorTable.error = true
         errorTable["m"] = { monitorCount = 1 }
     end
-
-    -- TODO: Check peripheral config file
-
 
     if not errorTable.error then
         exit = true

@@ -8,7 +8,6 @@
 local exit = false
 local options = newOptions()
 local text = loadLanguageFile(options:get("lang") .. "/turbineControl.json")
-local errorTable = {isPresent = false, reason = ""}
 
 --Peripherals
 local mon = monitorTable[1]
@@ -18,14 +17,14 @@ local e --energyStorage
 
 --Buttons
 local mainButtons
-local selectPeripheralButtons
 
 
 
 ---------- Control functions
 
 local function init()
-    checkPeripherals()
+    shell.run("/reactor-turbine-program/program/turbinePrograms/checkPeriperals.lua")
+
 end
 
 ---------- UI functions
