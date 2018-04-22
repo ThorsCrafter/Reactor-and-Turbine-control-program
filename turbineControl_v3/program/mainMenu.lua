@@ -4,11 +4,6 @@
 
 ---------- Variables
 
---Loads the Touchpoint API
---shell.run("cp /reactor-turbine-program/lib/touchpoint.lua /touchpoint")
---os.loadAPI("touchpoint")
---shell.run("rm touchpoint")
-
 local exit = false
 local buttons
 local mon = monitorTable[1]

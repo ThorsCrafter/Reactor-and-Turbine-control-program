@@ -36,16 +36,12 @@ end
 ---------- Button functions
 
 local function doManualEdit()
-    mon:backgroundColor(manualOptions:get("backgroundColor"))
-    mon:textColor(manualOptions:get("textColor"))
-    mon:clear()
+    local ui = newUI("manualEditMenu", mon, menuText.manualEditMenu, manualOptions:get("version"), manualOptions:get("backgroundColor"), manualOptions:get("textColor"))
 
-    drawHeader(menuText.manualEditMenu)
+    ui:clear()
+    ui:drawFrame()
 
-    mon:setCursor(2,5)
-    mon:write(menuText.manualEditRedirect)
-
-    drawFooter()
+    ui:writeContent(2, 5, menuText.manualEditRedirect)
 
     shell.run("edit /reactor-turbine-program/config/options.json")
 
@@ -65,16 +61,16 @@ end
 
 local function manualMenu()
     createAdvancedMenuButtons()
-    local ui = newUI("manualEditMenu",mon,menuText.manualEditMenu,manualOptions:get("version"),manualOptions:get("backgroundColor"), manualOptions:get("textColor"))
+    local ui = newUI("manualEditMenu", mon, menuText.manualEditMenu, manualOptions:get("version"), manualOptions:get("backgroundColor"), manualOptions:get("textColor"))
 
     ui:clear()
     manualButtons:draw()
     ui:drawFrame()
 
-    ui:writeContent(2,5, menuText.manualEditWarning1)
-    ui:writeContent(2,7,menuText.manualEditWarning2)
-    ui:writeContent(2,9,menuText.manualEditWarning3)
-    ui:writeContent(2,12,menuText.manualEditConfirm)
+    ui:writeContent(2, 5, menuText.manualEditWarning1)
+    ui:writeContent(2, 7, menuText.manualEditWarning2)
+    ui:writeContent(2, 9, menuText.manualEditWarning3)
+    ui:writeContent(2, 12, menuText.manualEditConfirm)
 
     handleClicks(manualButtons)
 end

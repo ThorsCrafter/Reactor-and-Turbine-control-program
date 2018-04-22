@@ -10,10 +10,10 @@ local options = newOptions()
 local text = loadLanguageFile(options:get("lang") .. "/turbineControl.json")
 
 --Peripherals
-local mon = monitorTable[1]
-local r --Reactor
-local tTable --turbineTable
-local e --energyStorage
+local mon = monitorTable[1] --Main Monitor
+local r = "" --Reactor
+local tTable = {} --turbineTable
+local e = "" --energyStorage
 
 --Buttons
 local mainButtons
@@ -22,59 +22,19 @@ local mainButtons
 
 ---------- Control functions
 
-local function init()
-    shell.run("/reactor-turbine-program/program/turbinePrograms/checkPeriperals.lua")
-
-end
-
----------- UI functions
-
-local function createMainButtons()
-    mainButtons = newTouchpoint(monitorTable[1].side)
-
-
-end
-
-local function drawHeader()
-    mon:setCursor(1, 1)
-    for i = 1, mon:x() do mon:write("=") end
-    mon:setCursor(math.floor(mon:x() / 2 - string.len(text.title) / 2), 2)
-    mon:write(text.title)
-    mon:setCursor(1, 3)
-    for i = 1, mon:x() do mon:write("=") end
-end
-
-local function drawFooter()
-    mon:setCursor(1, mon:y() - 1)
-    for i = 1, mon:x() do mon:write("-") end
-    mon:setCursor(math.floor(mon:x() / 2 - string.len("Version " .. options:get("version") .. " - (c) 2017 Thor_s_Crafter") / 2), mon:y())
-    mon:write("Version " .. options:get("version") .. " - (c) 2017 Thor_s_Crafter")
-end
-
-local function selectPeripherals()
-
-end
-
-local function drawUIElements()
-    mon:clear()
-    mainButtons:draw()
-    mon:backgroundColor(options:get("backgroundColor"))
-    mon:textColor(options:get("textColor"))
-
-    drawHeader()
-    drawFooter()
-
-    --Print error messages if present end exit the program
-    if errorTable.isPresent then
-        mon:setCursor(2,5)
-
-        mon:textColor(colors.red)
-        mon:write(errorTable.reason)
-
-        os.sleep(3)
-        exit = true
+local function loadPeripherals()
+    local p = newOptions("/reactor-turbine-program/config/peripherals.json")
+    r = newReactor("r1",peripheral.wrap(p:get("reactor")), p:get("reactor"),peripheral.getType(p:get("reactor")))
+    e = newEnergyStorage("e1", peripheral.wrap(p:get("energyStorage")), p:get("energyStorage"), peripheral.getType(p:get("energyStorage")))
+    local t = p:get("turbines")
+    for i=1, #t do
+        table.insert(tTable, newTurbine("t"..i, peripheral.wrap(t[i]), t[i], peripheral.getType(t[i])))
     end
+end
 
+local function init()
+    shell.run("/reactor-turbine-program/program/turbinePrograms/checkPeripherals.lua")
+    loadPeripherals()
 end
 
 ---------- Event functions
@@ -101,15 +61,34 @@ local function handleClicks(buttonInstance)
     end
 end
 
+---------- UI functions
+
+local function createMainButtons()
+    mainButtons = newTouchpoint(mon.side)
+
+
+end
+
+local function drawMenu()
+    local ui = newUI("turbineControl",mon,text.title,options:get("version"), options:get("backgroundColor"),options:get("textColor"))
+    createMainButtons()
+
+    ui:clear()
+    mainButtons:draw()
+    ui:drawFrame()
+
+
+    handleClicks(mainButtons)
+end
+
+
 
 ---------- Execute program
 
 init()
 
 while not exit do
-    createMainButtons()
-    drawUIElements()
-    handleClicks(mainButtons)
+    drawMenu()
 end
 
 
