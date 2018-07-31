@@ -462,7 +462,7 @@ function findOptimalFuelRodLevel()
                 mon.write("Current Steam-Output: " .. (input.formatNumberComma(steamOutput)) .. "mb/t    ")
             end
 
-            --Level too big
+            --Level too high
             if steamOutput < targetSteamOutput then
                 controlRodLevel = controlRodLevel - 1
                 r.setAllControlRodLevels(controlRodLevel)
