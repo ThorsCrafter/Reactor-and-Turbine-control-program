@@ -1,4 +1,12 @@
-# Reactor and Turbine control program
+# [Discontinued] Reactor and Turbine control program
+
+***Unfortunately, I had to discontinue this project as well as my YouTube Channel. I don't have the time to develop this program any further.
+Additionally, I don't need this program myself anymore since I stopped playing Minecraft a while ago.
+Since I started Version 3.0 some time ago, but since have not been able to finish it, the program is in a bad state.
+If you enjoy programming and want to continue this project, I'd be happy to give you access to it. Just ask ;)
+Thor_s_Crafter***
+
+
 ***Description:***
 
 This is my Reactor- and Turbine control program for ComputerCraft and BigReactors.
