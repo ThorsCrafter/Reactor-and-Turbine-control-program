@@ -448,6 +448,16 @@ function findOptimalFuelRodLevel()
 
         --Find precise level
         while true do
+            if (controlRodLevel <= 0) then
+                -- prevent controlRodLevel from going negative in case the reactor cannot produce enough steam to reach targetSteamOutput
+                controlRodLevel = 0
+                r.setAllControlRodLevels(controlRodLevel)
+                rodLevel = controlRodLevel
+                saveOptionFile()
+                print("Target RodLevel: " .. controlRodLevel)
+                sleep(2)
+                break; 
+            end
             sleep(5)
             local steamOutput = r.getHotFluidProducedLastTick()
 
